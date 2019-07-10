@@ -1,0 +1,142 @@
+% \documentclass[manuscript]{geophysics}
+\documentclass[paper,twocolumn,twoside]{geophysics}
+% \documentclass[paper]{geophysics}
+% \documentclass[paper, revised]{geophysics}
+% \documentclass[manuscript,revised]{geophysics}
+
+% Additional packages to geophysics.cls
+\usepackage[USenglish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{amssymb, amsmath, amsfonts}
+\usepackage{upquote}
+\usepackage[strings]{underscore}
+\usepackage{natbib}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[pdftex, final, breaklinks=True]{hyperref}
+\hypersetup{allcolors=blue, allbordercolors={0 0 .5}, colorlinks=true}
+
+% Figures
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\renewcommand{\figdir}{./figures}
+
+% Own commands
+\newcommand{\mr}[1]{\mathrm{#1}}
+
+\begin{document}
+
+\title{Status of the open-source landscape for 3D CSEM modeling}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\ms{GEO-2018-0069.R2}
+
+\address{
+\footnotemark[1]TU Delft,
+Building 23,
+Stevinweg 1 / PO-box 5048,
+2628 CN Delft,
+E-mail: \href{mailto:D.Werthmuller@tudelft.nl}{D.Werthmuller@tudelft.nl};
+}
+
+
+\author{%
+Dieter Werthmüller\footnotemark[1],
+Lindsey Heagy,
+Raphael Rochlitz, and
+Octavio Castillo-Reyes
+}
+
+\footer{}
+\lefthead{Werthmüller et al.}
+\righthead{Digital filter designing tool}
+
+\maketitle
+
+\begin{abstract} % 1-2 sentence(s) each
+%
+% (1) PRINCIPAL OBJECTIVES AND SCOPE OF THE WORK
+%
+% (2) METHODOLOGY
+%
+% (3) RESULTS
+%
+% (4) CONCLUSIONS
+%
+To-Do/-Discuss:
+\begin{itemize}
+  \item Title?
+  \item Order of authors? These authors or others?
+  \item Other codes to include? Currently considered:\\
+    SimPEG, custEM, PETGEM, and emg3d.
+  \item Are these references OK?
+    \begin{itemize}
+      \item \cite{CAG.15.Cockett} (SimPEG)
+      \item \cite{GEO.18.Rochlitz} (custEM)
+      \item \cite{CAG.18.CastilloReyes} (PETGEM)
+      \item \cite{JOSS.19.Werthmuller} (emg3d).
+    \end{itemize}
+  \item Exact structure of the paper?
+  \item Exact models to calculate/show/compare?
+\end{itemize}
+\end{abstract}
+
+\section{Introduction}
+
+\dots
+
+\section{Codes}
+
+Each code should outline:
+\begin{itemize}
+  \item Equation system it solves;
+  \item the used discretization possibilities;
+  \item domains (frequency, time);
+  \item details (anisotropy; el. perm. and mag. perm.);
+  \item other things (inversion; other methods);
+  \item speed and memory estimation;
+  \item plans for next features.
+\end{itemize}
+
+\subsection{emg3d}
+
+\subsection{SimPEG}
+
+\subsection{custEM}
+
+\subsection{PETGEM}
+
+\section{Numerical Results}
+
+\subsection{Layered model}
+
+A simple layered model, comparing with \texttt{empymod}
+\citep{GEO.17.Werthmuller}.
+
+\subsection{3D model}
+
+A complicated, big, 3D model with bathymetry (topography).
+
+\section{Conclusions}
+
+The landscape in 3D CSEM modelling greatly changed in the last five years or
+so. While before there were only closed-source codes owned by companies or
+consortia (e.g., CEMI) there was recently a wave of openly released codes.
+\dots
+
+\section{Acknowledgment}
+\dots
+
+
+% REFERENCES
+\bibliographystyle{references}
+\bibliography{references}
+
+% Include bbl instead above command before submission.
+% \begin{thebibliography}{}
+% \itemsep0pt
+% \bibitem ...
+% \end{thebibliography}
+
+\end{document}

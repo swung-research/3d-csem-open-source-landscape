@@ -1,0 +1,10 @@
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.lot
+*.lof
+*.bin
+.ipynb_checkpoints/
+__pycache__/

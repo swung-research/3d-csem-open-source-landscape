@@ -1,0 +1,3 @@
+# Comparison of open-source 3D CSEM modelling tools.
+
+Work in progress...
