@@ -90,6 +90,7 @@ To-Do/-Discuss:
 
 Each code should outline:
 \begin{itemize}
+  \item General presentation/introduction;
   \item Equation system it solves;
   \item the used discretization possibilities;
   \item domains (frequency, time);
@@ -100,6 +101,34 @@ Each code should outline:
 \end{itemize}
 
 \subsection{emg3d}
+
+\emph{General presentation/introduction}\\
+
+\emph{Equation system it solves}\\
+
+\emph{the used discretization possibilities}\\
+The code requires regular, but not necessary equidistant, grids.
+
+\emph{domains (frequency, time)}\\
+
+\emph{details (anisotropy; el. perm. and mag. perm.)}\\
+It currently includes tri-axial electric anisotropy and isotropic relative
+magnetic permeability; the relative electric permittivity is fixed at 1.
+
+\emph{other things (inversion; other methods)}\\
+
+\emph{speed and memory estimation}\\
+The advantage of multigrid methods is that they have optimal scaling for both
+runtime and memory usage. If the number of cells is doubled it will take twice
+as long and twice as much memory to calculate. Expand on that.
+
+\emph{plans for next features}\\
+According to the current roadmap the next step in the development of emg3d will
+see routines for fast time-domain calculations with a frequency-domain code by
+minimizing the required frequencies for the Fourier transform. Also planned are
+the extension to general anisotropy, inversion routines, and some improved
+routines for the inclusion of topography. Some of these might be sought to
+achieve by a compatibility layer to SimPEG.
 
 \subsection{SimPEG}
 
@@ -126,6 +155,10 @@ consortia (e.g., CEMI) there was recently a wave of openly released codes.
 \dots
 
 \section{Acknowledgment}
+
+The development of emg3d was funded through the European Commission: MarTERA -
+Maritime and Marine Technologies for a New ERA (728053).
+
 \dots
 
 
