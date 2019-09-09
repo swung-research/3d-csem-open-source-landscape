@@ -1,5 +1,5 @@
-Status of the open-source landscape for 3D CSEM modelling
-=========================================================
+An overview of the open-source landscape for 3D CSEM modelling
+==============================================================
 
 - Version: |version|
 - Date: |today|
