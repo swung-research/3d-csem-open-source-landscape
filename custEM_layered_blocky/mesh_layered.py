@@ -24,7 +24,8 @@ points = np.concatenate((
 rx = mu.refine_rx(points, 1., 30.)
 
 # create world
-M = BlankWorld(name='layered_earth_p1', m_dir='./meshes',
+M = BlankWorld(name='layered_earth_p1',
+               m_dir='./meshes',
                x_dim=[-3e4, 3e4],
                y_dim=[-3e4, 3e4],
                z_dim=[-5e4, 5e4],
@@ -56,7 +57,8 @@ points = np.concatenate((
 rx = mu.refine_rx(points, 25., 30.)
 
 # create world
-M = BlankWorld(name='layered_earth_p2', m_dir='./meshes',
+M = BlankWorld(name='layered_earth_p2',
+               m_dir='./meshes',
                x_dim=[-1.5e4, 1.5e4],
                y_dim=[-1.4e4, 1.4e4],
                z_dim=[-5e4, 5e4],

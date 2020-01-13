@@ -26,7 +26,7 @@ lines = ['l1m_line_x', 'l2m_line_x', 'l3m_line_x']
 p = 2
 
 mesh_l = 'layered_earth_p' + str(p)
-mesh_b = 'blocky_model_p' + str(p)
+mesh_b = 'block_model_p' + str(p)
 
 mod = 'p' + str(p)
 
@@ -47,7 +47,7 @@ for j, line in enumerate(lines):
     mod = 'p' + str(p)
 #    mod2 = 'p2'
     P.import_line_data(line, mesh=mesh_l, key='t1')
-#    P.import_line_data(line, mesh=mesh_l2, mod=mod2, key='t2')
+    P.import_line_data(line, mesh=mesh_b, mod=mod, key='t2')
 
     if j == 0:
         epm = epm_1
@@ -66,10 +66,10 @@ for j, line in enumerate(lines):
         out_name += 'y_3000_'
 
     np.save(out_name + 'coords.npy', P.line_coords[line].real)
-    np.save(out_name + 'E_le_p'+ str(p) + '.npy', P.line_data['t1_E_t'][:, :3])
-#    np.save(out_name + 'E_bm.npy', P.line_data['t2_E_t'][:, :3])
-    np.save(out_name + 'H_le_p' + str(p) + '.npy', P.line_data['t1_H_t'][:, :3])
-#    np.save(out_name + 'H_bm.npy', P.line_data['t2_H_t'][:, :3])
+#    np.save(out_name + 'E_le_p' + str(p) + '.npy', P.line_data['t1_E_t'][:, :3])
+    np.save(out_name + 'E_bm_p' + str(p) + '.npy', P.line_data['t2_E_t'][:, :3])
+#    np.save(out_name + 'H_le_p' + str(p) + '.npy', P.line_data['t1_H_t'][:, :3])
+    np.save(out_name + 'H_bm_p' + str(p) + '.npy', P.line_data['t2_H_t'][:, :3])
 
     fields = 'E'  # choose either 'E', 'H' or 'EH'
 #    P.plot_line_data(key='t1', EH=fields, label='p1', xlim=[-10., 10.])
@@ -77,8 +77,8 @@ for j, line in enumerate(lines):
 #    P.plot_line_data(key='ref' + str(j), EH=fields, label='empymod', new=False)
 #    plt.savefig('new_results.pdf', bbox_inches='tight', pad_inches=0)
 
-    P.plot_line_errors(key='ref' + str(j), EH=fields, key2='t1',
-                       label='p1 misfit', xlim=[-10., 10.])
+#    P.plot_line_errors(key='ref' + str(j), EH=fields, key2='t1',
+#                       label='p1 misfit', xlim=[-10., 10.])
 #    P.plot_line_errors(key='ref' + str(j), EH=fields, key2='t2',
 #                       new=False, label='p2 misfit')
 #    plt.savefig('new_misfits.pdf', bbox_inches='tight', pad_inches=0)
