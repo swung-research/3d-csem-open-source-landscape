@@ -43,7 +43,17 @@ survey.line_2.data = ... # Data y=0 (required for layered and block model)
 survey.line_3.data = ... # Data y=3000 (only required for the block model)
 
 # Add info
-survey.attrs['...'] = ...  # SEE BELOW FOR KEYS
+ds.attrs['runtime'] = 'N/A'   # Elapsed real time (wall time) [s]
+ds.attrs['cputime'] = 'N/A'   # Total time [s] (for parallel comp. >> runtime)
+ds.attrs['nthreads'] = 'N/A'  # Number of threads used
+ds.attrs['maxram'] = 'N/A'    # Max RAM used
+ds.attrs['ncell'] = 'N/A'     # Number of cells (for emg3d/SimPEG)
+ds.attrs['nedges'] = 'N/A'    # Number of edges (for custEM/PETGEM)
+ds.attrs['machine'] = 'N/A'   # Machine info, e.g.
+#                             # "laptop with an i7-6600U CPU@2.6 GHz (x4)
+#                             #  and 16 GB of memory, using Ubuntu 18.04"
+ds.attrs['version'] = 'N/A'   # Version number of your code
+ds.attrs['date'] = datetime.today().isoformat()
 
 # Add other meta data: add whatever you think is important for your code
 survey.attrs['...'] = ...
@@ -56,20 +66,14 @@ survey.to_netcdf(f"../results/{model}_{code}.nc",
                  invalid_netcdf=True, engine='h5netcdf')
 ```
 
+=> **PETGEM**: Please save data as `data.conj()`. PETGEM has, as far as I could
+see, the opposite Fourier definition than custEM/emg3d/SimPEG. It is best we
+save it all with the same definition.
+
 
 ## Info
 
-Every code should store its info directly in the data (`survey.attrs[]`) under
-the following keywords:
-- 'runtime': Elapsed real time (wall time), in s
-- 'cputime'; Total runtime, in s (for parallel comp. much higher than runtime)
-- 'nthreads': Number of threads used
-- 'maxram': Max RAM used
-- 'ncell': Number of cells (for emg3d/SimPEG)
-- 'nedges': Number of edges (for custEM/PETGEM)
-- 'machine': Machine info, e.g. "laptop with an i7-6600U CPU@2.6 GHz (x4) and
-  16 GB of memory, using Ubuntu 18.04"
-- 'version': Version number of your code
-- 'date': Date, use `datetime.today().isoformat()`
+Every code should store its info directly in the data (`survey.attrs[]`) as
+shown in the code snippet above.
 
 **Please make sure to add all info-data as indicated!**
