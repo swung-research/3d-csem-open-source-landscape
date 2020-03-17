@@ -9,14 +9,18 @@
     │   ├── figures        # Figures for the paper
     │   └── notebooks      # Notebooks to create above figures
     └── model-{MODEL}      # 'block' or 'marlim'
-        └── {CODE}         # Each code has its folder
-            └── results    # Result for each code
+        ├── {CODE}         # Each code has its folder
+        └── results        # Result of each code
 
 1. This will not move to the public repo.
 2. Will currently stay empty, and figures will be created using the files in
-   `model-{MODEL}/{CODE}/results`. However, once the article is finished this
-   folder should contain all data to create the figure, such that the
+   `model-{MODEL}/results`. However, once the article is finished this folder
+   should contain all data to create the figure, such that the
    `manuscript`-folder is self-contained and can reproduce the entire article.
+
+**Each `model`-directory contains a README.md with instructions how to load the
+model and how to save the data correctly, so that we all save it in the same
+way.**
 
 
 ## Manuscript
@@ -40,7 +44,3 @@ make livehtml
 This will automatically open a browser with the docs, watch the `manuscript`
 directory, re-build whenever a source file has changed, and refresh the
 browser.
-
-## Data format
-
-TODO
