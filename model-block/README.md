@@ -38,21 +38,24 @@ rec_z = survey.attrs['rec_z']
 
 ```python
 # Save the three lines
-survey.line_1.data = ... # Data y=-3000 (required for layered and block model)
-survey.line_2.data = ... # Data y=0 (required for layered and block model)
-survey.line_3.data = ... # Data y=3000 (only required for the block model)
+survey.line_1_re.data = ... # y =-3000 RE (req. for layered and block model)
+survey.line_1_im.data = ... # y =-3000 IM (req. for layered and block model)
+survey.line_2_re.data = ... # y =    0 RE (req. for layered and block model)
+survey.line_2_im.data = ... # y =    0 IM (req. for layered and block model)
+survey.line_3_re.data = ... # y = 3000 RE (only req. for block model)
+survey.line_3_im.data = ... # y = 3000 IM (only req. for block model)
 
 # Add info
-ds.attrs['runtime'] = 'N/A'   # Elapsed real time (wall time) [s]
-ds.attrs['cputime'] = 'N/A'   # Total time [s] (for parallel comp. >> runtime)
-ds.attrs['nthreads'] = 'N/A'  # Number of threads used
-ds.attrs['maxram'] = 'N/A'    # Max RAM used
-ds.attrs['ncell'] = 'N/A'     # Number of cells (for emg3d/SimPEG)
-ds.attrs['nedges'] = 'N/A'    # Number of edges (for custEM/PETGEM)
-ds.attrs['machine'] = 'N/A'   # Machine info, e.g.
-#                             # "laptop with an i7-6600U CPU@2.6 GHz (x4)
-#                             #  and 16 GB of memory, using Ubuntu 18.04"
-ds.attrs['version'] = 'N/A'   # Version number of your code
+ds.attrs['runtime'] = ...   # Elapsed real time (wall time) [s]
+ds.attrs['cputime'] = ...   # Total time [s] (for parallel comp. >> runtime)
+ds.attrs['nthreads'] = ...  # Number of threads used
+ds.attrs['maxram'] = ...    # Max RAM used
+ds.attrs['ncell'] = ...     # Number of cells (for emg3d/SimPEG else 'N/A')
+ds.attrs['nedges'] = ...    # Number of edges (for custEM/PETGEM else 'N/A')
+ds.attrs['machine'] = ...   # Machine info, e.g.
+#                           # "laptop with an i7-6600U CPU@2.6 GHz (x4)
+#                           #  and 16 GB of memory, using Ubuntu 18.04"
+ds.attrs['version'] = ...   # Version number of your code
 ds.attrs['date'] = datetime.today().isoformat()
 
 # Add other meta data: add whatever you think is important for your code
@@ -62,8 +65,7 @@ survey.attrs['...'] = ...
 model = ...  # 'layered' or 'block'
 code = ...   # 'custEM', 'emg3d', 'PETGEM', or 'SimPEG'
 #            # custEM/PETGEM: you can add a '_{p}', where p = 'p1' or 'p2'
-survey.to_netcdf(f"../results/{model}_{code}.nc",
-                 invalid_netcdf=True, engine='h5netcdf')
+survey.to_netcdf(f"../results/{model}_{code}.nc", engine='h5netcdf')
 ```
 
 => **PETGEM**: Please save data as `data.conj()`. PETGEM has, as far as I could
