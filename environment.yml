@@ -1,0 +1,19 @@
+name: os-csem
+
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - discretize
+  - emg3d
+  - empymod
+  - h5netcdf
+  - ipython
+  - jupyter
+  - matplotlib
+  - mkl
+  - numba
+  - numpy
+  - scipy
+  - scooby
+  - xarray
