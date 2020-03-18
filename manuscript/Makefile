@@ -9,7 +9,7 @@ SOURCEDIR     = .
 BUILDDIR      = _build
 
 livehtml:
-	sphinx-autobuild $(SOURCEDIR) $(BUILDDIR)/html html -B $(SPHINXOPTS)
+	sphinx-autobuild $(SOURCEDIR) $(BUILDDIR)/html -B $(SPHINXOPTS)
 
 # Put it first so that "make" without argument is like "make help".
 help:

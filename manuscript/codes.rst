@@ -1,6 +1,12 @@
 Codes
 #####
 
+Intro to it; numerical approximations (FE, FD), differences in solvers,
+gridding/meshing, boundary conditions, etc.
+
+It is beyond the scope of this paper to go into every detail of the different
+modellers, however, a quick blabla...
+
 Each code should outline:
 
 - Equation system it solves;
@@ -14,6 +20,23 @@ Each code should outline:
 - Inversion capabilities
 - Time/frequency
 - transmitter types
+
+Basically summarize each code in three points:
+- Brief intro and main features
+- Main selling point
+- Planned features
+
+Cite for all: NumPy, SciPy.
+
+The codes under consideration are presented here in alphabetical order.
+
+custEM
+======
+
+[RoSG19]_
+
+FEniCS ([ABHJ15]_)
+
 
 emg3d
 =====
@@ -58,21 +81,6 @@ magnetic permeability, from very low frequencies (DC) to very high frequencies
 In the future it should be possible to use `emg3d` as a solver within the
 `SimPEG` framework.
 
-SimPEG
-======
-
-[CKHP15]_
-
-PARDISO ([ScGa04]_)
-
-
-custEM
-======
-
-[RoSG19]_
-
-FEniCS ([ABHJ15]_)
-
 
 PETGEM
 ======
@@ -82,6 +90,11 @@ PETGEM
 FEniCS ([ABHJ15]_)
 
 
-MARE3DEM
-========
+SimPEG
+======
+
+[CKHP15]_
+
+PARDISO ([ScGa04]_)
+
 

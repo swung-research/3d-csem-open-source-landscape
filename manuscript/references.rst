@@ -21,6 +21,11 @@ References
    gradient based parameter estimation in geophysical applications: Computers &
    Geosciences, 85, 142--154; DOI: `10.1016/j.cageo.2015.09.015
    <https://doi.org/10.1016/j.cageo.2015.09.015>`_.
+.. [CoMe19] Correa, J. L. and P. T. L. Menezes, 2019, Marlim R3D: A realistic
+   model for controlled-source electromagnetic simulations -- Phase 2: The
+   controlled-source electromagnetic data set:
+   Geophysics, 84(5), E293--E299; DOI: `10.1190/geo2018-0452.1
+   <https://doi.org/10.1190/geo2018-0452.1>`_.
 .. [Fedo64] Fedorenko, R. P., 1964, The speed of convergence of one iterative
    process: USSR Computational Mathematics and Mathematical Physics, 4,
    227--235; DOI `10.1016/0041-5553(64)90253-8
