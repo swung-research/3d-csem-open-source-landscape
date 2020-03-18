@@ -1,9 +1,11 @@
-name: os-csem
+name: csem
 
 channels:
   - defaults
   - conda-forge
+  - gimli
 dependencies:
+  - custem
   - discretize
   - emg3d
   - empymod
@@ -11,6 +13,7 @@ dependencies:
   - ipython
   - jupyter
   - matplotlib
+  - memory_profiler
   - mkl
   - numba
   - numpy

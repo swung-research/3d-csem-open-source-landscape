@@ -36,18 +36,17 @@ To create the environment simply run
 ```bash
 conda env create -f environment.yml
 ```
-This will create a new conda environment called `os-csem` (for open-source
-CSEM).
+This will create a new conda environment called `csem`.
 
 To activate and deactivate the environment run
 ```bash
-conda activate os-csem
-conda deactivate os-csem
+conda activate csem
+conda deactivate
 ```
 
 To completely remove the environment run
 ```bash
-conda remove --name os-csem --all
+conda remove --name csem --all
 ```
 
 `emg3d` requires at least Python 3.6, so this has to be the minimum version.
