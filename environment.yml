@@ -14,6 +14,7 @@ dependencies:
   - mkl
   - numba
   - numpy
+  - python>=3.6
   - scipy
   - scooby
   - xarray

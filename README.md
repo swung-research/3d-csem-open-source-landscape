@@ -47,9 +47,14 @@ conda deactivate os-csem
 
 To completely remove the environment run
 ```bash
-conda remove -name os-csem --all
+conda remove --name os-csem --all
 ```
 
+`emg3d` requires at least Python 3.6, so this has to be the minimum version.
+Python 3.5 reaches EOL in September, so it does not make sense to support it
+anyway. To make it verbose to the user, I added the line `python>=3.6` to the
+`environment.yml`. We can also increase it to 3.7 if someone has a strong
+preference.
 
 ## Manuscript
 
