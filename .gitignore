@@ -1,5 +1,12 @@
+# Python and Jupyter
 .ipynb_checkpoints/
 __pycache__/
+
+# Sphinx (manuscript)
 _build/
-DATA/
-DATA
+
+# Put the Marlim data (not in repo) either
+# - in a folder model-marlim/DATA or
+# - anywhere on your computer and symlink it to model-marlim/DATA
+model-marlim/DATA/
+model-marlim/DATA

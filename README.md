@@ -28,9 +28,9 @@ way.**
 ## Environment
 
 We provide an `environment.yml` to ensure everything can be reproduced.
-**Everyone should update this files** for the needs of their codes, and
+**Everyone should update this file** for the needs of their codes, and
 **everyone should test that the environment works with their codes**. Please
-limit it to the bare minimum, so we do not inflate it. A few 
+limit it to the bare minimum, so we do not inflate it.
 
 To create the environment simply run
 ```bash
