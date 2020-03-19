@@ -6,6 +6,10 @@ References
    The FEniCS Project Version 1.5: Computing in Science & Engineering, 3; DOI:
    `10.11588/ans.2015.100.20553
    <https://doi.org/10.11588/ans.2015.100.20553>`_.
+.. [CaMe17] B. R. Carvalho and P. T. L. Menezes, 2017, Marlim R3D: a realistic
+   model for CSEM simulations - phase I: model building: Brazilian Journal of
+   Geology, 47, 633--644; DOI: `10.1590/2317-4889201720170088
+   <https://doi.org/10.1590/2317-4889201720170088>`_.
 .. [CPGC19] Castillo-Reyes, O., J. de la Puente, L. E. García-Castillo, and
    J. M. Cela, 2019, Parallel 3-D marine controlled-source electromagnetic
    modelling using high-order tetrahedral Nédélec elements: Geophysical Journal
