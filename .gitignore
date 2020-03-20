@@ -10,3 +10,4 @@ _build/
 # - anywhere on your computer and symlink it to model-marlim/DATA
 model-marlim/DATA/
 model-marlim/DATA
+model-marlim/marlim_data.nc

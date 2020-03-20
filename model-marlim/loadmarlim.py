@@ -20,37 +20,44 @@ import xarray as xr
 from os.path import abspath
 
 
-def load_model(model='orig'):
+def load_model(model='orig', vti='h'):
     """Load original or computational model of Marlim R3D.
 
     Parameters
     ----------
-    model : str
+    model : str; {<'orig'>; 'comp'}
         If model=='comp', the computational model is returned. Else the
         original model.
+    vti : str; {<'h'>; 'v'}
+        If vti='v' returns vertical resistivity, else horizontal. Default is
+        horizontal.
 
     Returns
     -------
     mesh : TensoMesh
         The model mesh
-    res_h, res_v : ndarrays
-        Vertical and horizontal resistivities
+    res : ndarray
+        Horizontal or vertical resistivities
 
     """
 
     if model == 'comp':
-        name_h = 'novo_mrl3d_H_Z_meters.segy'
-        name_v = 'novo_mrl3d_Zmeters.segy'
+        if vti == 'v':
+            name = 'novo_mrl3d_Zmeters.segy-'
+        else:
+            name = 'novo_mrl3d_H_Z_meters.segy'
         dx, dy, dz = 100, 100, 20  # Cell widths
     else:
-        name_h = 'Horizontal_resistivity.sgy'
-        name_v = 'Vertical_Resistivity.sgy'
-        dx, dy, dz = 75, 25, 5  # Cell widths
+        if vti == 'v':
+            name = 'Vertical_Resistivity.sgy'
+        else:
+            name = 'Horizontal_resistivity.sgy'
+        dx, dy, dz = 25, 75, 5  # Cell widths
 
     # Load horizontal and vertical cubes
     try:
-        res_h = segyio.tools.cube(abspath('./DATA/'+name_h))[:, :, ::-1]
-        res_v = segyio.tools.cube(abspath('./DATA/'+name_v))[:, :, ::-1]
+        # Load and swap z for positive upwards
+        res = segyio.tools.cube(abspath('./DATA/'+name))[:, :, ::-1]
     except FileNotFoundError:
         s = "    "
         txt = f"\n{3*s}** DATA NOT FOUND! **\n\n"
@@ -65,15 +72,19 @@ def load_model(model='orig'):
         txt += f"{s}- novo_mrl3d_Zmeters.segy\n"
         txt += f"{s}from ???????????\n"
         print(txt)
-        return None, None, None
+        return None, None
+
+    # Reshape
+    if model != 'comp':
+        res = np.transpose(res[::-1, :, :], (1, 0, 2))
 
     # Define number of cells and cell widths
-    nx, ny, nz = res_h.shape
+    nx, ny, nz = res.shape
 
     # Extract origin
     x0 = 1e100
     y0 = 1e100
-    with segyio.open('DATA/'+name_h) as f:
+    with segyio.open('DATA/'+name) as f:
         for i in range(nx*ny):
             if f.header[i][segyio.TraceField.CDP_X] < x0:
                 x0 = f.header[i][segyio.TraceField.CDP_X]
@@ -85,9 +96,8 @@ def load_model(model='orig'):
     mesh = discretize.TensorMesh(
         [np.ones(nx)*dx, np.ones(ny)*dy, np.ones(nz)*dz],
         x0=[x0, y0, 'N'])
-    mesh
 
-    return mesh, res_h, res_v
+    return mesh, res
 
 
 def load_data(noise=False):
@@ -173,20 +183,21 @@ def create_survey(store_data=False, noise=False):
     src_il = [src_x_il, src_y_il, src_z_il]
     src_bs = [src_x_bs, src_y_bs, src_z_bs]
 
-    print(f"                   Inline     Broadside")
-    print(f"recid       :: {data_il.attrs['recid']:>10}   "
+    s = "    "
+    print(f"\n{s}                   Inline     Broadside")
+    print(f"{s}recid       :: {data_il.attrs['recid']:>10}   "
           f"{data_bs.attrs['recid']:>10}")
-    print(f"lineid      :: {data_il.attrs['lineid']:>10}   "
+    print(f"{s}lineid      :: {data_il.attrs['lineid']:>10}   "
           f"{data_bs.attrs['lineid']:>10}")
-    print(f"src-y (N)   :: {src_y_il[0]:>10.1f}   {src_y_bs[0]:>10.1f}")
-    print(f"rec-x (E)   :: {data_il.x_r:>10.1f}   {data_bs.x_r:>10.1f}")
-    print(f"rec-y (N)   :: {data_il.y_r:>10.1f}   {data_bs.y_r:>10.1f}")
-    print(f"rec-z (Z)   :: {data_il.z_r:>10.1f}   {data_bs.z_r:>10.1f}")
+    print(f"{s}src-y (N)   :: {src_y_il[0]:>10.1f}   {src_y_bs[0]:>10.1f}")
+    print(f"{s}rec-x (E)   :: {data_il.x_r:>10.1f}   {data_bs.x_r:>10.1f}")
+    print(f"{s}rec-y (N)   :: {data_il.y_r:>10.1f}   {data_bs.y_r:>10.1f}")
+    print(f"{s}rec-z (Z)   :: {data_il.z_r:>10.1f}   {data_bs.z_r:>10.1f}")
     print()
-    print(f"nr. offsets :: {src_x_il.size:10}   {src_x_bs.size:10}")
+    print(f"{s}nr. offsets :: {src_x_il.size:10}   {src_x_bs.size:10}")
     print()
-    print(f"frequencies :: {data_il.freqs} Hz")
-    print(f"components  :: {data_il.emf.emf_fieldtype.split()[:3]}")
+    print(f"{s}frequencies :: {data_il.freqs} Hz")
+    print(f"{s}components  :: {data_il.emf.emf_fieldtype.split()}")
 
     # Initiate data with zeros
     dataset = {}
