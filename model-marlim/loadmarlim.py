@@ -34,12 +34,12 @@ def extract_model(model='orig'):
     """
 
     if model == 'comp':
-        name_h = 'novo_mrl3d_Zmeters.segy'
-        name_v = 'novo_mrl3d_H_Z_meters.segy'
+        name_h = 'novo_mrl3d_H_Z_meters.segy'
+        name_v = 'novo_mrl3d_Zmeters.segy'
         dx, dy, dz = 100, 100, 20  # Cell widths
     else:
-        name_h = 'Vertical_Resistivity.sgy'
-        name_v = 'Horizontal_resistivity.sgy'
+        name_h = 'Horizontal_resistivity.sgy'
+        name_v = 'Vertical_Resistivity.sgy'
         dx, dy, dz = 25, 75, 5  # Cell widths
 
     # Load horizontal and vertical cubes
