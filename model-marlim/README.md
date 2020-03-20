@@ -27,50 +27,62 @@ Zenodo.
   DOI: [10.5281/zenodo.1807135](https://doi.org/10.5281/zenodo.1807135)
 
 
-## Loading the model and the survey
+## Loading the model
 
 We do not want to store the resistivity model and the CSEM data in our repo -
 the reader has to download them and put them in a folder `model-marlim/DATA`.
 The file `loadmarlim.py` contains functions to load the resistivity model and
-the CSEM data. If the functions cannot find the data it prints a help-text with
-the link where the data can be downloaded and instructions where to put them.
+the CSEM data and stores them in an easier accessible format. If the functions
+cannot find the data it prints a help-text with the link where the data can be
+downloaded and instructions where to put them.
 
-**Please make sure your scripts works with the `loadmarlim`-routines. Adjust
-them if necessary.**
-
-To load the detailed models:
+To create the model-files you have to run in `model-marlim/` the following
+code in Python:
 ```python
 import loadmarlim
-mesh, res_h = loadmarlim.load_model(vti='h')
-mesh, res_v = loadmarlim.load_model(vti='v')
+loadmarlim.extract_model('comp')  # => creates `model-marlim/marlim_comp.pnz`
+loadmarlim.extract_model('orig')  # => creates `model-marlim/marlim_orig.npz`
 ```
 
-To load the computational models:
+Now to load the models in `model-marlim/{CODE}/.` run
 ```python
-import loadmarlim
-mesh, res_h = loadmarlim.load_model(model='comp', vti='h')
-mesh, res_v = loadmarlim.load_model(model='comp', vti='v')
+import discretize
+import numpy as np
+data = np.load('../marlim_comp.npz')  #  or 'marlim_orig.npz'
+res_h = data['res_h']
+res_v = data['res_v']
+
+mesh = discretize.TensorMesh(
+    [data['hx'], data['hy'], data['hz']], x0=data['x0'])
 ```
+
 **Note:** The computational models are not yet publicly available, I sent them
 once to you, I received them directly from the authors. I wrote them asking to
 put in on Zenodo too, so we can properly link to them and cite it.
 
-To load the survey:
+
+## Loading the survey and the comparison data
+
+To load the survey (in `model-marlim/{CODE}/`):
 ```python
 import xarray as xr
-data = xr.load_dataset('marlim_survey.nc', engine='h5netcdf')
+data = xr.load_dataset('../marlim_survey.nc', engine='h5netcdf')
 ```
 
-To load the CSEM data from the authors:
+If you want to compare your CSEM results to the published ones you first have
+to create the data file. Run the following command (in the directory
+`model-marlim/`):
 ```python
 import loadmarlim
-import xarray as xr
-
-# 1. Creates the file `marlim_data.nc`; only has to be done once.
 loadmarlim.create_survey(store_data=True)
+```
+This creates the file `model-marlim/marlim_data.nc`.
 
-# 2. Load the data
-data = xr.load_dataset('marlim_data.nc', engine='h5netcdf')
+From now on you can load the data in your `model-marlim/{CODE}/`-directory like
+this:
+```python
+import xarray as xr
+data = xr.load_dataset('../marlim_data.nc', engine='h5netcdf')
 ```
 
 

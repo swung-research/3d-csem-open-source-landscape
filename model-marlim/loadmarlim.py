@@ -20,44 +20,33 @@ import xarray as xr
 from os.path import abspath
 
 
-def load_model(model='orig', vti='h'):
-    """Load original or computational model of Marlim R3D.
+def extract_model(model='orig'):
+    """Extract original or computational model of Marlim R3D and store as npz.
+
+    Extracts the original fine model or the computational model from the
+    sgy-fiels and stores them as numpy-compressed npz files.
 
     Parameters
     ----------
     model : str; {<'orig'>; 'comp'}
         If model=='comp', the computational model is returned. Else the
         original model.
-    vti : str; {<'h'>; 'v'}
-        If vti='v' returns vertical resistivity, else horizontal. Default is
-        horizontal.
-
-    Returns
-    -------
-    mesh : TensoMesh
-        The model mesh
-    res : ndarray
-        Horizontal or vertical resistivities
-
     """
 
     if model == 'comp':
-        if vti == 'v':
-            name = 'novo_mrl3d_Zmeters.segy-'
-        else:
-            name = 'novo_mrl3d_H_Z_meters.segy'
+        name_h = 'novo_mrl3d_Zmeters.segy'
+        name_v = 'novo_mrl3d_H_Z_meters.segy'
         dx, dy, dz = 100, 100, 20  # Cell widths
     else:
-        if vti == 'v':
-            name = 'Vertical_Resistivity.sgy'
-        else:
-            name = 'Horizontal_resistivity.sgy'
+        name_h = 'Vertical_Resistivity.sgy'
+        name_v = 'Horizontal_resistivity.sgy'
         dx, dy, dz = 25, 75, 5  # Cell widths
 
     # Load horizontal and vertical cubes
     try:
         # Load and swap z for positive upwards
-        res = segyio.tools.cube(abspath('./DATA/'+name))[:, :, ::-1]
+        res_h = segyio.tools.cube(abspath('./DATA/'+name_h))[:, :, ::-1]
+        res_v = segyio.tools.cube(abspath('./DATA/'+name_v))[:, :, ::-1]
     except FileNotFoundError:
         s = "    "
         txt = f"\n{3*s}** DATA NOT FOUND! **\n\n"
@@ -76,15 +65,16 @@ def load_model(model='orig', vti='h'):
 
     # Reshape
     if model != 'comp':
-        res = np.transpose(res[::-1, :, :], (1, 0, 2))
+        res_h = np.transpose(res_h[::-1, :, :], (1, 0, 2))
+        res_v = np.transpose(res_v[::-1, :, :], (1, 0, 2))
 
     # Define number of cells and cell widths
-    nx, ny, nz = res.shape
+    nx, ny, nz = res_h.shape
 
     # Extract origin
     x0 = 1e100
     y0 = 1e100
-    with segyio.open('DATA/'+name) as f:
+    with segyio.open('DATA/'+name_h) as f:
         for i in range(nx*ny):
             if f.header[i][segyio.TraceField.CDP_X] < x0:
                 x0 = f.header[i][segyio.TraceField.CDP_X]
@@ -97,7 +87,12 @@ def load_model(model='orig', vti='h'):
         [np.ones(nx)*dx, np.ones(ny)*dy, np.ones(nz)*dz],
         x0=[x0, y0, 'N'])
 
-    return mesh, res
+    # Save it
+    np.savez_compressed(
+            f"marlim_{model}.npz",
+            hx=mesh.hx, hy=mesh.hy, hz=mesh.hz, x0=mesh.x0,
+            res_h=res_h, res_v=res_v
+    )
 
 
 def load_data(noise=False):
