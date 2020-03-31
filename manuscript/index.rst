@@ -1,5 +1,5 @@
-An overview of the open-source landscape for 3D CSEM modelling
-==============================================================
+Open-source landscape for 3D CSEM modelling
+===========================================
 
 Werthmüller, D., R. Rochlitz, O. Castillo-Reyes, and L. Heagy.
 
