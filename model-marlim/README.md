@@ -26,6 +26,30 @@ Zenodo.
 - Without noise;
   DOI: [10.5281/zenodo.1807135](https://doi.org/10.5281/zenodo.1807135)
 
+### Required files
+
+For the data comparison, from
+[10.5281/zenodo.1807135](https://doi.org/10.5281/zenodo.1807135):
+
+- EW_nonoise.zip
+- NS_nonoise.zip
+
+To create the FD-models, from
+[10.5281/zenodo.400233](https://doi.org/10.5281/zenodo.400233):
+
+- Horizontal_resistivity.sgy
+- Vertical_Resistivity.sgy
+
+To create the FE-models additionally, from
+[10.5281/zenodo.400233](https://doi.org/10.5281/zenodo.400233):
+
+- Sea_Bottom-mr3d.xyz
+- Miocene-mr3d.xyz
+- Oligocene-mr3d.xyz
+- Blue_mark-mr3d.xyz
+- Top_of_Salt-mr3d.xyz
+- Base_of_salt-mr3d.xyz
+
 
 ## Loading the model
 
@@ -40,7 +64,7 @@ To create the model-files you have to run in `model-marlim/` the following
 code in Python:
 ```python
 import loadmarlim
-loadmarlim.extract_model('comp')  # => creates `model-marlim/marlim_comp.pnz`
+loadmarlim.extract_model('comp')  # => creates `model-marlim/marlim_comp.npz`
 loadmarlim.extract_model('orig')  # => creates `model-marlim/marlim_orig.npz`
 ```
 
@@ -95,29 +119,26 @@ import xarray as xr
 # Load survey as template
 ds = xr.load_dataset('../marlim_survey.nc', engine='h5netcdf')
 
-# Save the two lines; the data has shape (204, 6, 6) => (noff, nfreq, ncomp)
-ds.data_il_re.data = ...  # Inline RE
-ds.data_il_im.data = ...  # Inline IM
-ds.data_bs_re.data = ...  # Broadside RE
-ds.data_bs_im.data = ...  # Broadside IM
+# Save the two lines; the data has shape (408, 6, 6) => (noff*2, nfreq, ncomp)
+ds.data_il.data = ... # Inline
+ds.data_bs.data = ... # Broadside
 # If you only store ex, ey, and ez, which is sufficient for the paper, do
-# ds.data_{il;bs}_{re;im}.data[:, :, :3] = ...
+# ds.data_{il;bs}.data[:, :, :3] = ...
 
 # Add info
-ds.attrs['runtime'] = ...     # Elapsed real time (wall time) [s]
-ds.attrs['cputime'] = ...     # Total time [s] (for parallel comp. >> runtime)
-ds.attrs['nthreads'] = ...    # Number of threads used
-ds.attrs['maxram'] = ...      # Max RAM used
-ds.attrs['ncells'] = ...      # Number of cells (FD codes, else 'N/A')
-ds.attrs['nnodes'] = ...      # Number of nodes (FE codes, else 'N/A')
-ds.attrs['ndof'] = ...        # Number of dof (FE codes, else 'N/A')
-ds.attrs['extent'] = ...      # (xmin, xmax, ymin, ymax, zmin, zmax) mesh ext.
-ds.attrs['min_cwidth'] = ...  # (hxmin, hymin, hzmin) smallest cell
-ds.attrs['max_cwidth'] = ...  # (hxmax, hymax, hzmax) largest cell
-ds.attrs['machine'] = ...     # Machine info, e.g.
-#                             # "laptop with an i7-6600U CPU@2.6 GHz (x4)
-#                             #  and 16 GB of memory, using Ubuntu 18.04"
-ds.attrs['version'] = ...     # Version number of your code
+ds.attrs['runtime'] = ...  # Elapsed real time (wall time) [s]
+ds.attrs['n_procs'] = ...  # Number of processes (cores, procs, threads)
+ds.attrs['max_ram'] = ...  # Max RAM used
+ds.attrs['n_cells'] = ...  # Number of cells (FD codes, else 'N/A')
+ds.attrs['n_nodes'] = ...  # Number of nodes (FE codes, else 'N/A')
+ds.attrs['n_dof'] = ...    # Number of dof (FE codes, else 'N/A')
+ds.attrs['extent'] = ...   # (xmin, xmax, ymin, ymax, zmin, zmax) mesh ext.
+ds.attrs['min_vol'] = ...  # Volume of smallest voxel
+ds.attrs['max_vol'] = ...  # Volume of largest voxel
+ds.attrs['machine'] = ...  # Machine info, e.g.
+#                          # "laptop with an i7-6600U CPU@2.6 GHz (x4)
+#                          #  and 16 GB of memory, using Ubuntu 18.04"
+ds.attrs['version'] = ...  # Version number of your code
 ds.attrs['date'] = datetime.today().isoformat()
 
 # Add other meta data: add whatever you think is important for your code
@@ -129,15 +150,9 @@ code = ...   # 'custEM', 'emg3d', 'PETGEM', or 'SimPEG'
 ds.to_netcdf(f"../results/marlim_{code}.nc", engine='h5netcdf')
 ```
 
-A note regarding `runtime`, `cputime`, and also `maxram`: Only profile the
-solution of the actual system `Ax=b`. Mesh creation, model and field
-interpolation, and all other pre- and post-processing steps do not fall under
-this measure. If you have doubts regarding the difference of `runtime` and
-`cputime` please read https://en.wikipedia.org/wiki/Elapsed_real_time. In
-short: runtime is the real-world time it takes. If it starts at 14:14:38 and
-finishes at 14:15:48 then the runtime is 70 seconds. Now if you run the process
-on one thread then cputime will be the same or less than runtime. However, if
-you run your process in parallel then your cputime will be higher than runtime.
+A note regarding `runtime` and `max_ram`: Only profile the solution of the
+actual system `Ax=b`. Mesh creation, model and field interpolation, and all
+other pre- and post-processing steps do not fall under this measure.
 
 => **PETGEM**: Please save data as `data.conj()`. PETGEM has, as far as I could
 see, the opposite Fourier definition than custEM/emg3d/SimPEG. It is best we

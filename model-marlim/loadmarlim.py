@@ -197,19 +197,18 @@ def create_survey(store_data=False, noise=False):
     # Initiate data with zeros
     dataset = {}
     for i, data in enumerate([data_il, data_bs]):
-        lineid = ['data_il', 'data_bs'][i]+'_'
-        for re_im in ['re', 'im']:
-            dataset[lineid+re_im] = xr.DataArray(
-                data=np.zeros((noff, data.freqs.size, 6), dtype=float),
-                dims=['src_x', 'freqs', 'components'],
-                coords={
-                    'src_x': xco,
-                    'freqs': data.freqs,
-                    'components': data_il.emf.emf_fieldtype.split()},
-            )
-            dataset[lineid+re_im].attrs['src_y'] = [src_il, src_bs][i][1]
-            dataset[lineid+re_im].attrs['src_z'] = [src_il, src_bs][i][2]
-            dataset[lineid+re_im].attrs['lineid'] = data.attrs['lineid']
+        lineid = ['data_il', 'data_bs'][i]
+        dataset[lineid] = xr.DataArray(
+            data=np.zeros((noff*2, data.freqs.size, 6), dtype=float),
+            dims=['src_x', 'freqs', 'components'],
+            coords={
+                'src_x': np.vstack([xco, xco]).ravel('F'),
+                'freqs': data.freqs,
+                'components': data_il.emf.emf_fieldtype.split()},
+        )
+        dataset[lineid].attrs['src_y'] = [src_il, src_bs][i][1]
+        dataset[lineid].attrs['src_z'] = [src_il, src_bs][i][2]
+        dataset[lineid].attrs['lineid'] = data.attrs['lineid']
 
     # Create a Dataset from the DataArray
     ds = xr.Dataset(dataset)
@@ -256,11 +255,11 @@ def create_survey(store_data=False, noise=False):
         tmp_bs = tmp_bs[off_bs, :, :][int_bs, :, :]
 
         # Store data
-        ds.data_il_re.data = tmp_il.real
-        ds.data_il_im.data = tmp_il.imag
+        ds.data_il.data[::2, :, :] = tmp_il.real
+        ds.data_il.data[1::2, :, :] = tmp_il.imag
 
-        ds.data_bs_re.data = tmp_bs.real
-        ds.data_bs_im.data = tmp_bs.imag
+        ds.data_bs.data[::2, :, :] = tmp_bs.real
+        ds.data_bs.data[1::2, :, :] = tmp_bs.imag
 
         # Delete our meta-data
         del ds.attrs['runtime']
