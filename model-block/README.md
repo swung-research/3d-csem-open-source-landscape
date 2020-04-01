@@ -37,8 +37,7 @@ rec_z = ds.attrs['rec_z']
 ## Saving the data
 
 ```python
-# Save the three lines
-# Data is save like
+# Save the three lines; data is saved like
 # np.array([[Re[0], Im[0], Re[1], Im[1], ..., Re[-1], Im[-1]])
 ds.line_1.data = ... # y =-3000 (req. for layered and block model)
 ds.line_2.data = ... # y =    0 (req. for layered and block model)
@@ -70,15 +69,9 @@ code = ...   # 'custEM', 'emg3d', 'PETGEM', or 'SimPEG'
 ds.to_netcdf(f"../results/{model}_{code}.nc", engine='h5netcdf')
 ```
 
-A note regarding `runtime`, `cputime`, and also `maxram`: Only profile the
-solution of the actual system `Ax=b`. Mesh creation, model and field
-interpolation, and all other pre- and post-processing steps do not fall under
-this measure. If you have doubts regarding the difference of `runtime` and
-`cputime` please read https://en.wikipedia.org/wiki/Elapsed_real_time. In
-short: runtime is the real-world time it takes. If it starts at 14:14:38 and
-finishes at 14:15:48 then the runtime is 70 seconds. Now if you run the process
-on one thread then cputime will be the same or less than runtime. However, if
-you run your process in parallel then your cputime will be higher than runtime.
+A note regarding `runtime` and `max_ram`: Only profile the solution of the
+actual system `Ax=b`. Mesh creation, model and field interpolation, and all
+other pre- and post-processing steps do not fall under this measure.
 
 => **PETGEM**: Please save data as `data.conj()`. PETGEM has, as far as I could
 see, the opposite Fourier definition than custEM/emg3d/SimPEG. It is best we
