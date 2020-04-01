@@ -26,6 +26,30 @@ Zenodo.
 - Without noise;
   DOI: [10.5281/zenodo.1807135](https://doi.org/10.5281/zenodo.1807135)
 
+### Required files
+
+For the data comparison, from
+[10.5281/zenodo.1807135](https://doi.org/10.5281/zenodo.1807135):
+
+- EW_nonoise.zip
+- NS_nonoise.zip
+
+To create the FD-models, from
+[10.5281/zenodo.400233](https://doi.org/10.5281/zenodo.400233):
+
+- Horizontal_resistivity.sgy
+- Vertical_Resistivity.sgy
+
+To create the FE-models additionally, from
+[10.5281/zenodo.400233](https://doi.org/10.5281/zenodo.400233):
+
+- Sea_Bottom-mr3d.xyz
+- Miocene-mr3d.xyz
+- Oligocene-mr3d.xyz
+- Blue_mark-mr3d.xyz
+- Top_of_Salt-mr3d.xyz
+- Base_of_salt-mr3d.xyz
+
 
 ## Loading the model
 
@@ -40,7 +64,7 @@ To create the model-files you have to run in `model-marlim/` the following
 code in Python:
 ```python
 import loadmarlim
-loadmarlim.extract_model('comp')  # => creates `model-marlim/marlim_comp.pnz`
+loadmarlim.extract_model('comp')  # => creates `model-marlim/marlim_comp.npz`
 loadmarlim.extract_model('orig')  # => creates `model-marlim/marlim_orig.npz`
 ```
 
