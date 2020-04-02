@@ -27,6 +27,7 @@ from scipy.interpolate import RegularGridInterpolator as rgi
 from custEM.core import MOD
 from custEM.misc import mpi_print as mpp
 from custEM.misc import release_memory
+from custEM.misc import max_mem
 import numpy as np
 import dolfin as df
 
@@ -120,8 +121,9 @@ p = 2
 
 
 # %% run p2 computations for all frequencies
-for fi, freq in enumerate(frequencies):       # all approaches
+for fi, freq in enumerate(frequencies[5:]):       # all approaches
 
+    fi = 5
     # Initialize MODel
     mod = 'f_' + str(freq)
     M = MOD(mod, mesh, 'E_t', p=p, overwrite=True,
@@ -193,6 +195,3 @@ for fi, freq in enumerate(frequencies):       # all approaches
     M.IB.interpolate('H_t', 'inline_path_line_x')
     M.IB.interpolate('H_t', 'broadside_path_line_x')
     M.IB.synchronize()
-    del M
-    
-    release_memory()
