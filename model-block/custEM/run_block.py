@@ -4,7 +4,7 @@
 """
 
 # ########################################################################### #
-# # # # #                        layered earth                        # # # # #
+# # # # #                         block model                         # # # # #
 # ########################################################################### #
 # # # # #                     computation script                      # # # # #
 # ########################################################################### #
@@ -26,7 +26,7 @@ source_current = 800.
 
 # ####################### run p1 and p2 computations ######################## #
 
-for p in range(1, 3):
+for p in [2, 1]:
 
     mod = 'p' + str(p)
     mesh = 'block_model_p' + str(p)
@@ -48,12 +48,8 @@ for p in range(1, 3):
     #                        start=[-100., 0., -550.],
     #                        stop=[100., 0., -550.])
 
-    # Call solver, autoamtically convert to H-fields, and export results
-    M.solve_main_problem()
-
-    # load existing model only for interpolation purposes
-    M = MOD(mod, mesh, 'E_t', p=p, overwrite=False, load_existing=True,
-            m_dir='./meshes', r_dir='./results')
+    # Call solver, skip conversion to H-fields, and export results
+    M.solve_main_problem(convert_to_H=False)
 
     # create regular inteprolation lines in x-direction at sea floor
     M.IB.create_line_meshes('x',  x0=-1e4, x1=1e4, y=-3e3, z=-600.1,
@@ -65,5 +61,4 @@ for p in range(1, 3):
 
     for line in ['l1m_line_x', 'l2m_line_x', 'l3m_line_x']:
         M.IB.interpolate('E_t', line)
-        M.IB.interpolate('H_t', line)
     M.IB.synchronize()  # synchronize all processes after interpolation
