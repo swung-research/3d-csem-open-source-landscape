@@ -176,7 +176,7 @@ for fi, freq in enumerate(frequencies):       # all approaches
 
     # conduct the real FE stuff
     M.FE.build_var_form(check_sigma_conformity=False)
-    M.solve_main_problem(convert_to_H=False)
+    M.solve_main_problem()  # convert_to_H=False
 
     # import existing FE results, if exported before
     # M = MOD(mod, mesh, 'E_t', p=p, overwrite=False,

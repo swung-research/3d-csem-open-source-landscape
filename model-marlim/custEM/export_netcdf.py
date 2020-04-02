@@ -42,14 +42,14 @@ for i, freq in enumerate(frequencies):
 
     # Save inline and broadside data for each frequency
     ds.data_il.data[::2, i, :3] = P.line_data[
-            'il' + str(i) + '_E_t'][0, :].real  # Inline RE
+            'il' + str(i) + '_E_t'].real  # Inline RE
     ds.data_il.data[1::2, i, :3] = P.line_data[
-            'il' + str(i) + '_E_t'][0, :].imag  # Inline IM
+            'il' + str(i) + '_E_t'].imag  # Inline IM
 
     ds.data_bs.data[::2, i, :3] = P.line_data[
-            'bs' + str(i) + '_E_t'][0, :].real  # Inline RE
+            'bs' + str(i) + '_E_t'].real  # Inline RE
     ds.data_bs.data[1::2, i, :3] = P.line_data[
-            'bs' + str(i) + '_E_t'][0, :].imag  # Inline IM
+            'bs' + str(i) + '_E_t'].imag  # Inline IM
 
 # Add info
 ds.attrs['runtime'] = solution_time
