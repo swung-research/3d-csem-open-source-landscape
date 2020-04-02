@@ -1,8 +1,6 @@
 References
 ##########
 
-.. DOI: ` <https://doi.org/>`_.
-
 .. [ABHJ15] Alnaes, M.S., J. Blechta, J. Hake, A. Johansson, B. Kehlet, A.
    Logg, C. Richardson, J. Ring, M. E. Rognes, and G. N. Wells, 2015, The
    FEniCS Project Version 1.5: Computing in Science & Engineering, 3; DOI:
