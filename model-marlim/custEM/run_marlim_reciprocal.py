@@ -26,6 +26,7 @@ For any questions or issues, contact
 from scipy.interpolate import RegularGridInterpolator as rgi
 from custEM.core import MOD
 from custEM.misc import mpi_print as mpp
+from custEM.misc import release_memory
 import numpy as np
 import dolfin as df
 
@@ -176,7 +177,7 @@ for fi, freq in enumerate(frequencies):       # all approaches
 
     # conduct the real FE stuff
     M.FE.build_var_form(check_sigma_conformity=False)
-    M.solve_main_problem(convert_to_H=False)
+    M.solve_main_problem()  # convert_to_H=False
 
     # import existing FE results, if exported before
     # M = MOD(mod, mesh, 'E_t', p=p, overwrite=False,
@@ -189,5 +190,9 @@ for fi, freq in enumerate(frequencies):       # all approaches
         M.IB.create_path_mesh(broadside, 'broadside', suffix='line_x')
     M.IB.interpolate('E_t', 'inline_path_line_x')
     M.IB.interpolate('E_t', 'broadside_path_line_x')
+    M.IB.interpolate('H_t', 'inline_path_line_x')
+    M.IB.interpolate('H_t', 'broadside_path_line_x')
     M.IB.synchronize()
     del M
+    
+    release_memory()

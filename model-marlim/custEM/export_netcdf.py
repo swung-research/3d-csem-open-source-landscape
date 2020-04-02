@@ -15,7 +15,6 @@ from custEM.post import PlotFD
 import custEM as ce
 import xarray as xr
 from datetime import datetime
-import numpy as np
 
 # import base dataset and specify custEM observation lines
 ds = xr.load_dataset('../marlim_survey.nc', engine='h5netcdf')
@@ -37,24 +36,34 @@ for i, freq in enumerate(frequencies):
     P = PlotFD(mod=mod, mesh=mesh, approach='E_t', r_dir='./results')
     solution_time += P.solution_time 
     
-    P.import_line_data(line_il, key='il' + str(i), EH='E')
-    P.import_line_data(line_bs, key='bs' + str(i), EH='E')
+    P.import_line_data(line_il, key='il' + str(i))
+    P.import_line_data(line_bs, key='bs' + str(i))
 
     # Save inline and broadside data for each frequency
     ds.data_il.data[::2, i, :3] = P.line_data[
-            'il' + str(i) + '_E_t'][0, :].real  # Inline RE
+            'il' + str(i) + '_E_t'].real  # Inline RE
     ds.data_il.data[1::2, i, :3] = P.line_data[
-            'il' + str(i) + '_E_t'][0, :].imag  # Inline IM
+            'il' + str(i) + '_E_t'].imag  # Inline IM
 
     ds.data_bs.data[::2, i, :3] = P.line_data[
-            'bs' + str(i) + '_E_t'][0, :].real  # Inline RE
+            'bs' + str(i) + '_E_t'].real  # Inline RE
     ds.data_bs.data[1::2, i, :3] = P.line_data[
-            'bs' + str(i) + '_E_t'][0, :].imag  # Inline IM
+            'bs' + str(i) + '_E_t'].imag  # Inline IM
+
+    ds.data_il.data[::2, i, 3:] = P.line_data[
+            'il' + str(i) + '_H_t'].real  # Inline RE
+    ds.data_il.data[1::2, i, 3:] = P.line_data[
+            'il' + str(i) + '_H_t'].imag  # Inline IM
+
+    ds.data_bs.data[::2, i, 3:] = P.line_data[
+            'bs' + str(i) + '_H_t'].real  # Inline RE
+    ds.data_bs.data[1::2, i, 3:] = P.line_data[
+            'bs' + str(i) + '_H_t'].imag  # Inline IM
 
 # Add info
-ds.attrs['runtime'] = solution_time
+ds.attrs['runtime'] = str(int(solution_time)) + ' s'
 ds.attrs['n_procs'] = P.mpi_procs * P.omp_threads
-ds.attrs['max_ram'] = P.max_mem
+ds.attrs['max_ram'] = '{:5.1f}'.format(1e6 * P.max_mem / 1024**2) + ' GiB'
 ds.attrs['n_cells'] = P.cells
 ds.attrs['n_nodes'] = P.nodes
 ds.attrs['n_dof'] = P.dof

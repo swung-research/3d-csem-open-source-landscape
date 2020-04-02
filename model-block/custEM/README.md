@@ -10,7 +10,7 @@ Calculate layered earth and block model results
    (additional OpenMP threads led not to speed-up for these problem sizes)
    Rcommended are 24 MPI processes, but less is also fine without 
    increasing the computation times significantly. With this recommended
-   setup, 2-5 min time per frequ and overall less than 250 GB RAM
+   setup, 2-5 min time per frequency and overall less than 200 GB RAM
    are required. Run the following commands (choose given default or
    your own of OMP and MPI processes):
    
