@@ -120,8 +120,10 @@ import xarray as xr
 ds = xr.load_dataset('../marlim_survey.nc', engine='h5netcdf')
 
 # Save the two lines; the data has shape (408, 6, 6) => (noff*2, nfreq, ncomp)
-ds.data_il.data = ... # Inline
-ds.data_bs.data = ... # Broadside
+ds.data_il.data[::2, :, :] = ...  # Inline Re
+ds.data_il.data[1::2, :, :] = ... # Inline Im
+ds.data_bs.data[::2, :, :] = ...  # Broadside Re
+ds.data_bs.data[1::2, :, :] = ... # Broadside Im
 # If you only store ex, ey, and ez, which is sufficient for the paper, do
 # ds.data_{il;bs}.data[:, :, :3] = ...
 
