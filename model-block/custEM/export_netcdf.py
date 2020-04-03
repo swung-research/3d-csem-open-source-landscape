@@ -48,12 +48,10 @@ for p in ['1', '2']:
                 [P.line_data['t3_E_t'][:, 0].real, 
                  P.line_data['t3_E_t'][:, 0].imag]).ravel('F') 
     
-        mem_in_gib = 1e6 * P.max_mem / 1024**2
-    
         # Add info
         ds.attrs['runtime'] = str(int(P.solution_time)) + ' s'
         ds.attrs['n_procs'] = P.mpi_procs * P.omp_threads
-        ds.attrs['max_ram'] = '{:5.1f}'.format(mem_in_gib) + ' GiB'
+        ds.attrs['max_ram'] = f"{P.max_mem :5.1f} GiB"
         ds.attrs['n_cells'] = P.cells
         ds.attrs['n_nodes'] = P.nodes
         ds.attrs['n_dof'] = P.dof

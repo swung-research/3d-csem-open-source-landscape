@@ -40,30 +40,32 @@ for i, freq in enumerate(frequencies):
     P.import_line_data(line_bs, key='bs' + str(i))
 
     # Save inline and broadside data for each frequency
+    # Divide all data by factor 10 for normalizing the transmitter moment,
+    # because the Tx was included with length 10 m in the mesh
     ds.data_il.data[::2, i, :3] = P.line_data[
-            'il' + str(i) + '_E_t'].real  # Inline RE
+            'il' + str(i) + '_E_t'].real / 10. # Inline RE
     ds.data_il.data[1::2, i, :3] = P.line_data[
-            'il' + str(i) + '_E_t'].imag  # Inline IM
+            'il' + str(i) + '_E_t'].imag / 10. # Inline IM
 
     ds.data_bs.data[::2, i, :3] = P.line_data[
-            'bs' + str(i) + '_E_t'].real  # Inline RE
+            'bs' + str(i) + '_E_t'].real / 10. # Inline RE
     ds.data_bs.data[1::2, i, :3] = P.line_data[
-            'bs' + str(i) + '_E_t'].imag  # Inline IM
+            'bs' + str(i) + '_E_t'].imag / 10. # Inline IM
 
     ds.data_il.data[::2, i, 3:] = P.line_data[
-            'il' + str(i) + '_H_t'].real  # Inline RE
+            'il' + str(i) + '_H_t'].real / 10. # Inline RE
     ds.data_il.data[1::2, i, 3:] = P.line_data[
-            'il' + str(i) + '_H_t'].imag  # Inline IM
+            'il' + str(i) + '_H_t'].imag / 10. # Inline IM
 
     ds.data_bs.data[::2, i, 3:] = P.line_data[
-            'bs' + str(i) + '_H_t'].real  # Inline RE
+            'bs' + str(i) + '_H_t'].real / 10. # Inline RE
     ds.data_bs.data[1::2, i, 3:] = P.line_data[
-            'bs' + str(i) + '_H_t'].imag  # Inline IM
+            'bs' + str(i) + '_H_t'].imag / 10. # Inline IM
 
 # Add info
 ds.attrs['runtime'] = str(int(solution_time)) + ' s'
 ds.attrs['n_procs'] = P.mpi_procs * P.omp_threads
-ds.attrs['max_ram'] = '{:5.1f}'.format(1e6 * P.max_mem / 1024**2) + ' GiB'
+ds.attrs['max_ram'] = f"{P.max_mem :5.1f} GiB"
 ds.attrs['n_cells'] = P.cells
 ds.attrs['n_nodes'] = P.nodes
 ds.attrs['n_dof'] = P.dof
