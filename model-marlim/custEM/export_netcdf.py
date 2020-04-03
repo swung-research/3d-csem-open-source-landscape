@@ -62,12 +62,10 @@ for i, freq in enumerate(frequencies):
     ds.data_bs.data[1::2, i, 3:] = P.line_data[
             'bs' + str(i) + '_H_t'].imag / 10. # Inline IM
 
-mem_in_gib = 1e6 * P.max_mem / 1024**2
-
 # Add info
 ds.attrs['runtime'] = str(int(solution_time)) + ' s'
 ds.attrs['n_procs'] = P.mpi_procs * P.omp_threads
-ds.attrs['max_ram'] = f"{mem_in_gib :5.1f} GiB"
+ds.attrs['max_ram'] = f"{P.max_mem :5.1f} GiB"
 ds.attrs['n_cells'] = P.cells
 ds.attrs['n_nodes'] = P.nodes
 ds.attrs['n_dof'] = P.dof
