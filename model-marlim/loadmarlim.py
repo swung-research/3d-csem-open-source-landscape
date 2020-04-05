@@ -226,15 +226,14 @@ def create_survey(store_data=False, noise=False):
     # Add meta data (see README for more info)
     # We don't fill it out here as this is only dummy data
     ds.attrs['runtime'] = 'N/A'
-    ds.attrs['cputime'] = 'N/A'
-    ds.attrs['nthreads'] = 'N/A'
-    ds.attrs['maxram'] = 'N/A'
-    ds.attrs['ncells'] = 'N/A'
-    ds.attrs['nnodes'] = 'N/A'
-    ds.attrs['ndof'] = 'N/A'
+    ds.attrs['n_procs'] = 'N/A'
+    ds.attrs['max_ram'] = 'N/A'
+    ds.attrs['n_cells'] = 'N/A'
+    ds.attrs['n_nodes'] = 'N/A'
+    ds.attrs['n_dof'] = 'N/A'
     ds.attrs['extent'] = 'N/A'
-    ds.attrs['min_cwidth'] = 'N/A'
-    ds.attrs['max_cwidth'] = 'N/A'
+    ds.attrs['min_vol'] = 'N/A'
+    ds.attrs['max_vol'] = 'N/A'
     ds.attrs['machine'] = 'N/A'
     ds.attrs['version'] = 'N/A'
     ds.attrs['date'] = 'N/A'
@@ -263,15 +262,14 @@ def create_survey(store_data=False, noise=False):
 
         # Delete our meta-data
         del ds.attrs['runtime']
-        del ds.attrs['cputime']
-        del ds.attrs['nthreads']
-        del ds.attrs['maxram']
-        del ds.attrs['ncells']
-        del ds.attrs['nnodes']
-        del ds.attrs['ndof']
+        del ds.attrs['n_procs']
+        del ds.attrs['max_ram']
+        del ds.attrs['n_cells']
+        del ds.attrs['n_nodes']
+        del ds.attrs['n_dof']
         del ds.attrs['extent']
-        del ds.attrs['min_cwidth']
-        del ds.attrs['max_cwidth']
+        del ds.attrs['min_vol']
+        del ds.attrs['max_vol']
         del ds.attrs['machine']
         del ds.attrs['version']
         del ds.attrs['date']

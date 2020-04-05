@@ -12,3 +12,13 @@ model-marlim/DATA/
 model-marlim/DATA
 model-marlim/marlim_dat*.nc
 model-marlim/*.npz
+
+# LaTeX
+*.pdf
+*.aux
+*.bbl
+*.blg
+*.lof
+*.log
+*.lot
+*.out
