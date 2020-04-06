@@ -28,18 +28,18 @@ sol_block = h5py.File('out/block.h5', 'r')
 # ---------------------------------------------------------------
 model = 'block'
 # Save line 1
-real_line1 = sol_block.get('line1')[()].real
-imag_line1 = sol_block.get('line1')[()].imag
+real_line1 = sol_block.get('line1')[()].conjugate().real
+imag_line1 = sol_block.get('line1')[()].conjugate().imag
 ds.line_1.data = np.vstack((real_line1, imag_line1)).ravel('F')
 
 # Save line 2
-real_line2 = sol_block.get('line2')[()].real
-imag_line2 = sol_block.get('line2')[()].imag
+real_line2 = sol_block.get('line2')[()].conjugate().real
+imag_line2 = sol_block.get('line2')[()].conjugate().imag
 ds.line_2.data = np.vstack((real_line2, imag_line2)).ravel('F')
 
 # Save line 3
-real_line3 = sol_block.get('line3')[()].real
-imag_line3 = sol_block.get('line3')[()].imag
+real_line3 = sol_block.get('line3')[()].conjugate().real
+imag_line3 = sol_block.get('line3')[()].conjugate().imag
 ds.line_3.data = np.vstack((real_line3, imag_line3)).ravel('F')
 
 # Save memory (Gb)
@@ -80,18 +80,18 @@ sol_layered = h5py.File('out/layered.h5', 'r')
 # ---------------------------------------------------------------
 model = 'layered'
 # Save line 1
-real_line1 = sol_layered.get('line1')[()].real
-imag_line1 = sol_layered.get('line1')[()].imag
+real_line1 = sol_layered.get('line1')[()].conjugate().real
+imag_line1 = sol_layered.get('line1')[()].conjugate().imag
 ds.line_1.data = np.vstack((real_line1, imag_line1)).ravel('F')
 
 # Save line 2
-real_line2 = sol_layered.get('line2')[()].real
-imag_line2 = sol_layered.get('line2')[()].imag
+real_line2 = sol_layered.get('line2')[()].conjugate().real
+imag_line2 = sol_layered.get('line2')[()].conjugate().imag
 ds.line_2.data = np.vstack((real_line2, imag_line2)).ravel('F')
 
 # Save line 3
-real_line3 = sol_layered.get('line3')[()].real
-imag_line3 = sol_layered.get('line3')[()].imag
+real_line3 = sol_layered.get('line3')[()].conjugate().real
+imag_line3 = sol_layered.get('line3')[()].conjugate().imag
 ds.line_3.data = np.vstack((real_line3, imag_line3)).ravel('F')
 
 # Save memory (Gb)
