@@ -120,25 +120,25 @@ published there, so it would be in the same place.
 
 \section{Introduction}
 
-Controlled-source electromagnetic (CSEM) measurements is a frequently applied
-method in exploration geophysics for various applications, such as ground
-water, geothermal, oil and gas, mining, civil engineering, or geo-hazards.
-Modelling these electromagnetic fields is therefore of great interest in order
-to understand the measured data. Publications regarding 3D modelling in
-electromagnetic methods started to appear as early as the 1970's and 1980's.
-These early publications where all integral equation (IE) methods, having an
-anomaly embedded within a layered medium, for loop-loop type transient EM
-measurements \citep{GJI.74.Raiche, GEO.75.Hohmann, GJI.82.Das, GEO.86.Newman}
-and magnetotelluric (MT) measurements \citep{GEO.84.Wannamaker}.
+Controlled-source electromagnetic (CSEM) measurements are a frequently applied
+method in various geophysical exploration fields, such as geothermal and ground
+water, oil and gas, mining, civil engineering, or geo-hazards. Modelling these
+electromagnetic fields is therefore of great interest in order to understand
+the measured data. Publications regarding 3D modelling in electromagnetic
+methods started to appear as early as the 1970's and 1980's. These early
+publications where integral equation (IE) methods, having an anomaly embedded
+within a layered medium, mostly for loop-loop type transient EM measurements
+\citep{GJI.74.Raiche, GEO.75.Hohmann, GJI.82.Das, GEO.86.Newman} and
+magnetotelluric (MT) measurements \citep{GEO.84.Wannamaker}.
 
 In the 1990's computer became sufficiently powerful that 3D modelling gained
 traction, which resulted amongst other in the publication of the book
-\emph{Three-Dimensional Electromagnetics} \citep{B.SEG.99.Oristaglio} by the
-SEG. Often cited publications from that time are \cite{RSC.94.Mackie}, 3D MT
-computation; \cite{RS.94.Druskin}, frequency- and time-domain modelling using a
-Yee grid and a global Krylov subspace approximation; and \cite{RS.96.Alumbaugh,
-GJI.97.Newman}, low-to-high frequency computation on massively parallel
-computers.
+\emph{Three-Dimensional Electromagnetics} by the SEG
+\citep{B.SEG.99.Oristaglio}. Often cited publications from that time are
+\cite{RSC.94.Mackie}, 3D MT computation; \cite{RS.94.Druskin}, frequency- and
+time-domain modelling using a Yee grid and a global Krylov subspace
+approximation; and \cite{RS.96.Alumbaugh, GJI.97.Newman}, low-to-high frequency
+computation on massively parallel computers.
 
 The continuous improvement of computing power and the CSEM boom in the early
 2000's in the hydrocarbon industry led to a wealth of publications. The amount
@@ -148,8 +148,8 @@ methods to solve Maxwell's equation, such as the IE method
 \citep{GJI.74.Raiche, RS.02.Hursan, GEO.06.Zhdanov, GP.10.Tehrani,
 CAG.16.Kruglyakov, MGS.17.Kruglyakov} and different variations of the
 differential equation (DE) method, for instance finite differences (FD)
-\citep{IEEE.66.Yee, RSC.94.Mackie, RS.94.Druskin, GEO.09.Streich,
-CAG.13.Sommer}, finite elementes (FE) \citep{GJI.11.Schwarzbach,
+\citep{IEEE.66.Yee, GEO.93.Wang, RSC.94.Mackie, RS.94.Druskin, GEO.09.Streich,
+CAG.13.Sommer}, finite elementes (FE) \citep{GJI.11.Schwarzbach, GEO.04.Commer,
 GEO.12.daSilva, GJI.13.Puzyrev, GJI.13.Grayver, SEG.16.Zhang}, finite volume
 (FV) \citep{EM.90.Madsen, ECP.07.Haber, GEO.14.Jahandari}, and finite
 integration technique (FIT) \citep{PIER.01.Clemens, GP.06.Mulder}. And these
@@ -172,158 +172,59 @@ GP.06.Mulder, GJI.16.Jaysaval}.
 A very well written overview up to the year 2005 of the different approaches to
 3D EM modelling is given by \cite{SG.05.Avdeev}. In the last 15 years the
 publications with regards to 3D EM  modelling grew tremendously, driven
-probably by improved computer powers. Avdeev finished his review with the
+by the ever increasing computing power. Avdeev finished his review with the
 following statement: «\emph{The most important challenge that faces the EM
 community today is to convince software developers to put their 3-D EM forward
 and inverse solutions into the public domain, at least after some time. This
 would have a strong impact on the whole subject and the developers would
 benefit from feedback regarding the real needs of the end-users.}»
 
-It is this topic that we want to address, open-source 3D CSEM codes. Some big
-exploration companies and service companies have their own codes, as well as
-certain research consortia. But how about codes that are open-source?
-Traditionally research code was often available upon request by the author.
-Codes distributed that way often come with the request to not share the code,
-or they often come without a license attached at all (which means that they are
-not open-source). Also, at times there can be a significant hurdle to install
-a code.
-
-However, the meaning of open-source evolved rapidly in the last decades. Today
-open-source generally not only means that a code is available (with a proper
-license). It includes much more today, such as that the code is hosted online,
-is under version control, has the possibility to file issues and make pull
-requests to fix bugs. Good codes also have continuous integration that includes
-extensive testing of the code base and online hosted documentation that
-includes the API. As such the term has shifted from purely open-source code
+It is this topic that we address, open-source 3D CSEM codes. Some major
+exploration service companies as well as certain research consortia and
+research groups have their 3D CSEM codes. But how about codes that are
+open-source? Traditionally research code was often available upon request by
+the author. Codes distributed that way often come with the request to not share
+the code, or they often come without a license attached at all (which means
+that they are not open-source). Also, at times there can be a significant
+hurdle to install a code. However, the meaning of open-source evolved rapidly
+in the last decades. Today, open-source generally not only means that a code is
+available (with a proper license). It includes much more today, such as that
+the code is hosted online, is under version control, has the possibility to
+file issues and make pull requests to fix bugs. Well maintained codes often
+have continuous integration that includes testing of the code base and online
+hosted documentation. As such the term has shifted from purely open-source code
 to development in the open and increasingly building a global community. There
 are a number of projects within the realm of geophysical exploration, besides
-the ones we present here, e.g. pyGIMLi \citep{CAG.17.Rucker} and Fatiando
-\citep{JOSS.18.Uieda}.
+the ones we present here, \todo{Others coming to your mind?}e.g. pyGIMLi
+\citep{CAG.17.Rucker} and Fatiando \citep{JOSS.18.Uieda}. Newer \todo{wrong
+term, think about it}programming environments  have also brought much
+simplifications in the installation process and have most importantly
+simplified it for code developers to make their codes easily available and
+installable. All our presented codes are in the Python ecosystem, and each code
+can be installed with a single command (which includes downloading and
+installation).
 
-Newer \todo{wrong term, think about it}programming environments  have also
-brought much simplifications in the installation process and have most
-importantly simplified it for code developers to make their codes easily
-available and installable. All our presented codes are in the Python
-environment, and each code can be install with a single command (which includes
-downloading and installation).
+A second topic we want to address is verification. New codes are generally
+verified against analytical solutions. However, analytical and semi-analytical
+solutions only exist for very simple models. There is no possibility to check
+how good a computed response is, expect for comparing the result from different
+modellers. If different modellers using different discretisation and
+implementations of Maxwell's equations yield the same result it can give
+confidence in the accuracy.
 
+It is worth mentioning that there are many more 3D EM codes developed in other
+fields than geophysics such as communication systems (antennas, radar,
+satellites), medical imaging. There are various open-source codes in these
+fields \todo{Add at least three references} too, e.g., Elmer
+(\href{http://www.csc.fi/elmer}{csc.fi/elmer}, couldn't find a publication,
+just a poster). While these codes could potentially be used for the same goals
+as presented here we restrict our review to codes purpose-built for geophysical
+applications.
 
-~\\ \hrule
-
-
-Mention \cite{GJI.13.Miensopust}, which is a similar thing, but for 3D
-modelling and inversion for MT.
-
-
-It is worth mentioning that there are many more open-source 3D electromagnetic
-codes developed in other fields than geophysics. Examples include \dots (TODO:
-add at least three references). While these codes could potentially be used for
-the same goals as presented here we restrict our review to codes purpose-built
-for geophysical applications.
-
-An integral part of this publication are the necessary instructions and codes
-to reproduce all published results. In fact, the provided codes contain more
-than just the results shown here, as including everything here would have made
-the article to lengthy.
-
-This will significantly increase the user base and the number of people who are
-actually doing 3D EM modelling.
-
-~\\ \hrule
-
-\begin{itemize}
-  \item Why need:
-    \begin{itemize}
-      \item analytical solutions
-      \item semi-analytical solutions such as 1D codes (analytical [recursion]
-        in k-f domain followed by numerical transformation).
-      \item need of comparison of more complex models.
-    \end{itemize}
-  \item What exists:
-    \begin{itemize}
-      \item very quick run-down of codes, methods, discretizations.
-      \item Thesis Raphael
-      \item LitRev Dieter
-    \end{itemize}
-  \item What changed:
-    \begin{itemize}
-      \item Python
-      \item Demand/Desire for reproducible research
-      \item Open-source has changed:
-        \begin{itemize}
-          \item easy install
-          \item documented
-          \item bug/issues
-          \item communities
-          \item testing/benchmarks/coverage/style/quality
-        \end{itemize}
-    \end{itemize}
-  \item What is this paper:
-    \begin{itemize}
-      \item 4 codes, 2 FD 2 FE
-      \item 2 models, simple one after MT paper, complex Marlim one
-    \end{itemize}
-  \item Outline of paper
-  \item Zenodo, provide all codes to reproduce the results.
-\end{itemize}
-
-
-~\\ \hrule
-
-
-There are many codes for EM - our focus here is on the application to
-controlled-source electromagnetic measurements, even though all of the codes
-can handle different setups too.
-
-in such fields as the modelling of communication systems (antennas, radar,
-satellites), medical imaging, and others.
-
-1D, 2D, we look at 3D.
-time domain and frequency domain
-
-
-Common methods in geophysics are the
-
-\begin{itemize}
-  \item integral equation (IE, \cite{GJI.74.Raiche, GEO.06.Zhdanov,
-    CAG.16.Kruglyakov}), (scattering equation) (anomalies in layered
-    background), computational effort comparably low
-  \item differential equation such as finite difference (FD \cite{IEEE.66.Yee,
-    GEO.93.Wang}), simple to implement
-  \item and finite volume (FV \cite{EM.90.Madsen, GEO.14.Jahandari}),
-  \item or and finite element (FE \cite{GEO.04.Commer GEO.09.Streich})
-    (approximating the DE on edges and nodals), good for complex geometries,
-  \item finite integration technique (FIT, \cite{AEU.77.Weiland},
-    \cite{PIER.01.Clemens}, \cite{GP.06.Mulder})
-\end{itemize}
-
-OctTree meshes or severe stretching \citep{ECP.07.Haber}
-
-
-Elmer FEM multiphysical simulation software P. Råback, P.-L. Forsström, M. Lyly
-and M. Gröhn, Elmer - finite element package for the solution of partial
-differential equations, poster presentation, EGEE User Forum, 2007, Manchester,
-UK. http://www.csc.fi/elmer
-
-
-Many commercial, e.g., COMSOL Multiphysics; EMGS, RSI, KMS; the oil and service
-companies.
-
-Consortia (CEMI; Key)
-
-Universities, e.g. Pottsdam (Streich, Grayver)
-
-Computational cost IE < FD < FV < FE
-
-Direct solvers vs indirect solvers, both its advantages and disadvantages;
-memory, various sources.
-
-Grids (regular grids, unstructured grids, Octree, tetrahedra, hexahedral,
-adaptive, multigrids).
-
-Boundary condition
-
-
+In the following section we introduce the codes under consideration. The
+numerical result consider two cases. First a layered background with vertical
+transverse isotropy containing three blocks, followed by a realistic, complex
+model.
 
 \section{Codes}
 
@@ -450,6 +351,9 @@ PARDISO \citep{FGCS.04.Schenk}
 
 \subsection{Block Model}
 
+Mention \cite{GJI.13.Miensopust}, which is a similar thing, but for 3D
+modelling and inversion for MT.
+
 Simple block (one to three blocks) model similar to \cite{GJI.13.Miensopust};
 potentially with a bit a funkier source (say, finite length rotated bipole and
 finite length receivers). In this case I would only compare inline and
@@ -508,14 +412,23 @@ The Marlim R3D model is a \dots \cite{BJG.17.Carvalho} (model)
 
 Comparison to an code from the industry, using \emph{SBLwiz} from EMGS.
 
+Custom meshes for these lines.
+
 
 
 \section{Discussion}
 
 The landscape in 3D CSEM modelling greatly changed in the last five years or
 so. While before there were only closed-source codes owned by companies or
-consortia (e.g., CEMI), or codes that you had to obtain from the authors, often
+consortia, or codes that you had to obtain from the authors, often
 without much documentation, there was recently a wave of openly released codes.
+
+
+Points to discuss and mention
+\begin{itemize}
+  \item Direct solvers vs indirect solvers, both its advantages and
+    disadvantages; memory, various sources.
+\end{itemize}
 
 \dots
 
@@ -558,7 +471,7 @@ required).
 
 The landscape in 3D CSEM modelling greatly changed in the last five years or
 so. While before there were only closed-source codes owned by companies or
-consortia (e.g., CEMI) there was recently a wave of openly released codes.
+consortia there was recently a wave of openly released codes.
 
 Results from numerical modellers for simple models, such as a halfspace below
 air or a sphere in a fullspace, can be verified by comparing them to analytical
@@ -589,6 +502,11 @@ actual computation model available under an open-source license.
 The work of D.W. was conducted within the Gitaro.JIM project funded through
 MarTERA, a EU Horizon 2020 research and innovation programme (No 728053);
 \href{https://www.martera.eu}{martera.eu}.
+
+\section{Data}
+
+All files to reproduce the shown results and more are available at
+\todo{zenodo}\dots.
 
 
 % REFERENCES
