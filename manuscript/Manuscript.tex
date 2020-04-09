@@ -257,13 +257,18 @@ In the following a quick rundown of the codes. It is, however, beyond the scope
 of this article to go into every detail of the different modellers, and we
 refer to their references and documentation.
 
-\tabl[btp]{codecomparison}{Caption.}{
+\tabl[btp]{codecomparison}{All codes solve Maxwell's Equations in its
+  differential form (DE) and with the quasistatic approximation. We use two
+  finite element codes and two finite difference codes; the finite element
+  codes both make use of the FEniCS solver \citep{CSE.15.Alnaes}, whereas
+  \simpeg can use either solvers implemented in SciPy or the PARDISO solver
+  \citep{FGCS.04.Schenk}; \emg3d, on the other hand, is a solver on its own.}{
   \centering
   \small
 \begin{tabular}{lcccc}
   \toprule
   %
-  Code & \custem & \emg3d & \petgem & \simpeg  \\
+  & \custem & \emg3d & \petgem & \simpeg  \\
   \midrule
   %
   Home & \href{https://custem.rtfd.io}{custem.rtfd.io}
@@ -275,22 +280,16 @@ refer to their references and documentation.
                & \texttt{pip}; \texttt{conda}
                & \texttt{pip}; \texttt{conda} \\
   License & GPL-3.0 & Apache-2.0 & GPL-3.0 & MIT \\
-  Eq. system & ? & FIT & ? & ? \\
   Comp. Dom. & frequency & frequency & frequency & frequency \& time \\
-  Mesh & FE & FD & FE & FD; OcTree; CylMesh \\
+  Method & FE & FIT & FE & FV \\
+  Mesh & tetrahedral & rectilinear & tetrahedral & rectilinear; curvilinear \\
   BC & ? & PEC & ? & ? \\
-  Methods & ? & Diffusion & ? & ? \\
   Solver & FEniCS$^\dagger$ & \emg3d & FEniCS$^\dagger$ &
            PARDISO$^\ddagger$; SciPy \\
   %
   \bottomrule
 \end{tabular}}%
 %
-As is visible from Table~\ref{tbl:codecomparison}, we use two finite element
-codes and two finite difference codes; the finite element codes both make use
-of the FEniCS solver \citep{CSE.15.Alnaes}, whereas \simpeg can use either
-solvers implemented in SciPy, or the PARDISO solver \citep{FGCS.04.Schenk};
-\emg3d, on the other hand, is a solver on its own.
 
 \imycom[DW]{
 Each code should be briefly summarized by four points:\\
