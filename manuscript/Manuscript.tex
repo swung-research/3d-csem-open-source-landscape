@@ -50,9 +50,10 @@
 \newcommand{\petgem}{\texttt{PETGEM}\xspace}
 
 % Remove once done
-\newcommand{\itodo}[1]{\todo[color=blue!40!white, inline]{\sffamily #1}}
-\newcommand{\mtodo}[1]{\todo[inline]{\sffamily #1}}
-\newcommand{\etodo}[1]{\todo[color=blue!40!white]{#1}}
+\newcommand{\mycom}[2][]{
+  \todo[]{\textbf{\uppercase{[#1]}}:~#2}}
+\newcommand{\imycom}[2][]{
+  \todo[inline]{\textbf{\uppercase{[#1]}}:~#2}}
 \newcommand{\dul}[1]{\underline{\underline{#1}}}
 \newcommand{\ul}[1]{\underline{#1}}
 \newcommand{\rmk}[1]{{\color{red}{#1}}}
@@ -103,7 +104,14 @@ Write at the end; one or two sentence(s) each:
 %
 \end{abstract}
 
-\itodo{
+\imycom[DW]{
+  For comments in the margin, use:\\[.2cm]
+  \qquad\texttt{\textbackslash mycom[YOURINITIALS]\{comment\}}\\[.2cm]
+  and for inline comments, use:\\[.2cm]
+  \qquad\texttt{\textbackslash imycom[YOURINITIALS]\{comment\}}
+}
+
+\imycom[DW]{
 We will have to decide on a Journal. Current suggestions:\\
 - GMD: Geoscientific Model Development\\
 - SIG: Surveys in Geophysics\\
@@ -210,7 +218,9 @@ solutions only exist for very simple models. There is no possibility to check
 how good a computed response is, expect for comparing the result from different
 modellers. If different modellers using different discretisation and
 implementations of Maxwell's equations yield the same result it can give
-confidence in the accuracy.
+confidence in the accuracy. Providing these two models and results from four
+different codes should give a benchmark with which new codes can be compared
+and validated.
 
 It is worth mentioning that there are many more 3D EM codes developed in other
 fields than geophysics such as communication systems (antennas, radar,
@@ -226,65 +236,71 @@ numerical result consider two cases. First a layered background with vertical
 transverse isotropy containing three blocks, followed by a realistic, complex
 model.
 
+\clearpage  % TODO: Just for now while drafting, remove later!
 \section{Codes}
 
-Intro to it; numerical approximations (FE, FD), differences in solvers,
-gridding/meshing, boundary conditions, etc.
+The four codes under consideration are, in alphabetical order, \custem
+\citep{GEO.19.Rochlitz}, \emg3d \citep{JOSS.19.Werthmuller}, \petgem
+\citep{GJI.19.CastilloReyes}, and \simpeg \citep{CAG.15.Cockett}. All four
+codes have their user-facing routines written in Python, while the underlying
+heavy computation is mostly done in other languages (which is the normal case
+in the scientific Python stack); all of them make heavy use of \texttt{NumPy}
+\citep{CSE.11.VanDerWalt} and \texttt{SciPy} \citep{NM.20.Virtanen}. All are
+“modern” open-source projects, meaning that they not only come with open-source
+license, but they are also hosted in an online-hosted version-control system
+with feedback and tracking possibilities (raising issues, filing pull
+requests), have extensive online documentation including many examples, have
+continuous integration to some degree, and also importantly are all easily
+installable, without any user-side compilations.
 
-It is beyond the scope of this paper to go into every detail of the different
-modellers, however, a quick blabla...
+In the following a quick rundown of the codes. It is, however, beyond the scope
+of this article to go into every detail of the different modellers, and we
+refer to their references and documentation.
 
-All the codes presented here
-\begin{itemize}
-  \item are \emph{just available} (you don't have to write someone and ask if
-    you could have the code);
-  \item are \emph{easy installable} (through \texttt{pip} or \texttt{conda});
-  \item are under \emph{version control} and online either on GitHub or on
-    GitLab, which includes possibilities of easy involvement by either creating
-    an issue, reporting a bug, or filing a pull request; and
-  \item are well documented and come with a lot of examples.
-\end{itemize}
+\tabl[btp]{codecomparison}{Caption.}{
+  \centering
+  \small
+\begin{tabular}{lcccc}
+  \toprule
+  %
+  Code & \custem & \emg3d & \petgem & \simpeg  \\
+  \midrule
+  %
+  Home & \href{https://custem.rtfd.io}{custem.rtfd.io}
+       & \href{https://empymod.github.io}{empymod.github.io}
+       & \href{http://petgem.bsc.es}{petgem.bsc.es}
+       & \href{https://docs.simpeg.xyz}{simpeg.xyz} \\
+  Installation & \texttt{conda}
+               & \texttt{pip}; \texttt{conda}
+               & \texttt{pip}; \texttt{conda}
+               & \texttt{pip}; \texttt{conda} \\
+  License & GPL-3.0 & Apache-2.0 & GPL-3.0 & MIT \\
+  Eq. system & ? & FIT & ? & ? \\
+  Comp. Dom. & frequency & frequency & frequency & frequency \& time \\
+  Mesh & FE & FD & FE & FD; OcTree; CylMesh \\
+  BC & ? & PEC & ? & ? \\
+  Methods & ? & Diffusion & ? & ? \\
+  Solver & FEniCS$^\dagger$ & \emg3d & FEniCS$^\dagger$ &
+           PARDISO$^\ddagger$; SciPy \\
+  %
+  \bottomrule
+\end{tabular}}%
+%
+As is visible from Table~\ref{tbl:codecomparison}, we use two finite element
+codes and two finite difference codes; the finite element codes both make use
+of the FEniCS solver \citep{CSE.15.Alnaes}, whereas \simpeg can use either
+solvers implemented in SciPy, or the PARDISO solver \citep{FGCS.04.Schenk};
+\emg3d, on the other hand, is a solver on its own.
 
-\begin{itemize}
-  \item Code (license): \emg3d (Apache-2.0), custEM (LPGL-3.0), PETGEM
-    (GPL-3.0), and \simpeg (MIT).
-  \item Hosting: GitHub (\emg3d, \petgem, \simpeg); GitLab (\custem)
-\end{itemize}
-
-
-
-
-Each code should outline:
-
-\begin{itemize}
-  \item Equation system it solves;
-  \item the used discretization possibilities;
-  \item domains (frequency, time);
-  \item details (anisotropy; el. perm. and mag. perm.);
-  \item other things (inversion; other methods);
-  \item speed and memory estimation;
-  \item plans for next features.
-  \item Inversion capabilities
-  \item Time/frequency
-  \item transmitter types
-\end{itemize}
-
-Basically summarize each code in three points:
-\begin{itemize}
-  \item Brief intro and main features
-  \item Main selling point
-  \item Planned features
-\end{itemize}
-
-Cite for all: NumPy, SciPy.
-
-The codes under consideration are presented here in alphabetical order.
+\imycom[DW]{
+Each code should be briefly summarized by four points:\\
+- Brief intro and main features\\
+- Main selling point\\
+- Planned features\\
+- List (same list for all)\\
+}
 
 \subsection{custEM}
-
-\cite{GEO.19.Rochlitz}
-
-FEniCS \citep{CSE.15.Alnaes}
 
 
 \subsection{emg3d}
@@ -334,19 +350,11 @@ In the future it should be possible to use \emg3d as a solver within the
 
 \subsection{PETGEM}
 
-\cite{GJI.19.CastilloReyes}
-
-FEniCS \citep{CSE.15.Alnaes}
-
 
 \subsection{SimPEG}
 
-\cite{CAG.15.Cockett}
 
-PARDISO \citep{FGCS.04.Schenk}
-
-
-
+\clearpage  % TODO: Just for now while drafting, remove later!
 \section{Comparison}
 
 \subsection{Block Model}
@@ -416,6 +424,7 @@ Custom meshes for these lines.
 
 
 
+\clearpage  % TODO: Just for now while drafting, remove later!
 \section{Discussion}
 
 The landscape in 3D CSEM modelling greatly changed in the last five years or
@@ -467,6 +476,7 @@ MARE3DEM, if (and I think only if) there are clear plans and a time-scale to
 open-source it. Embedded in a wider summary of available codes (some research
 required).
 
+\clearpage  % TODO: Just for now while drafting, remove later!
 \section{Conclusions}
 
 The landscape in 3D CSEM modelling greatly changed in the last five years or
@@ -491,9 +501,10 @@ Python developed for geophysical exploration.
 
 \dots
 
+\clearpage  % TODO: Just for now while drafting, remove later!
 \section{Acknowledgment}
 
-\itodo{Write here your fundings; and potentially also minor contributors etc.}
+\imycom[DW]{Write here your fundings; and potentially also minor contributors etc.}
 
 We would like to thank Paulo Menezes for the help and explanations with regards
 to the Marlim R3D model and corresponding CSEM data, and for making their
@@ -503,14 +514,15 @@ The work of D.W. was conducted within the Gitaro.JIM project funded through
 MarTERA, a EU Horizon 2020 research and innovation programme (No 728053);
 \href{https://www.martera.eu}{martera.eu}.
 
+\clearpage  % TODO: Just for now while drafting, remove later!
 \section{Data}
 
 All files to reproduce the shown results and more are available at
 \todo{zenodo}\dots.
 
 
+\clearpage  % TODO: Just for now while drafting, remove later!
 % REFERENCES
-
 \bibliographystyle{Refs}          % Modified SEG bibliography style.
 \bibliography{Refs}
 
