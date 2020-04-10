@@ -23,6 +23,7 @@
 \usepackage{colortbl}
 \usepackage{booktabs}
 \usepackage{xspace}
+\usepackage{flafter}
 
 \usepackage[pdftex, final]{hyperref}
 % \usepackage[pdftex, hidelinks]{hyperref}
@@ -93,14 +94,13 @@ Lindsey Heagy\footnotemark[2] %                  orcid: 0000-0002-1551-5926
 %%fakesection ===    ABSTRACT    ===
 \begin{abstract}
 %
-Write at the end; one or two sentence(s) each:
+\emph{A will draft a first abstract after the manuscript has been reviewed by
+everyone once.}
 %
-\begin{enumerate}
-  \item Principal OBJECTIVES AND SCOPE OF THE WORK
-  \item Methodology
-  \item Results
-  \item Conclusions
-\end{enumerate}
+% % Principal objectives and scope of the work
+% % Methodology
+% % Results
+% % Conclusions
 %
 \end{abstract}
 
@@ -242,29 +242,31 @@ model.
 The four codes under consideration are, in alphabetical order, \custem
 \citep{GEO.19.Rochlitz}, \emg3d \citep{JOSS.19.Werthmuller}, \petgem
 \citep{GJI.19.CastilloReyes}, and \simpeg \citep{CAG.15.Cockett}. All four
-codes have their user-facing routines written in Python, while the underlying
-heavy computation is mostly done in other languages (which is the normal case
-in the scientific Python stack); all of them make heavy use of \texttt{NumPy}
-\citep{CSE.11.VanDerWalt} and \texttt{SciPy} \citep{NM.20.Virtanen}. All are
-“modern” open-source projects, meaning that they not only come with open-source
-license, but they are also hosted in an online-hosted version-control system
-with feedback and tracking possibilities (raising issues, filing pull
-requests), have extensive online documentation including many examples, have
-continuous integration to some degree, and also importantly are all easily
-installable, without any user-side compilations.
+codes have their user-facing routines written in Python; all of them make heavy
+use of \texttt{NumPy} \citep{CSE.11.VanDerWalt} and \texttt{SciPy}
+\citep{NM.20.Virtanen}. All are “modern” open-source projects, meaning that
+they not only come with an open-source license, but they are also in an
+online-hosted version-control system with feedback and tracking possibilities
+(raising issues, filing pull requests), have extensive online documentation
+including many examples, have continuous integration to some degree, and also
+importantly are all easily installable, without any user-side compilations.
 
 In the following a quick rundown of the codes. It is, however, beyond the scope
 of this article to go into every detail of the different modellers, and we
-refer to their references and documentation.
+refer to their documentations for more details. An overview comparison of the
+different codes is given in Tabel~\ref{tbl:codecomparison}. All codes have in
+common that they solve the Maxwell's equation in its differential form (DE)
+under the quasistatic or diffusive approximation, hence neglecting displacement
+currents.
 
-\tabl[btp]{codecomparison}{All codes solve Maxwell's Equations in its
-  differential form (DE) and with the quasistatic approximation. We use two
-  finite element codes and two finite difference codes; the finite element
-  codes both make use of the FEniCS solver \citep{CSE.15.Alnaes}, whereas
-  \simpeg can use either solvers implemented in SciPy or the PARDISO solver
-  \citep{FGCS.04.Schenk}; \emg3d, on the other hand, is a solver on its own.}{
+\tabl[btp]{codecomparison}{All codes solve Maxwell's equations in its
+  differential form (DE) under the quasistatic approximation. Note that
+  \emg3d is a solver on its own, while the other codes implement third-package
+  solvers such as PETSc, MUMPS, FEniCS \citep{CSE.15.Alnaes}, or PARDISO
+  \citep{FGCS.04.Schenk}.
+  \imycom[DW]{PETSc and MUMPS probably need citations too.}}{
   \centering
-  \small
+  \footnotesize
 \begin{tabular}{lcccc}
   \toprule
   %
@@ -275,77 +277,58 @@ refer to their references and documentation.
        & \href{https://empymod.github.io}{empymod.github.io}
        & \href{http://petgem.bsc.es}{petgem.bsc.es}
        & \href{https://docs.simpeg.xyz}{simpeg.xyz} \\
+  License & GPL-3.0 & Apache-2.0 & GPL-3.0 & MIT \\
   Installation & \texttt{conda}
                & \texttt{pip}; \texttt{conda}
                & \texttt{pip}; \texttt{conda}
                & \texttt{pip}; \texttt{conda} \\
-  License & GPL-3.0 & Apache-2.0 & GPL-3.0 & MIT \\
   Comp. Dom. & frequency & frequency & frequency & frequency \& time \\
   Method & FE & FIT & FE & FV \\
   Mesh & tetrahedral & rectilinear & tetrahedral & rectilinear; curvilinear \\
-  BC & ? & PEC & ? & ? \\
-  Solver & FEniCS$^\dagger$ & \emg3d & FEniCS$^\dagger$ &
-           PARDISO$^\ddagger$; SciPy \\
+  BC & Dirichlet & PEC & Neumann; Dirichlet & Dirichlet; Neumann \\
+  Solver & PETSc; MUMPS & \emg3d & FEniCS & PARDISO; MUMPS \\
   %
   \bottomrule
 \end{tabular}}%
 %
 
 \imycom[DW]{
-Each code should be briefly summarized by four points:\\
-- Brief intro and main features\\
+Each code should be briefly summarized by three points:\\
+- Brief intro\\
 - Main selling point\\
 - Planned features\\
-- List (same list for all)\\
+I think in a first round \textbf{everyone should just write what they want to
+write and think is important for their code}. In a second round we should then
+homogenize it, such that all codes have more or less the same length and also
+similar topic/layout.
 }
 
+\clearpage  % TODO: Just for now while drafting, remove later!
 \subsection{custEM}
 
 
 \subsection{emg3d}
 
-The 3D CSEM modeller \emg3d \citep{JOSS.19.Werthmuller} is a multigrid
-\citep{CMMP.64.Fedorenko} solver for 3D electromagnetic diffusion following
-\cite{GP.06.Mulder}, with tri-axial electrical anisotropy and isotropic
-magnetic permeability. The matrix-free solver can be used as main solver or as
-preconditioner for one of the Krylov subspace methods implemented in SciPy
-\citep{NM.20.Virtanen}, and the governing equations are discretized on a
-staggered grid by the finite-integration technique \cite{AEU.77.Weiland}, which
-can be viewed as a finite-volume generalization of \cite{IEEE.66.Yee}'s scheme.
-The code is written completely in Python using the NumPy
-\citep{CSE.11.VanDerWalt} and SciPy stacks, where the most time- and
-memory-consuming parts are sped up through jitted functions using Numba
-\citep{LLVM.15.Lam}.
+The 3D CSEM modeller \emg3d is a multigrid \citep{CMMP.64.Fedorenko} solver for
+3D electromagnetic diffusion following \cite{GP.06.Mulder}, with tri-axial
+electrical anisotropy, isotropic electric permittivity, and isotropic magnetic
+permeability. The matrix-free solver can be used as main solver or as
+preconditioner for one of the Krylov subspace methods implemented in SciPy, and
+the governing equations are discretized on a staggered grid by the
+finite-integration technique \citep{AEU.77.Weiland}. The code is written
+completely in Python using the NumPy and SciPy stacks, where the most time- and
+memory-consuming parts are sped up through jitted (just-in-time compiled)
+functions using Numba \citep{LLVM.15.Lam}. The code computes the electric field
+due to an electric source in the frequency-domain. Implemented are functions to
+obtain the magnetic field due to an electric source; to obtain the electric and
+magnetic fields due to a magnetic source; and to obtain time-domain responses.
 
-The multigrid method is characterized by almost linear scaling both in terms
-of CPU usage and RAM, and it is therefore a comparably low-memory consumption
-solver (see results). However, the way multigrid is implemented also means some
-additional constraints on the chosen grid. You can input any three-dimensional
-grid into \emg3d, but the implemented method works with the existing nodes,
-meaning there are no new nodes created as coarsening is done by combining
-adjacent cells. The more times the grid dimension can be divided by two the
-better it is suited. Ideally, the dimension of the coarsest grid should be a
-low prime, and grid dimensions are therefore given by their multiplication with
-powers of two (${2,3,5}·2^n$).
-
-Currently \emg3d can be used to model the electric and magnetic fields due to
-arbitrary finite length electric dipole sources for a single frequency at a
-time. Helper functions to compute time-domain responses are in the works
-(should be ready by publishing this article). Current development is focused
-on adding inversion capabilities; averaging routines to implement strong
-topography; and general anisotropy.
-
-The 3D solver \emg3d can be found in the GitHub organization of \empymod
-(`empymod.github.io <https://empymod.github.io>`_). The modeller \empymod
-\citep{GEO.17.Werthmuller} is a 1D code which can compute electric or
-magnetic responses due to a 3D electric or magnetic source in a layered-earth
-model with vertical transverse isotropic (VTI) resistivity, VTI electric
-permittivity, and VTI magnetic permeability, from very low frequencies (DC) to
-very high frequencies (GPR).
-
-In the future it should be possible to use \emg3d as a solver within the
-\simpeg framework.
-
+The multigrid method is characterized by almost linear scaling both in terms of
+runtime (CPU) and memory (RAM) usage, and it is therefore a comparably
+low-memory consumption solver. It is also minimal in terms of requirements,
+only NumPy, SciPy, and Numba are required, with Python 3.7+. The current
+development is focused on adding inversion capabilities. A further plan is also
+to implement a hook in order to use \emg3d as a solver for \simpeg.
 
 \subsection{PETGEM}
 
@@ -354,7 +337,7 @@ In the future it should be possible to use \emg3d as a solver within the
 
 
 \clearpage  % TODO: Just for now while drafting, remove later!
-\section{Comparison}
+\section{Verifications}
 
 \subsection{Block Model}
 
@@ -425,6 +408,9 @@ Custom meshes for these lines.
 
 \clearpage  % TODO: Just for now while drafting, remove later!
 \section{Discussion}
+
+=> \textbf{Important point: Verification of existing and future codes: this is
+a start!}
 
 The landscape in 3D CSEM modelling greatly changed in the last five years or
 so. While before there were only closed-source codes owned by companies or
