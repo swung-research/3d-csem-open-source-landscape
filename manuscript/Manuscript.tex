@@ -339,62 +339,93 @@ to implement a hook in order to use \emg3d as a solver for \simpeg.
 \clearpage  % TODO: Just for now while drafting, remove later!
 \section{Verifications}
 
+In this numerical section compute the responses for two different models to
+verify that these different 3D codes yield the same electromagnetic responses.
+The first model is a simple one consisting of a layered, anisotropic
+background, in which three blocks are embedded, and the second model is a very
+complex, realistic model.
+
 \subsection{Block Model}
 
-Mention \cite{GJI.13.Miensopust}, which is a similar thing, but for 3D
-modelling and inversion for MT.
+\cite{GJI.13.Miensopust} published a review of two workshops dealing with the
+verification of magnetotelluric forward and inversion codes, hence a similar
+exercise to what we do here for CSEM codes. The block model is a derivation of
+the \emph{Dublin Test Model 1}, a model from their first workshop. We took the
+same layout of the blocks but adjusted the dimensions and resistivities to a
+typical, marine CSEM problem, as shown in Figure~\ref{fig:block-model}. We
+additionally added a layered background with vertical transverse isotropy
+(VTI).
 
-Simple block (one to three blocks) model similar to \cite{GJI.13.Miensopust};
-potentially with a bit a funkier source (say, finite length rotated bipole and
-finite length receivers). In this case I would only compare inline and
-crossline responses.
-
-\begin{itemize}
-  \item VTI resistivity
-  \item \simpeg => use OcTree for this example? That would be awesome!
-  \item Show Ex, Ey, Ez, Hx, Hy, Hz
-\end{itemize}
-
-Tables:
-
-%
-\tabl[btp]{comp1}{Caption.}{
-  \centering
-\begin{tabular}{lccrS[table-format=2.4]rl}
-  \toprule
-  %
-  Code & Method & Mesh & \#Cells & {CPU} & RAM & Computer \\
-  \midrule
-  %
-  \custem & FE  & FE & & & & \\
-  \emg3d  & FIT & FD & & & & \\
-  \petgem & FE  & FE & & & & \\
-  \simpeg & FD  & OcTree & & & & \\
-  %
-  \bottomrule
-\end{tabular}}%
-%
+\imycom[DW]{Next:\\
+  - Describe models in text\\
+  - Write text for layered and block model\\
+  - Start tables for them\\
+  - Move to Marlim\\
+  - Discussion\\
+  - Conclusions\\
+  - Send to Raphael
+}
 
 %
 \plot*{block-model}{width=.6\textwidth}{
-   Block model, consisting of a layered background, in which three blocks are
-   embedded.
-}
-%
-
-%
-\plot*{layered-result}{width=.6\textwidth}{
-   Comparison of the layered model.
-}
-%
-
-%
-\plot*{block-result}{width=.6\textwidth}{
-   Comparison of the block model.
+  Sketch of the block model. The layered model consists of an air layer, a
+  water layer, a thin top-layer and then a thick background layer, and at the
+  bottom a resistive basement layer. All three blocks are embedded in the thick
+  background layer, which has VTI with $\lambda=\sqrt{2}$.
 }
 %
 
 
+% %
+% \tabl[btp]{comp1}{Caption.}{
+%   \centering
+% \begin{tabular}{lccrS[table-format=2.4]rl}
+%   \toprule
+%   %
+%   Code & Method & Mesh & \#Cells & {CPU} & RAM & Computer \\
+%   \midrule
+%   %
+%   \custem & FE  & FE & & & & \\
+%   \emg3d  & FIT & FD & & & & \\
+%   \petgem & FE  & FE & & & & \\
+%   \simpeg & FD  & OcTree & & & & \\
+%   %
+%   \bottomrule
+% \end{tabular}}%
+% %
+
+%
+\plot*{results-layered-0}{width=\textwidth}{
+   Comparison of the layered model at y=0km.
+}
+%
+
+%
+\plot*{results-layered--3}{width=\textwidth}{
+   Comparison of the layered model at y=-3km.
+}
+%
+
+%
+\plot*{results-block--3}{width=\textwidth}{
+   Comparison of the block model at y=-3km.
+}
+%
+
+%
+\plot*{results-block-0}{width=\textwidth}{
+   Comparison of the block model at y=0km.
+}
+%
+
+%
+\plot*{results-block-3}{width=\textwidth}{
+   Comparison of the block model at y=+3km.
+}
+%
+
+
+\clearpage  % TODO: Just for now while drafting, remove later!
 \subsection{Marlim R3D}
 
 The Marlim R3D model is a \dots \cite{BJG.17.Carvalho} (model)
@@ -489,7 +520,8 @@ Python developed for geophysical exploration.
 \clearpage  % TODO: Just for now while drafting, remove later!
 \section{Acknowledgment}
 
-\imycom[DW]{Write here your fundings; and potentially also minor contributors etc.}
+\imycom[DW]{Write here your fundings; and potentially also minor contributors
+etc.}
 
 We would like to thank Paulo Menezes for the help and explanations with regards
 to the Marlim R3D model and corresponding CSEM data, and for making their
@@ -502,8 +534,8 @@ MarTERA, a EU Horizon 2020 research and innovation programme (No 728053);
 \clearpage  % TODO: Just for now while drafting, remove later!
 \section{Data}
 
-All files to reproduce the shown results and more are available at
-\todo{zenodo}\dots.
+All files to rerun the different models with the four codes and reproduce the
+shown results are available at \todo{zenodo}\dots.
 
 
 \clearpage  % TODO: Just for now while drafting, remove later!
