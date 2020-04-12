@@ -8,10 +8,11 @@ mesh.
 
 Links to download:
 
-- Fine Model: https://doi.org/10.5281/zenodo.400233
-- Computation Model: ????????????
-- With noise: https://doi.org/10.5281/zenodo.1256787
-- Without noise: https://doi.org/10.5281/zenodo.1807135
+- Detailed resistivity model: https://doi.org/10.5281/zenodo.400233
+- Computational resistivity model (upscaled and extended):
+  https://doi.org/10.5281/zenodo.3748492
+- CSEM data with noise: https://doi.org/10.5281/zenodo.1256787
+- CSEM data without noise: https://doi.org/10.5281/zenodo.1807135
 """
 import segyio
 import discretize
@@ -34,8 +35,8 @@ def extract_model(model='orig'):
     """
 
     if model == 'comp':
-        name_h = 'novo_mrl3d_H_Z_meters.segy'
-        name_v = 'novo_mrl3d_Zmeters.segy'
+        name_h = 'Mrl3d_Rh_20metersmesh.segy'
+        name_v = 'Mrl3d_Rv_20metersmesh.segy'
         dx, dy, dz = 100, 100, 20  # Cell widths
     else:
         name_h = 'Horizontal_resistivity.sgy'
@@ -59,7 +60,7 @@ def extract_model(model='orig'):
         txt += f"{s}For model='comp' you need\n"
         txt += f"{s}- novo_mrl3d_H_Z_meters.segy\n"
         txt += f"{s}- novo_mrl3d_Zmeters.segy\n"
-        txt += f"{s}from ???????????\n"
+        txt += f"{s}from https://doi.org/10.5281/zenodo.3748492\n"
         print(txt)
         return None, None
 

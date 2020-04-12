@@ -18,13 +18,14 @@ Zenodo.
   for controlled-source electromagnetic simulations - Phase 2: The
   controlled-source electromagnetic data set: Geophysics, 84(5), E293-E299;
   DOI: [10.1190/geo2018-0452.1](https://doi.org/10.1190/geo2018-0452.1).
-- Fine Model;
-  DOI: [10.5281/zenodo.400233](https://doi.org/10.5281/zenodo.400233)
-- Computation Model (personal communication; TODO: ask for uploading it)
-- With noise;
-  DOI: [10.5281/zenodo.1256787](https://doi.org/10.5281/zenodo.1256787)
-- Without noise;
-  DOI: [10.5281/zenodo.1807135](https://doi.org/10.5281/zenodo.1807135)
+- Detailed resistivity model:
+  [10.5281/zenodo.400233](https://doi.org/10.5281/zenodo.400233)
+- Computational resistivity model (upscaled and extended):
+  [10.5281/zenodo.3748492](https://doi.org/10.5281/zenodo.3748492)
+- CSEM data with noise:
+  [10.5281/zenodo.1256787](https://doi.org/10.5281/zenodo.1256787)
+- CSEM data without noise:
+  [10.5281/zenodo.1807135](https://doi.org/10.5281/zenodo.1807135)
 
 ### Required files
 
@@ -34,11 +35,12 @@ For the data comparison, from
 - EW_nonoise.zip
 - NS_nonoise.zip
 
-To create the FD-models, from
-[10.5281/zenodo.400233](https://doi.org/10.5281/zenodo.400233):
+To create the resistivity models, from
+[10.5281/zenodo.3748492](https://doi.org/10.5281/zenodo.3748492)
 
-- Horizontal_resistivity.sgy
-- Vertical_Resistivity.sgy
+- Mrl3d_Rh_20metersmesh.segy
+- Mrl3d_Rv_20metersmesh.segy
+
 
 To create the FE-models additionally, from
 [10.5281/zenodo.400233](https://doi.org/10.5281/zenodo.400233):
