@@ -58,6 +58,7 @@
 \newcommand{\dul}[1]{\underline{\underline{#1}}}
 \newcommand{\ul}[1]{\underline{#1}}
 \newcommand{\rmk}[1]{{\color{red}{#1}}}
+\newcommand{\ohmm}{\ensuremath{\Omega\,}\text{m}\xspace}
 
 \begin{document}
 
@@ -73,6 +74,8 @@ Building 23,
 Stevinweg 1 / PO-box 5048,
 2628 CN Delft;\\
 \footnotemark[2]TODO\\
+\footnotemark[3]TODO\\
+\footnotemark[4]TODO\\
 E-mail: \href{mailto:Dieter@Werthmuller.org}{Dieter@Werthmuller.org};\\
 \textbf{Keywords}: CSEM, Open-Source, 3D modelling, FD, FE.
 }
@@ -81,8 +84,8 @@ E-mail: \href{mailto:Dieter@Werthmuller.org}{Dieter@Werthmuller.org};\\
 \author{%
 Dieter Werthmüller\footnotemark[1], %            orcid: 0000-0002-8575-2484
 Raphael Rochlitz\footnotemark[2], %              orcid: 0000-0002-5132-916X
-Octavio Castillo-Reyes\footnotemark[2], and %    orcid: 0000-0003-4271-5015
-Lindsey Heagy\footnotemark[2] %                  orcid: 0000-0002-1551-5926
+Octavio Castillo-Reyes\footnotemark[3], and %    orcid: 0000-0003-4271-5015
+Lindsey Heagy\footnotemark[4] %                  orcid: 0000-0002-1551-5926
 }
 
 \footer{}
@@ -94,7 +97,7 @@ Lindsey Heagy\footnotemark[2] %                  orcid: 0000-0002-1551-5926
 %%fakesection ===    ABSTRACT    ===
 \begin{abstract}
 %
-\emph{A will draft a first abstract after the manuscript has been reviewed by
+\emph{I will draft a first abstract after the manuscript has been reviewed by
 everyone once.}
 %
 % % Principal objectives and scope of the work
@@ -254,20 +257,21 @@ importantly are all easily installable, without any user-side compilations.
 In the following a quick rundown of the codes. It is, however, beyond the scope
 of this article to go into every detail of the different modellers, and we
 refer to their documentations for more details. An overview comparison of the
-different codes is given in Tabel~\ref{tbl:codecomparison}. All codes have in
+different codes is given in Table~\ref{tbl:codecomparison}. All codes have in
 common that they solve the Maxwell's equation in its differential form (DE)
 under the quasistatic or diffusive approximation, hence neglecting displacement
-currents.
+currents. The machines on which the different codes were run are listed in
+Table~\ref{tbl:machines}, together with the responsible operator.
 
 \tabl[btp]{codecomparison}{All codes solve Maxwell's equations in its
   differential form (DE) under the quasistatic approximation. Note that
   \emg3d is a solver on its own, while the other codes implement third-package
-  solvers such as PETSc, MUMPS, FEniCS \citep{CSE.15.Alnaes}, or PARDISO
-  \citep{FGCS.04.Schenk}.
-  \imycom[DW]{PETSc and MUMPS probably need citations too.}}{
+  solvers such as \texttt{PETSc}, \texttt{MUMPS}, \texttt{FEniCS}
+  \citep{CSE.15.Alnaes}, or \texttt{PARDISO} \citep{FGCS.04.Schenk}.
+  \imycom[DW]{\texttt{PETSc} and \texttt{MUMPS} probably need citations too.}}{
   \centering
   \footnotesize
-\begin{tabular}{lcccc}
+\begin{tabularx}{\linewidth}{lXXXX}
   \toprule
   %
   & \custem & \emg3d & \petgem & \simpeg  \\
@@ -284,13 +288,15 @@ currents.
                & \texttt{pip}; \texttt{conda} \\
   Comp. Dom. & frequency & frequency & frequency & frequency \& time \\
   Method & FE & FIT & FE & FV \\
-  Mesh & tetrahedral & rectilinear & tetrahedral & rectilinear; curvilinear \\
-  BC & Dirichlet & PEC & Neumann; Dirichlet & Dirichlet; Neumann \\
-  Solver & PETSc; MUMPS & \emg3d & FEniCS & PARDISO; MUMPS \\
+  Mesh & tetrahedral & rectilinear & tetrahedral & recti- \& curvilinear \\
+  BC & PEC & PEC & Neumann; Dirichlet & Dirichlet; Neumann \\
+  Solver & \texttt{PETSc}; \texttt{MUMPS} & \emg3d & \texttt{FEniCS} &
+           \texttt{PARDISO}; \texttt{MUMPS} \\
   %
   \bottomrule
-\end{tabular}}%
+\end{tabularx}}%
 %
+
 
 \imycom[DW]{
 Each code should be briefly summarized by three points:\\
@@ -336,10 +342,38 @@ to implement a hook in order to use \emg3d as a solver for \simpeg.
 \subsection{SimPEG}
 
 
+%
+\tabl[btp]{machines}{List of computer and operating system on which the
+  different codes were run, together with the operator.}{
+  \centering
+  \footnotesize
+  \begin{tabularx}{\linewidth}{lXl}
+  \toprule
+  %
+  Code & Computer and Operating System & Operator \\
+  \midrule
+  %
+  \custem & PowerEdge R940 server; 144 Xeon Gold 6154 CPU @2.666 GHz; ~3 TB
+            DDR4 RAM; Ubuntu 18.04
+          & Raphael Rochlitz \\
+  \emg3d  & Laptop; i7-6600U CPU@2.6 GHz x4; 16 GB of memory, Ubuntu 18.04
+          & Dieter Werthmüller \\
+  \petgem & Marenostrum4. Intel Xeon Platinum from Skylake generation; 2
+            sockets Intel Xeon Platinum 8160 CPU with 24 cores each @2.10GHz
+            for a total of 48 cores per node; 386 Gb DDR4 RAM per node; SuSE
+            Linux Enterprise
+          & Octavio Castillo-Reyes \\
+  \simpeg & ???
+          & Lindsey Heagy \\
+  %
+  \bottomrule
+\end{tabularx}}%
+%
+
 \clearpage  % TODO: Just for now while drafting, remove later!
 \section{Verifications}
 
-In this numerical section compute the responses for two different models to
+In this numerical section we compute the responses for two different models to
 verify that these different 3D codes yield the same electromagnetic responses.
 The first model is a simple one consisting of a layered, anisotropic
 background, in which three blocks are embedded, and the second model is a very
@@ -355,17 +389,6 @@ same layout of the blocks but adjusted the dimensions and resistivities to a
 typical, marine CSEM problem, as shown in Figure~\ref{fig:block-model}. We
 additionally added a layered background with vertical transverse isotropy
 (VTI).
-
-\imycom[DW]{Next:\\
-  - Describe models in text\\
-  - Write text for layered and block model\\
-  - Start tables for them\\
-  - Move to Marlim\\
-  - Discussion\\
-  - Conclusions\\
-  - Send to Raphael
-}
-
 %
 \plot*{block-model}{width=.6\textwidth}{
   Sketch of the block model. The layered model consists of an air layer, a
@@ -375,58 +398,155 @@ additionally added a layered background with vertical transverse isotropy
 }
 %
 
+The layered model consists of an upper halfspace of air, a 600\,m deep water
+layer, followed by a 150\,m thick, isotropic layer of 1\,\ohmm, a 3.3\,km
+thick, anisotropic layer of $\rho_\text{h}=2\,\ohmm$ and
+$\rho_\text{v}=4\,\ohmm$, and finally a resistive basement consisting of a
+lower halfspace of $1000\,\ohmm$. The 200\,m long, $x$-directed source is
+located 50\,m above the seafloor from $x=-50$ to $x=50\,$m in $x$-direction, at
+$y=0\,$m. The $x$-directed receivers are placed on the seafloor every 200\,m
+from $x=-10\,$km to $x=+10\,$km in three lines for $y=-3, 0, 3\,$km.
 
-% %
-% \tabl[btp]{comp1}{Caption.}{
-%   \centering
-% \begin{tabular}{lccrS[table-format=2.4]rl}
-%   \toprule
-%   %
-%   Code & Method & Mesh & \#Cells & {CPU} & RAM & Computer \\
-%   \midrule
-%   %
-%   \custem & FE  & FE & & & & \\
-%   \emg3d  & FIT & FD & & & & \\
-%   \petgem & FE  & FE & & & & \\
-%   \simpeg & FD  & OcTree & & & & \\
-%   %
-%   \bottomrule
-% \end{tabular}}%
-% %
+In a first step we compare the layered background to the semi-analytical
+solutions of a 1D code, for which we use \empymod \citep{GEO.17.Werthmuller}.
+Figures~\ref{fig:results-layered-0} and \ref{fig:results-layered--3} show the
+actual responses in the top rows, and the relative error in the bottom rows
+for receiver line $y=0\,$km and $y=-3\,$km, respectively (for the layered
+background the responses for the two receiver-lines of $y=\pm3$\,km are
+identical, so we only show one here).
 
+Figure~\ref{fig:results-layered-0} shows in the top-row the inline responses
+for offsets $r>0.5\,$km. As all codes compute the same we only show the
+semi-analytical result for the real and imaginary amplitudes, and then in the
+bottom row the relative error of the 3D codes. The results show that the codes
+are literally yielding the same result, the relative error is for big parts
+below 1\,\%, and for almost all parts below a few percent. Some differences are
+due to the chosen discretizations. E.g., \emg3d is less precise close to the
+200\,m long source. This could be improved by choosing smaller cell sizes, at
+the cost of computation time. At large offsets, on the other hand, \emg3d seems
+to do a very good job.
 %
-\plot*{results-layered-0}{width=\textwidth}{
-   Comparison of the layered model at y=0km.
+\plot*{results-layered-0}{width=.8\textwidth}{
+   Comparison of the layered model for the inline receivers ($y=0\,$km).
+   Top row shows the semi-analytical responses from \empymod, and bottom row
+   show the relative error (\%) of \custem, \emg3d, \petgem, and \simpeg.
+}
+%
+
+The corresponding broadside responses for $y=-3\,$km is shown in
+Figure~\ref{fig:results-layered--3}, and the required CPU and RAM is shown in
+Table~\ref{tbl:comp-layered}.
+%
+\plot*{results-layered--3}{width=.8\textwidth}{
+   Comparison of the layered model for the broadside receivers ($y=-3\,$km).
+   Top row shows the semi-analytical responses from \empymod, and bottom row
+   show the relative error (\%) of \custem, \emg3d, \petgem, and \simpeg.
 }
 %
 
 %
-\plot*{results-layered--3}{width=\textwidth}{
-   Comparison of the layered model at y=-3km.
+\tabl[btp]{comp-layered}{Comparison of used CPU and RAM and of number of cells
+  used to discretize the layered model. \imycom[DW]{I will fill this table out
+  once we all submitted the final versions of the results.}}{
+  \centering
+\begin{tabular}{lS[table-format=4.2]rS[table-format=4.2]rl}
+  \toprule
+  %
+  Code & {CPU} & \#Procs & RAM     & \#Cells \\
+       & {(s)} &         & {(GiB)} &         \\
+  \midrule
+  %
+  \custem & 0.0 & 24 & 0.0 & 0 \\
+  \emg3d  & 0.0 &  1 & 0.0 & 0 \\
+  \petgem & 0.0 & 48 & 0.0 & 0 \\
+  \simpeg & 0.0 &    & 0.0 & 0 \\
+  %
+  \bottomrule
+\end{tabular}}%
+%
+
+
+
+Three resistive blocks are added in the 3.3\,km-thick, anisotropic background
+layer, as shown in Figure~\ref{fig:block-model}. They have resistivities of
+$\rho=10\,\ohmm$ (shallow beam perpendicular to survey lines),
+$\rho=100\,\ohmm$ (thin plate, South-East), $\rho=500\,\ohmm$ (cube,
+North-West). As there are no analytical solutions for this model we show the
+normalized difference between different codes, instead of the relative error,
+where the normalized difference of two responses $p$ and $q$ is given by
+%
+\begin{equation}
+  \mr{NRMSD~(\%)} = 200 \frac{|p - q|}{|p| + |q|}\ .
+  \label{eq:nrmsd}
+\end{equation}
+%
+\imycom[DW]{NRMSD: Comparing all codes to all would make the
+figures too cluttered, and I don't think it would add a lot insights. My idea
+is therefore to compare \emg3d/\simpeg (the two FD ones), \custem/\petgem (the
+two FE ones), and \emg3d/\custem (a cross-comparison). What do you think?}
+
+The results for the three receiver lines $y=-3,0,3\,$km are shown in
+Figures~\ref{fig:results-block--3}, \ref{fig:results-block-0}, and
+\ref{fig:results-block-3}, respectively, and the corresponding CPU and RAM in
+Table~\ref{tbl:comp-block}. What we can conclude from the NRMSD is that similar
+codes have a smaller NRMSD than cross-comparison, hence \emg3d and \simpeg are
+very similar, as well as are \custem and \petgem.
+\mycom[DW]{Write in detail when all results are available}
+%
+\plot*{results-block--3}{width=.8\textwidth}{
+   Comparison of the block model for the broadside receivers at $y=-3\,$km.
+   Top row shows the responses and bottom row the NRMSDs (\%)
+   between \emg3d--\custem, \custem--\petgem, and \emg3d--\simpeg.
 }
 %
 
 %
-\plot*{results-block--3}{width=\textwidth}{
-   Comparison of the block model at y=-3km.
+\plot*{results-block-0}{width=.8\textwidth}{
+   Comparison of the block model for the inline receivers at $y=0\,$km.
+   Top row shows the responses and bottom row the NRMSDs (\%)
+   between \emg3d--\custem, \custem--\petgem, and \emg3d--\simpeg.
 }
 %
 
 %
-\plot*{results-block-0}{width=\textwidth}{
-   Comparison of the block model at y=0km.
+\plot*{results-block-3}{width=.8\textwidth}{
+   Comparison of the block model for the broadside receivers at $y=+3\,$km.
+   Top row shows the responses and bottom row the NRMSDs (\%) between
+   \emg3d--\custem, \custem--\petgem, and \emg3d--\simpeg.
 }
 %
 
 %
-\plot*{results-block-3}{width=\textwidth}{
-   Comparison of the block model at y=+3km.
-}
+\tabl[btp]{comp-block}{Comparison of used CPU and RAM and of number of cells
+  used to discretize the block model. \imycom[DW]{I will fill this table out
+  once we all submitted the final versions of the results.}}{
+  \centering
+\begin{tabular}{lS[table-format=4.2]rS[table-format=4.2]rl}
+  \toprule
+  %
+  Code & {CPU} & \#Procs & RAM     & \#Cells \\
+       & {(s)} &         & {(GiB)} &         \\
+  \midrule
+  %
+  \custem & 0.0 & 24 & 0.0 & 0 \\
+  \emg3d  & 0.0 &  1 & 0.0 & 0 \\
+  \petgem & 0.0 & 48 & 0.0 & 0 \\
+  \simpeg & 0.0 &    & 0.0 & 0 \\
+  %
+  \bottomrule
+\end{tabular}}%
 %
-
 
 \clearpage  % TODO: Just for now while drafting, remove later!
 \subsection{Marlim R3D}
+
+\imycom[DW]{Next:\\
+  - Create figures for Marlim\\
+  - Write text for Marlim\\
+  - Discussion\\
+  - Conclusions\\
+  - Send to Raphael
+}
 
 The Marlim R3D model is a \dots \cite{BJG.17.Carvalho} (model)
 \cite{GEO.19.Correa} (CSEM data)
@@ -436,6 +556,27 @@ Comparison to an code from the industry, using \emph{SBLwiz} from EMGS.
 Custom meshes for these lines.
 
 
+
+%
+\tabl[btp]{comp-marlim}{Comparison of used CPU and RAM and of number of cells
+  used to discretize the Marlim R3D model. \imycom[DW]{I will fill this table
+  out once we all submitted the final versions of the results.}}{
+  \centering
+\begin{tabular}{lS[table-format=4.2]rS[table-format=4.2]rl}
+  \toprule
+  %
+  Code & {CPU} & \#Procs & RAM     & \#Cells \\
+       & {(s)} &         & {(GiB)} &         \\
+  \midrule
+  %
+  \custem & 0.0 & 24 & 0.0 & 0 \\
+  \emg3d  & 0.0 &  1 & 0.0 & 0 \\
+  \petgem & 0.0 & 48 & 0.0 & 0 \\
+  \simpeg & 0.0 &    & 0.0 & 0 \\
+  %
+  \bottomrule
+\end{tabular}}%
+%
 
 \clearpage  % TODO: Just for now while drafting, remove later!
 \section{Discussion}
