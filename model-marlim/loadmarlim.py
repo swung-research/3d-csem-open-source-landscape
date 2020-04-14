@@ -96,6 +96,57 @@ def extract_model(model='orig'):
     )
 
 
+def extract_section():
+    """Extract original or computational model of Marlim R3D and store as npz.
+
+    Extracts the original fine model or the computational model from the
+    sgy-fiels and stores them as numpy-compressed npz files.
+
+    Parameters
+    ----------
+    model : str; {<'orig'>; 'comp'}
+        If model=='comp', the computational model is returned. Else the
+        original model.
+    """
+
+    # Get original mesh and resistivities.
+    try:
+        data = np.load('marlim_orig.npz')
+    except:
+        extract_model(model='orig')
+        data = np.load('marlim_orig.npz')
+
+    full_res_h = data['res_h']
+    full_res_v = data['res_v']
+    mesh = discretize.TensorMesh(
+            [data['hx'], data['hy'], data['hz']], x0=data['x0'])
+    del data
+
+    # Get chosen data and extract the y-coordinate; find corresponding index.
+    try:
+        data = xr.load_dataset('marlim_data.nc', engine='h5netcdf')
+    except:
+        create_survey(store_data=True, noise=False)
+        data = xr.load_dataset('marlim_data.nc', engine='h5netcdf')
+
+    ycoord = data.attrs['rec_y']
+    ny = np.argmin(abs(mesh.vectorCCy - ycoord))
+    del data
+
+    # Store relevant sections.
+    res_h = full_res_h[:, ny, :]
+    res_v = full_res_v[:, ny, :]
+    del full_res_h, full_res_v
+
+    # Save it.
+    np.savez_compressed(
+            f"marlim_sections.npz",
+            hx=mesh.hx, hy=np.array([10]), hz=mesh.hz,
+            x0=np.array([mesh.x0[0], ycoord-5, mesh.x0[2]]),
+            res_h=res_h, res_v=res_v
+    )
+
+
 def load_data(noise=False):
     """Load CSEM data for our selected source and receiver positions.
 
