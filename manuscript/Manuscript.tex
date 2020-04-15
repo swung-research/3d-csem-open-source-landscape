@@ -266,9 +266,11 @@ Table~\ref{tbl:machines}, together with the responsible operator.
 \tabl[btp]{codecomparison}{All codes solve Maxwell's equations in its
   differential form (DE) under the quasistatic approximation. Note that
   \emg3d is a solver on its own, while the other codes implement third-package
-  solvers such as \texttt{PETSc}, \texttt{MUMPS}, \texttt{FEniCS}
-  \citep{CSE.15.Alnaes}, or \texttt{PARDISO} \citep{FGCS.04.Schenk}.
-  \imycom[DW]{\texttt{PETSc} and \texttt{MUMPS} probably need citations too.}}{
+  solvers such as \texttt{PETSc}, \texttt{MUMPS}, or \texttt{PARDISO}
+  \citep{FGCS.04.Schenk}.
+  \imycom[DW]{\texttt{PETSc} and \texttt{MUMPS} probably need citations too.}
+  \imycom[DW]{PEC/PMC instead of Dirichlet/Neumann?}
+}{
   \centering
   \footnotesize
 \begin{tabularx}{\linewidth}{lXXXX}
@@ -282,15 +284,15 @@ Table~\ref{tbl:machines}, together with the responsible operator.
        & \href{http://petgem.bsc.es}{petgem.bsc.es}
        & \href{https://docs.simpeg.xyz}{simpeg.xyz} \\
   License & GPL-3.0 & Apache-2.0 & GPL-3.0 & MIT \\
-  Installation & \texttt{conda}
+  Installation & \texttt{pip}; \texttt{conda}
                & \texttt{pip}; \texttt{conda}
-               & \texttt{pip}; \texttt{conda}
+               & \texttt{conda}
                & \texttt{pip}; \texttt{conda} \\
-  Comp. Dom. & frequency & frequency & frequency & frequency \& time \\
+  Comp. Dom. & frequency \& time & frequency & frequency & frequency \& time \\
   Method & FE & FIT & FE & FV \\
   Mesh & tetrahedral & rectilinear & tetrahedral & recti- \& curvilinear \\
-  BC & PEC & PEC & Neumann; Dirichlet & Dirichlet; Neumann \\
-  Solver & \texttt{PETSc}; \texttt{MUMPS} & \emg3d & \texttt{FEniCS} &
+  BC & Neumann; Dirichlet & PEC & PEC & Dirichlet; Neumann \\
+  Solver & \texttt{MUMPS} & \emg3d & \texttt{PETSc}; \texttt{MUMPS} &
            \texttt{PARDISO}; \texttt{MUMPS} \\
   %
   \bottomrule
@@ -312,6 +314,7 @@ similar topic/layout.
 \clearpage  % TODO: Just for now while drafting, remove later!
 \subsection{custEM}
 
+\texttt{FEniCS} \citep{CSE.15.Alnaes}
 
 \subsection{emg3d}
 
@@ -555,6 +558,12 @@ Comparison to an code from the industry, using \emph{SBLwiz} from EMGS.
 
 Custom meshes for these lines.
 
+\paragraph{Comments Raphael} “\emph{Yes, cutting the layers has an influce at
+  offsets greater distance X (see example \#2 thesis) - depending on the
+  boundary mesh. I'm sure that's the reason. I could also add a version with a
+  way larger horizontal layered earth extent, but this would require way more
+  resources - unstructured meshes are just not competitive to regular grids for
+  regular geopmetries in such cases as discussed before}“
 
 
 %
