@@ -162,9 +162,8 @@ differential equation (DE) method, for instance finite differences (FD)
 \citep{IEEE.66.Yee, GEO.93.Wang, RSC.94.Mackie, RS.94.Druskin, GEO.09.Streich,
 CAG.13.Sommer}, finite elementes (FE) \citep{GJI.11.Schwarzbach, GEO.04.Commer,
 GEO.12.daSilva, GJI.13.Puzyrev, GJI.13.Grayver, SEG.16.Zhang}, finite volume
-(FV) \citep{EM.90.Madsen, ECP.07.Haber, GEO.14.Jahandari}, and finite
-integration technique (FIT) \citep{PIER.01.Clemens, GP.06.Mulder}. And these
-are just the most common ones.
+(FV) \citep{EM.90.Madsen, ECP.07.Haber, GEO.14.Jahandari, PIER.01.Clemens,
+GP.06.Mulder}. And these are just the most common ones.
 
 There are also many different types of discretisation, where the most common
 ones are regular grids (Cartesian, rectilinear), mostly using a Yee grid
@@ -289,7 +288,7 @@ Table~\ref{tbl:machines}, together with the responsible operator.
                & \texttt{conda}
                & \texttt{pip}; \texttt{conda} \\
   Comp. Dom. & frequency \& time & frequency & frequency & frequency \& time \\
-  Method & FE & FIT & FE & FV \\
+  Method & FE & FV & FE & FV \\
   Mesh & tetrahedral & rectilinear & tetrahedral & recti- \& curvilinear \\
   BC & Neumann; Dirichlet & PEC & PEC & Dirichlet; Neumann \\
   Solver & \texttt{MUMPS} & \emg3d & \texttt{PETSc}; \texttt{MUMPS} &
@@ -540,6 +539,16 @@ very similar, as well as are \custem and \petgem.
 \end{tabular}}%
 %
 
+The difference becomes only significant at offsets larger than 8\,km. However,
+this is due to a practical difference in the meshing: \textbf{Rewrite, Comments
+Raphael} “\emph{Yes, cutting the layers has an influce at offsets greater
+  distance X (see example \#2 thesis) - depending on the boundary mesh. I'm
+  sure that's the reason. I could also add a version with a way larger
+  horizontal layered earth extent, but this would require way more resources -
+  unstructured meshes are just not competitive to regular grids for regular
+geopmetries in such cases as discussed before}“
+
+
 \clearpage  % TODO: Just for now while drafting, remove later!
 \subsection{Marlim R3D}
 
@@ -557,13 +566,6 @@ The Marlim R3D model is a \dots \cite{BJG.17.Carvalho} (model)
 Comparison to an code from the industry, using \emph{SBLwiz} from EMGS.
 
 Custom meshes for these lines.
-
-\paragraph{Comments Raphael} “\emph{Yes, cutting the layers has an influce at
-  offsets greater distance X (see example \#2 thesis) - depending on the
-  boundary mesh. I'm sure that's the reason. I could also add a version with a
-  way larger horizontal layered earth extent, but this would require way more
-  resources - unstructured meshes are just not competitive to regular grids for
-  regular geopmetries in such cases as discussed before}“
 
 
 %
