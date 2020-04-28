@@ -581,6 +581,19 @@ Comparison to an code from the industry, using \emph{SBLwiz} from EMGS.
 
 Custom meshes for these lines.
 
+%
+\plot*{model-marlim}{width=\textwidth}{
+  Needs improvements.
+}
+%
+
+%
+\plot*{results-marlim}{width=\textwidth}{
+  This is one heck of a figure. Just an idea, please make suggestions how to
+  improve it (currently, \petgem data is a copy of \custem data, and \simpeg
+  data is a copy of \emg3d data).
+}
+%
 
 %
 \tabl[btp]{comp-marlim}{Comparison of used CPU and RAM and of number of cells
@@ -594,17 +607,23 @@ Custom meshes for these lines.
        & {(s)} &         & {(GiB)} &         \\
   \midrule
   %
-  \custem & 0.0 & 24 & 0.0 & 0 \\
-  \emg3d  & 0.0 &  1 & 0.0 & 0 \\
-  \petgem & 0.0 & 48 & 0.0 & 0 \\
-  \simpeg & 0.0 &    & 0.0 & 0 \\
+  \custem & 0.0 &  0 & 0.0 & 0 \\
+  \emg3d  & 0.0 &  0 & 0.0 & 0 \\
+  \petgem & 0.0 &  0 & 0.0 & 0 \\
+  \simpeg & 0.0 &  0 & 0.0 & 0 \\
   %
   \bottomrule
 \end{tabular}}%
 %
 
+The three meaningful responses for node-based marine CSEM: Inline Ex and
+Broadside Ex and Ey.
+
 \clearpage  % TODO: Just for now while drafting, remove later!
 \section{Discussion}
+
+\imycom[DW]{Maybe we should create a Google-Doc for working on the Discussion
+and Conclusion collaboratively at the same time?}
 
 => \textbf{Important point: Verification of existing and future codes: this is
 a start!}
