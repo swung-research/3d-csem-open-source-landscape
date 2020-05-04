@@ -52,9 +52,10 @@
 
 % Remove once done
 \newcommand{\mycom}[2][]{
-  \todo[]{\textbf{\uppercase{[#1]}}:~#2}}
+  \todo[color=yellow]{\textbf{\uppercase{[#1]}}:~#2}}
 \newcommand{\imycom}[2][]{
-  \todo[inline]{\textbf{\uppercase{[#1]}}:~#2}}
+  \todo[inline, color=yellow]{\textbf{\uppercase{[#1]}}:~#2}}
+\newcommand{\itodo}[1]{\todo[inline, color=cyan]{\sffamily #1}}
 \newcommand{\dul}[1]{\underline{\underline{#1}}}
 \newcommand{\ul}[1]{\underline{#1}}
 \newcommand{\rmk}[1]{{\color{red}{#1}}}
@@ -107,14 +108,14 @@ everyone once.}
 %
 \end{abstract}
 
-\imycom[DW]{
+\itodo{
   For comments in the margin, use:\\[.2cm]
   \qquad\texttt{\textbackslash mycom[YOURINITIALS]\{comment\}}\\[.2cm]
   and for inline comments, use:\\[.2cm]
   \qquad\texttt{\textbackslash imycom[YOURINITIALS]\{comment\}}
 }
 
-\imycom[DW]{
+\itodo{
 We will have to decide on a Journal. Current suggestions:\\
 - GMD: Geoscientific Model Development\\
 - SIG: Surveys in Geophysics\\
@@ -127,7 +128,8 @@ I think \emph{Geoscientific Model Development} and \emph{Surveys in Geophysics}
 were the favourite ones when we discussed it ones. I personally would be very
 interested in GMD. What do you think? But also interesting would be the GJI,
 because the MT comparison was published there, so it would be in the same
-place.
+place. I just had a very bad experience with GP, so I am not inclined on that
+at all.
 }
 
 \section{Introduction}
@@ -208,14 +210,14 @@ and online hosted documentation which often includes code documentation,
 examples, and tutorials. As such the term has shifted from purely open-source
 code to development in the open and increasingly building a global community.
 There are a number of projects within the realm of geophysical exploration,
-besides the ones we present here, \todo{Others coming to your mind?}e.g.
+besides the ones we present here, \mycom[DW]{Others coming to your mind?}e.g.
 pyGIMLi \citep{CAG.17.Rucker} and Fatiando \citep{JOSS.18.Uieda}. Newer
-\todo{wrong term, think about it}programming environments  have also brought
-much simplifications in the installation process and have most importantly
-simplified it for code developers to make their codes easily available and
-installable. All our presented codes are in the Python ecosystem, and each code
-can be installed with a single command (which includes downloading and
-installation).
+\mycom[DW]{wrong term, think about it}programming environments  have also
+brought much simplifications in the installation process and have most
+importantly simplified it for code developers to make their codes easily
+available and installable. All our presented codes are in the Python ecosystem,
+and each code can be installed with a single command (which includes download
+and installation).
 
 A second topic we want to address is verification. New codes are generally
 verified against analytical solutions. However, analytical and semi-analytical
@@ -229,12 +231,12 @@ and validated with.
 
 It is worth mentioning that there are many more 3D EM codes developed in other
 fields than geophysics such as communication systems (antennas, radar,
-satellites), medical imaging. There are various open-source codes in these
-fields \todo{Add at least three references} too, e.g., Elmer
-(\href{http://www.csc.fi/elmer}{csc.fi/elmer}, couldn't find a publication,
-just a poster). While these codes could potentially be used for the same goals
-as presented here we restrict our review to codes purpose-built, and ready
-without further adjustments, for geophysical applications.
+satellites), medical imaging, or civil engineering. There are various
+open-source codes in these fields too, e.g., Elmer \mycom[DW]{Add 2-3 proper
+references} (\href{http://www.csc.fi/elmer}{csc.fi/elmer}, couldn't find a
+publication, just a poster). While these codes could potentially be used for
+the same goals as presented here we restrict our review to codes purpose-built,
+and ready without further adjustments, for geophysical applications.
 
 In the following section we introduce the codes under consideration. The
 numerical result consider two cases. First a layered background with vertical
@@ -271,9 +273,8 @@ with the responsible operator.
 \tabl[btp]{codecomparison}{All codes solve the weak form of Maxwell's equations
   in its differential form (DE) under the quasistatic approximation. Note that
   \emg3d is a solver on its own, while the other codes implement third-package
-  solvers such as \texttt{PETSc}, \texttt{MUMPS}, or \texttt{PARDISO}
-  \citep{FGCS.04.Schenk}.
-  \imycom[DW]{\texttt{PETSc} and \texttt{MUMPS} probably need citations too.}
+  solvers such as \texttt{PETSc} \citep{Preprint.Abhyankar}, \texttt{MUMPS}
+  \citep{SIAM.01.Amestoy}, or \texttt{PARDISO} \citep{FGCS.04.Schenk}.
 }{
   \centering
   \footnotesize
@@ -332,7 +333,7 @@ software) on which the different codes were run, together with the operator.}{
 %
 
 
-\imycom[DW]{
+\itodo{
 Each code should be briefly summarized by three points:\\
 - Brief intro\\
 - Main selling point\\
@@ -346,7 +347,7 @@ also similar topic/layout.
 \clearpage  % TODO: Just for now while drafting, remove later!
 \subsection{custEM}
 
-TODO (\texttt{FEniCS}; \cite{CSE.15.Alnaes})
+TODO
 
 
 \subsection{emg3d}
@@ -362,17 +363,18 @@ generalization of a Yee grid. The code is written completely in Python using
 the NumPy and SciPy stacks, where the most time- and memory-consuming parts are
 sped up through jitted (just-in-time compiled) functions using Numba
 \citep{LLVM.15.Lam}. The code computes the electric field due to an electric
-source in the frequency-domain. Implemented are functions to obtain the
-magnetic field due to an electric source; to obtain the electric and magnetic
-fields due to a magnetic source; and to obtain time-domain responses.
+source in the frequency-domain, which is its main application (frequency-domain
+CSEM). However, there are also routines to obtain the magnetic field due to an
+electric source, to obtain the electric and magnetic fields due to a magnetic
+source, and to obtain time-domain responses.
 
 The multigrid method is characterized by almost linear scaling both in terms of
 runtime (CPU) and memory (RAM) usage, and it is therefore a comparably
 low-memory consumption solver. It is also minimal in terms of requirements,
 only NumPy, SciPy, and Numba are required, with Python 3.7+. The current
-development is focused on adding inversion capabilities. A further plan is also
-to implement a hook in order to use \emg3d as a solver within the \simpeg
-framework.
+development is focused on adding basic inversion capabilities, and a further
+plan is to implement a hook in order to use \emg3d as a frequency-domain CSEM
+solver within the grander \simpeg framework.
 
 \subsection{PETGEM}
 
@@ -558,35 +560,59 @@ is advantageous for FV codes, as it consists of rectangular blocks and
 horizontal layers, simple geometric objects. While having a very thin, shallow
 layer is straight-forward for FV codes, it requires many cells for a FE code.
 The thin layer was therefore limited in its horizontal extent
-to\mycom[DW]{Raphael, to what x/y?} ???. This is the reason for the increased
-NRMSD at large offsets, and it has nothing to do with the accuracy of the
-computation itself.
+to\mycom[DW]{Raphael, to what x/y exactly?} ???. This is the reason for the
+increased NRMSD at large offsets, and it has nothing to do with the accuracy of
+the computation itself.
 
 
 \clearpage  % TODO: Just for now while drafting, remove later!
 \subsection{Marlim R3D}
 
-\imycom[DW]{Next:\\
-  - Create figures for Marlim\\
-  - Write text for Marlim\\
-  - Discussion\\
-  - Conclusions\\
-  - Send to Raphael
-}
+The Marlim oil field is a giant reservoir in a turbidite sandstone horizon in
+the north-eastern part of the Campos Basin, offshore Brazil, which was
+discovered in 1985. \cite{BJG.17.Carvalho} created from seismic data and well
+log data a realistic resistivity model with vertical transverse isotropy (VTI),
+Marlim R3D (MR3D), which they released under an open-source license. Using this
+model \cite{GEO.19.Correa} computed CSEM data for six frequencies from
+0.125\,Hz to 1.25\,Hz, which they also released under an open-source license.
+To compute the data they used a state-of-the-art code from the industry
+\citep{GEO.07.Maao}. It is therefore an ideal case to verify our open-source
+codes against, as it is a complex, realistic model, and the data were computed
+by an industry-proofed code. Additionally, that code is a time-domain code,
+whereas the four codes under consideration here compute the results all in the
+frequency-domain.
 
-The Marlim R3D model is a \dots \cite{BJG.17.Carvalho} (model)
-\cite{GEO.19.Correa} (CSEM data)
+The detailed reservoir model consists of 1022 by 371 by 1229 cells, totalling
+to almost 466 million cells, where each cell has dimensions of 25 by 75 by
+5\,m. For the computation the model is upscaled to 515 by 563 by 310 cells,
+totalling to almost 90 million cells, where each cell has dimensions of 100 by
+100 by 20\,m.
 
-Comparison to an code from the industry, using \emph{SBLwiz} from EMGS.
-
-Custom meshes for these lines.
-
+The published data set consists of a regular grid of receivers of 20 in
+eastern direction by 25 in northern direction, 500 receivers in total, with
+1\,km spacing located on the irregular seafloor. 45 source-towlines were
+located on the same grid, 50\,m above the seafloor, with shots every 100\,m. In
+\cite{GEO.19.Correa} the actual responses for one receiver with the
+corresponding East-West inline and one East-West broadside acquisition line are
+shown, which is the data we chose for our comparison. The cross-section of the
+resistivity model along the chosen inline acquisition line is shown in
+Figure~\ref{fig:model-marlim}, together with the acquisition information.
 %
 \plot*{model-marlim}{width=\textwidth}{
-  Needs improvements.
+  This figure obviously needs to be improved massively (at least a colorbar).
+  What would you like to show from the actual data here?
+  A nice figure would  be Figure 2 in \cite{GEO.19.Correa}; however, note that
+  the drawn survey line in that figure are plainly wrong. If someone is
+  familiar with GMT and happy to make a make that would be great. Also, the
+  cross-section is currently heavily vertically exaggerated.
 }
 %
 
+We computed all all six frequencies for all components ($E_x$, $E_y$, $E_z$)
+for both inline and broadside acquisition lines. However, we show here only
+the three frequencies and the responses with the strongest amplitudes (which
+are generally used in processing), which are $E_x$ inline and broadside and
+$E_y$ broadside. The comparison is shown in Figure~\ref{fig:results-marlim}.
 %
 \plot*{results-marlim}{width=\textwidth}{
   This is one heck of a figure. Just an idea, please make suggestions how to
@@ -594,6 +620,22 @@ Custom meshes for these lines.
   data is a copy of \emg3d data).
 }
 %
+
+
+\imycom[DW]{There are some interesting features we should highlight. But again,
+we first need all results. E.g.}
+\begin{itemize}
+  \item 0.125\,Hz: on the left side, \custem and \emg3d are almost identical,
+    but very different from MR3D. So there I actually trust more our
+    calculation, or there is a difference in the model that we did not take
+    into account.
+  \item 0.125\,Hz: on the right side, \custem is very similar to MR3D, whereas
+    \emg3d is off.
+  \item 0.125\,Hz and 0.5\,Hz: on the right side, \custem seems to very similar
+    to MR3D.
+\end{itemize}
+
+
 
 %
 \tabl[btp]{comp-marlim}{Comparison of used CPU and RAM and of number of cells
@@ -616,31 +658,78 @@ Custom meshes for these lines.
 \end{tabular}}%
 %
 
-The three meaningful responses for node-based marine CSEM: Inline Ex and
-Broadside Ex and Ey.
 
 \clearpage  % TODO: Just for now while drafting, remove later!
 \section{Discussion}
+%
+% enago.com/academy/discussion-conclusion-know-difference-drafting-manuscript/
+%
+% In order to make your discussion section engaging, you should include the
+% following information:
+% - The major findings of your study
+% - The meaning of those findings
+% - How these findings relate to what others have done
+% - Limitations of your findings
+% - An explanation for any surprising, unexpected, or inconclusive results
+% - Suggestions for further research
+%
+% Your discussion should NOT include any of the following information:
+% - New results or data not presented previously in the paper
+% - Unwarranted speculation
+% - Tangential issues
+% - Conclusions not supported by your data
+%
 
 \imycom[DW]{Maybe we should create a Google-Doc for working on the Discussion
-and Conclusion collaboratively at the same time?}
+collaboratively at the same time?}
 
-=> \textbf{Important point: Verification of existing and future codes: this is
-a start!}
+We compared four different, open-source 3D CSEM modellers by computing
+responses for (a) a layered, anisotropic model without and with three resistive
+blocks, and (b) a realistic 3D model. The comparison shows that the codes do
+yield the same responses. As such we could verify the accuracy of these four
+codes.
 
-The landscape in 3D CSEM modelling greatly changed in the last five years or
-so. While before there were only closed-source codes owned by companies or
-consortia, or codes that you had to obtain from the authors, often
-without much documentation, there was recently a wave of openly released codes.
+This is a very important insight. The possibilities to verify the accuracy of
+3D CSEM codes are limited. One can compare them to analytical and
+semi-analytical solutions, but they only exist for very simple models. For
+complex models comparisons to other codes is the only possibility.
+It is therefore really important to have more test models, and importantly, for
+various scenarios, and that they are easily accessible. Our data should also
+make it very easy for new codes to have a readily available data set to test
+against and verify.
 
+A similar exercise has be done for magnetotelluric (MT) 3D modelling and
+inversion by \cite{GJI.13.Miensopust}, but we are not aware of anything like
+this for CSEM data. However, we do hope that more comparisons will emerge in
+the future, particularly with the current increase in open-source codes as well
+as open-source data.
 
-Points to discuss and mention
-\begin{itemize}
-  \item Direct solvers vs indirect solvers, both its advantages and
-    disadvantages; memory, various sources.
-\end{itemize}
+The codes under consideration consisted of finite element and finite
+differences. However, it has to be noted that the chosen models are better
+suited for finite differences codes. The first model for obvious reasons, as it
+is a layered background containing blocks, all aligned in Cartesian
+coordinates. The second model, Marlim R3D, could be an ideal case for FE codes,
+as it comes with lithological horizons from seismic data. However, the
+corresponding, published resistivity model uses a Cartesian grid. An extension
+of this work could be to use a complex model tailored for a FE code, and
+compare how the FD codes cope with it.
 
-\dots
+The codes under consideration use direct and indirect solvers, \dots blabla say
+something. Having calculated in each model only one source favours in the
+runtime comparison the iterative solver and therefore \emg3d. For the iterative
+solvers additional sources would come at almost no cost, whereas for \emg3d it
+would come at the same cost as the first source. This is something to keep in
+mind when choosing the appropriate modeller for a problem at hand.
+
+\imycom[DW]{I would like to capture as many as possible of the (I) differences,
+(II) difficulties, (III) advantages, and (IV) disadvantages, that we
+encountered in this exercise. This includes differences from direct to
+iterative solver and differences from FE to FD codes etc. Please just jot down
+things that come to your mind.}
+
+Finally, the comparison in our study is limited to marine CSEM cases in the
+frequency-domain. We hope that similar studies will be carried out for land
+CSEM data and for time-domain data as well.
 
 We see this only as the start. Much more comparisons and examples are required.
 3D CSEM modelling is a difficult task, which requires many considerations: It
@@ -653,54 +742,47 @@ result is not correct it may look completely valid. The only options to verify
 results are (a) by comparing different discretizations, and (b) by comparing
 different codes.
 
-Here we only consider frequency-domain results from frequency-domain
-computations. Similar comparison for time-domain results from time-domain
-computations, and frequency-domain results from time-domain computations and
-vice versa using Fourier transforms would also be good.
-
-The readily availability of many codes means there will be many more people
-able to model 3D results, and not just a few specialists in the field. Whilst
-this is amazing and will push the field much further it also means that the
-same mistakes might happen over and over again, and comparisons and examples
-like these can help to avoid this.
-
-\subsection{Future (?)}
-
-Comment KK: \emph{One thing that the community could really use is more test
-models for various scenarios, and having them be easily accessible.}
-
-
-\subsection{MARE3DEM}
-
-This is, I thought, the right spot where Kerry Key could write a bit about
-MARE3DEM, if (and I think only if) there are clear plans and a time-scale to
-open-source it. Embedded in a wider summary of available codes (some research
-required).
 
 \clearpage  % TODO: Just for now while drafting, remove later!
 \section{Conclusions}
+%
+% enago.com/academy/discussion-conclusion-know-difference-drafting-manuscript/
+%
+% Your conclusion should:
+% - Restate your hypothesis or research question
+% - Restate your major findings
+% - Tell the reader what contribution your study has made to the existing
+%   literature
+% - Highlight any limitations of your study
+% - State future directions for research/recommendations
+%
+% Your conclusion should NOT:
+% - Introduce new arguments
+% - Introduce new data
+% - Fail to include your research question
+% - Fail to state your major results
+%
+
+\imycom[DW]{Maybe we should create a Google-Doc for working on the Conclusions
+collaboratively at the same time?}
+
+\imycom[DW]{I obviously haven't really done this section, just af few thoughts
+that I noted over time. I think the discussion (as the abstract) has to be
+tackled once the rest is at least in a draft status and all data is ready.}
 
 The landscape in 3D CSEM modelling greatly changed in the last five years or
 so. While before there were only closed-source codes owned by companies or
-consortia there was recently a wave of openly released codes.
+consortia, or codes that you had to obtain from the authors, often without much
+documentation, there was recently a wave of openly released codes.
 
-Results from numerical modellers for simple models, such as a halfspace below
-air or a sphere in a fullspace, can be verified by comparing them to analytical
-solutions. However, there is no such possibility for complicated, realistic
-models. The only way to gain confidence in numerical results is by comparing
-different codes to each other. We hope that our efforts help to the confidence
-in the available open-source codes\dots
+What is missing for these emerging codes is a comparison and verification
+suite, test models beyond the usual, analytical fullspace and halfspace models
+and the semi-analytical layered Earth models. We hope that our efforts help to
+the confidence in the available open-source codes\dots
 
 Also, the runtime and memory consumption comparison together with the meshing
 differences should help to decide which modeller is used best for which tasks,
 as there is not one method which is best for all problems.
-
-It is important to note that there exist many more 3D electromagnetic codes
-from various fields, such as civil engineering or medicine, in Python and in
-many other languages (list a few references here). Here we focused on codes in
-Python developed for geophysical exploration.
-
-\dots
 
 \clearpage  % TODO: Just for now while drafting, remove later!
 \section{Acknowledgment}
@@ -720,7 +802,8 @@ MarTERA, a EU Horizon 2020 research and innovation programme (No 728053);
 \section{Data}
 
 All files to rerun the different models with the four codes and reproduce the
-shown results are available at \todo{zenodo}\dots.
+shown results are available at \dots.
+\itodo{Put up on Zenodo, link here.}
 
 
 \clearpage  % TODO: Just for now while drafting, remove later!
