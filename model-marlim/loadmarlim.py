@@ -8,10 +8,11 @@ mesh.
 
 Links to download:
 
-- Fine Model: https://doi.org/10.5281/zenodo.400233
-- Computation Model: ????????????
-- With noise: https://doi.org/10.5281/zenodo.1256787
-- Without noise: https://doi.org/10.5281/zenodo.1807135
+- Detailed resistivity model: https://doi.org/10.5281/zenodo.400233
+- Computational resistivity model (upscaled and extended):
+  https://doi.org/10.5281/zenodo.3748492
+- CSEM data with noise: https://doi.org/10.5281/zenodo.1256787
+- CSEM data without noise: https://doi.org/10.5281/zenodo.1807135
 """
 import segyio
 import discretize
@@ -34,8 +35,8 @@ def extract_model(model='orig'):
     """
 
     if model == 'comp':
-        name_h = 'novo_mrl3d_H_Z_meters.segy'
-        name_v = 'novo_mrl3d_Zmeters.segy'
+        name_h = 'Mrl3d_Rh_20metersmesh.segy'
+        name_v = 'Mrl3d_Rv_20metersmesh.segy'
         dx, dy, dz = 100, 100, 20  # Cell widths
     else:
         name_h = 'Horizontal_resistivity.sgy'
@@ -59,7 +60,7 @@ def extract_model(model='orig'):
         txt += f"{s}For model='comp' you need\n"
         txt += f"{s}- novo_mrl3d_H_Z_meters.segy\n"
         txt += f"{s}- novo_mrl3d_Zmeters.segy\n"
-        txt += f"{s}from ???????????\n"
+        txt += f"{s}from https://doi.org/10.5281/zenodo.3748492\n"
         print(txt)
         return None, None
 
@@ -91,6 +92,57 @@ def extract_model(model='orig'):
     np.savez_compressed(
             f"marlim_{model}.npz",
             hx=mesh.hx, hy=mesh.hy, hz=mesh.hz, x0=mesh.x0,
+            res_h=res_h, res_v=res_v
+    )
+
+
+def extract_section():
+    """Extract original or computational model of Marlim R3D and store as npz.
+
+    Extracts the original fine model or the computational model from the
+    sgy-fiels and stores them as numpy-compressed npz files.
+
+    Parameters
+    ----------
+    model : str; {<'orig'>; 'comp'}
+        If model=='comp', the computational model is returned. Else the
+        original model.
+    """
+
+    # Get original mesh and resistivities.
+    try:
+        data = np.load('marlim_orig.npz')
+    except:
+        extract_model(model='orig')
+        data = np.load('marlim_orig.npz')
+
+    full_res_h = data['res_h']
+    full_res_v = data['res_v']
+    mesh = discretize.TensorMesh(
+            [data['hx'], data['hy'], data['hz']], x0=data['x0'])
+    del data
+
+    # Get chosen data and extract the y-coordinate; find corresponding index.
+    try:
+        data = xr.load_dataset('marlim_data.nc', engine='h5netcdf')
+    except:
+        create_survey(store_data=True, noise=False)
+        data = xr.load_dataset('marlim_data.nc', engine='h5netcdf')
+
+    ycoord = data.attrs['rec_y']
+    ny = np.argmin(abs(mesh.vectorCCy - ycoord))
+    del data
+
+    # Store relevant sections.
+    res_h = full_res_h[:, ny, :]
+    res_v = full_res_v[:, ny, :]
+    del full_res_h, full_res_v
+
+    # Save it.
+    np.savez_compressed(
+            f"marlim_sections.npz",
+            hx=mesh.hx, hy=np.array([10]), hz=mesh.hz,
+            x0=np.array([mesh.x0[0], ycoord-5, mesh.x0[2]]),
             res_h=res_h, res_v=res_v
     )
 

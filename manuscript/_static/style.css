@@ -1,8 +1,0 @@
-/* To fix equation numbering in rtd theme. */
-span.eqno {
-  margin-left: 5px;
-  float: right;
-}
-span.eqno a {
-  display: none;
-}

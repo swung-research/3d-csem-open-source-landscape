@@ -1,0 +1,814 @@
+\documentclass[
+    paper,
+%     manuscript,
+%     twocolumn,
+%     twoside,
+%     revised,
+  ]{geophysics}
+
+% Remove once done
+\usepackage[textsize=footnotesize, textwidth=2.8cm]{todonotes}
+
+% Additional packages to geophysics.cls
+\usepackage[UKenglish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+
+\usepackage{amssymb, amsmath, amsfonts}
+\usepackage{upquote}
+\usepackage[strings]{underscore}
+\usepackage{siunitx}                % SI conform commands (eg \num)
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{xspace}
+\usepackage{flafter}
+
+\usepackage[pdftex, final]{hyperref}
+% \usepackage[pdftex, hidelinks]{hyperref}
+\hypersetup{allcolors=blue, allbordercolors={0 0 .5}, colorlinks=true}
+
+% Figures
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\renewcommand{\figdir}{./figures}
+\ifthenelse{\boolean{@twoc}}{%
+  \newcommand{\cwidth}{250pt}}{%
+  \newcommand{\cwidth}{240pt}}
+
+\ifthenelse{\boolean{@twoc}}{%
+  \newcommand{\acwidth}{250pt}%
+  \newcommand{\tcwidth}{250pt}}{%
+  \newcommand{\acwidth}{240pt}%
+  \newcommand{\tcwidth}{312pt}}
+
+% Own commands
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\emg}[2]{\texttt{emg#1#2}\xspace}
+\newcommand{\empymod}{\texttt{empymod}\xspace}
+\newcommand{\simpeg}{\texttt{SimPEG}\xspace}
+\newcommand{\custem}{\texttt{custEM}\xspace}
+\newcommand{\petgem}{\texttt{PETGEM}\xspace}
+
+% Remove once done
+\newcommand{\mycom}[2][]{
+  \todo[color=yellow]{\textbf{\uppercase{[#1]}}:~#2}}
+\newcommand{\imycom}[2][]{
+  \todo[inline, color=yellow]{\textbf{\uppercase{[#1]}}:~#2}}
+\newcommand{\itodo}[1]{\todo[inline, color=cyan]{\sffamily #1}}
+\newcommand{\dul}[1]{\underline{\underline{#1}}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\rmk}[1]{{\color{red}{#1}}}
+\newcommand{\ohmm}{\ensuremath{\Omega\,}\text{m}\xspace}
+
+\begin{document}
+
+\title{Open-source landscape for 3D CSEM modelling}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\ms{}  % ARTICLE-ID
+
+\address{
+\footnotemark[1]TU Delft,
+Building 23,
+Stevinweg 1 / PO-box 5048,
+2628 CN Delft;\\
+\footnotemark[2]TODO\\
+\footnotemark[3]TODO\\
+\footnotemark[4]TODO\\
+E-mail: \href{mailto:Dieter@Werthmuller.org}{Dieter@Werthmuller.org};\\
+\textbf{Keywords}: CSEM, Open-Source, 3D modelling, FD, FE.
+}
+
+
+\author{%
+Dieter Werthmüller\footnotemark[1], %            orcid: 0000-0002-8575-2484
+Raphael Rochlitz\footnotemark[2], %              orcid: 0000-0002-5132-916X
+Octavio Castillo-Reyes\footnotemark[3], and %    orcid: 0000-0003-4271-5015
+Lindsey Heagy\footnotemark[4] %                  orcid: 0000-0002-1551-5926
+}
+
+\footer{}
+\lefthead{Werthmüller et al.}
+\righthead{Open-source 3D CSEM modelling}
+
+\maketitle
+
+%%fakesection ===    ABSTRACT    ===
+\begin{abstract}
+%
+\emph{I will draft a first abstract after the manuscript has been reviewed by
+everyone once.}
+%
+% % Principal objectives and scope of the work
+% % Methodology
+% % Results
+% % Conclusions
+%
+\end{abstract}
+
+\itodo{
+  For comments in the margin, use:\\[.2cm]
+  \qquad\texttt{\textbackslash mycom[YOURINITIALS]\{comment\}}\\[.2cm]
+  and for inline comments, use:\\[.2cm]
+  \qquad\texttt{\textbackslash imycom[YOURINITIALS]\{comment\}}
+}
+
+\itodo{
+We will have to decide on a Journal. Current suggestions:\\
+- GMD: Geoscientific Model Development\\
+- SIG: Surveys in Geophysics\\
+- SE: Solid Earth\\
+- GJI: Geophysical Journal International\\
+- GP: Geophysical Prospecting\\
+- GEO: Geophysics\\
+- CAG: Computers and Geosciences\\
+I think \emph{Geoscientific Model Development} and \emph{Surveys in Geophysics}
+were the favourite ones when we discussed it ones. I personally would be very
+interested in GMD. What do you think? But also interesting would be the GJI,
+because the MT comparison was published there, so it would be in the same
+place. I just had a very bad experience with GP, so I am not inclined on that
+at all.
+}
+
+\section{Introduction}
+
+Controlled-source electromagnetic (CSEM) measurements are a frequently applied
+method in various geophysical exploration fields, such as geothermal and ground
+water, oil and gas, mining, civil engineering, or geo-hazards. Modelling these
+electromagnetic fields is therefore of great interest in order to understand
+the measured data. Publications regarding 3D modelling in electromagnetic
+methods started to appear as early as the 1970's and 1980's. These early
+publications where integral equation (IE) methods, having an anomaly embedded
+within a layered medium, mostly for loop-loop type transient EM measurements
+\citep{GJI.74.Raiche, GEO.75.Hohmann, GJI.82.Das, GEO.86.Newman} and
+magnetotelluric (MT) measurements \citep{GEO.84.Wannamaker}.
+
+In the 1990's computer became sufficiently powerful that 3D modelling gained
+traction, which resulted amongst other in the publication of the book
+\emph{Three-Dimensional Electromagnetics} by the SEG
+\citep{B.SEG.99.Oristaglio}. Often cited publications from that time are
+\cite{RSC.94.Mackie}, 3D MT computation; \cite{RS.94.Druskin}, frequency- and
+time-domain modelling using a Yee grid and a global Krylov subspace
+approximation; and \cite{RS.96.Alumbaugh, GJI.97.Newman}, low-to-high frequency
+computation on massively parallel computers.
+
+The continuous improvement of computing power and the CSEM boom in the early
+2000's in the hydrocarbon industry led to a wealth of publications. The amount
+of available numerical solutions can be overwhelming and is part of the reason
+why there are hundreds of publications about the topic. There are the different
+methods to solve Maxwell's equation, such as the IE method
+\citep{GJI.74.Raiche, RS.02.Hursan, GEO.06.Zhdanov, GP.10.Tehrani,
+CAG.16.Kruglyakov, MGS.17.Kruglyakov} and different variations of the
+differential equation (DE) method, for instance finite differences (FD)
+\citep{IEEE.66.Yee, GEO.93.Wang, RSC.94.Mackie, RS.94.Druskin, GEO.09.Streich,
+CAG.13.Sommer}, and finite elementes (FE) \citep{GJI.11.Schwarzbach,
+GEO.04.Commer, GEO.12.daSilva, GJI.13.Puzyrev, GJI.13.Grayver, SEG.16.Zhang},
+finite volume (FV) \citep{EM.90.Madsen, ECP.07.Haber, GEO.14.Jahandari,
+PIER.01.Clemens, GP.06.Mulder}. And these are just the most common ones.
+
+There are also many different types of discretisation, where the most common
+ones are regular grids (Cartesian, rectilinear), mostly using a Yee grid
+\citep{IEEE.66.Yee} or a Lebedev grid \citep{CMMP.64.Lebedev}, but also
+unstructured tetrahedral grids \citep{SEG.16.Zhang, CAG.17.Cai}, OcTree meshes
+\citep{ECP.07.Haber}, or hexagonal meshes \citep{CAG.14.Cai}.
+
+The biggest variety of all exists probably in the available solvers to solve
+the system of linear equations; direct solvers \citep{GEO.09.Streich,
+GEO.15.Grayver, GP.14.Chung, GEO.14.Jaysaval, SEG.15.Oh, GJI.18.Wang}, indirect
+solvers \citep{GP.06.Mulder, GJI.15.Jaysaval}, or a combination of both,
+so-called hybrid solvers \citep{GEO.18.Liu}; the solvers often use
+preconditioners such as the multigrid method \citep{SIAM.02.Aruliah,
+GP.06.Mulder, GJI.16.Jaysaval}.
+
+A very well written overview up to the year 2005 of the different approaches to
+3D EM modelling is given by \cite{SG.05.Avdeev}, and also by
+\cite{SG.10.Borner}. In the last 15 years the publications with regards to 3D
+EM  modelling grew tremendously, driven by the ever increasing computing power.
+Avdeev finished his review with the following statement: «\emph{The most
+important challenge that faces the EM community today is to convince software
+developers to put their 3-D EM forward and inverse solutions into the public
+domain, at least after some time. This would have a strong impact on the whole
+subject and the developers would benefit from feedback regarding the real needs
+of the end-users.}»
+
+It is this topic that we address, open-source 3D CSEM codes. Some major
+exploration service companies as well as certain research consortia and
+research groups have their 3D CSEM codes. But how about codes that are
+open-source? Research code was traditionally often available upon request by
+the author. Codes distributed that way often come with the request to not share
+the code, and they often come without a license attached at all (which means
+that they are not open-source). Also, at times there can be significant hurdles
+to install a code. However, the meaning of open-source evolved rapidly in the
+last decades. Today, open-source generally not only means that a code is
+available (with a proper license). The meaning includes much more these days,
+such as that the code is hosted online, is under version control, has the
+possibility to file issues and make pull requests to fix bugs. Well maintained
+codes often have continuous integration that includes testing of the code base
+and online hosted documentation which often includes code documentation,
+examples, and tutorials. As such the term has shifted from purely open-source
+code to development in the open and increasingly building a global community.
+There are a number of projects within the realm of geophysical exploration,
+besides the ones we present here, \mycom[DW]{Others coming to your mind?}e.g.
+pyGIMLi \citep{CAG.17.Rucker} and Fatiando \citep{JOSS.18.Uieda}. Newer
+\mycom[DW]{wrong term, think about it}programming environments  have also
+brought much simplifications in the installation process and have most
+importantly simplified it for code developers to make their codes easily
+available and installable. All our presented codes are in the Python ecosystem,
+and each code can be installed with a single command (which includes download
+and installation).
+
+A second topic we want to address is verification. New codes are generally
+verified against analytical solutions. However, analytical and semi-analytical
+solutions only exist for very simple models. There is no possibility to check
+how good a computed response is, expect for comparing the result from different
+modellers. If different modellers using different discretisation and
+implementations of Maxwell's equations yield the same result it can give
+confidence in the accuracy. Providing these two models and results from four
+different codes should give a benchmark with which new codes can be compared to
+and validated with.
+
+It is worth mentioning that there are many more 3D EM codes developed in other
+fields than geophysics such as communication systems (antennas, radar,
+satellites), medical imaging, or civil engineering. There are various
+open-source codes in these fields too, e.g., Elmer \mycom[DW]{Add 2-3 proper
+references} (\href{http://www.csc.fi/elmer}{csc.fi/elmer}, couldn't find a
+publication, just a poster). While these codes could potentially be used for
+the same goals as presented here we restrict our review to codes purpose-built,
+and ready without further adjustments, for geophysical applications.
+
+In the following section we introduce the codes under consideration. The
+numerical result consider two cases. First a layered background with vertical
+transverse isotropy containing three blocks, followed by a realistic, complex
+3D model.
+
+\clearpage  % TODO: Just for now while drafting, remove later!
+\section{Codes}
+
+The four codes under consideration are, in alphabetical order, \custem
+\citep{GEO.19.Rochlitz}, \emg3d \citep{JOSS.19.Werthmuller}, \petgem
+\citep{GJI.19.CastilloReyes}, and \simpeg \citep{CAG.15.Cockett}. All four
+codes have their user-facing routines written in Python; all of them make heavy
+use of \texttt{NumPy} \citep{CSE.11.VanDerWalt} and \texttt{SciPy}
+\citep{NM.20.Virtanen}. The four of them are “modern” open-source projects,
+meaning that they not only come with an open-source license, but they are also
+in an online-hosted version-control system with feedback and tracking
+possibilities (raising issues, filing pull requests), have extensive online
+documentation including many examples, have continuous integration to some
+degree, and also importantly are all easily installable, without any user-side
+compilations.
+
+In the following a quick rundown of the codes. It is, however, beyond the scope
+of this article to go into every detail of the different modellers, and we
+refer to their documentations for more details. An overview comparison of the
+different codes is given in Table~\ref{tbl:codecomparison}. All codes have in
+common that they solve the\mycom[DW]{are we all using the weak form?} weak
+formulation of Maxwell's equation in its differential form (DE) under the
+quasistatic or\mycom[DW]{are we all using the diff. approx?} diffusive
+approximation, hence neglecting displacement currents. The machines on which
+the different codes were run are listed in Table~\ref{tbl:machines}, together
+with the responsible operator.
+
+\tabl[btp]{codecomparison}{All codes solve the weak form of Maxwell's equations
+  in its differential form (DE) under the quasistatic approximation. Note that
+  \emg3d is a solver on its own, while the other codes implement third-package
+  solvers such as \texttt{PETSc} \citep{Preprint.Abhyankar}, \texttt{MUMPS}
+  \citep{SIAM.01.Amestoy}, or \texttt{PARDISO} \citep{FGCS.04.Schenk}.
+}{
+  \centering
+  \footnotesize
+\begin{tabularx}{\linewidth}{lXXXX}
+  \toprule
+  %
+  & \custem & \emg3d & \petgem & \simpeg  \\
+  \midrule
+  %
+  Home & \href{https://custem.rtfd.io}{custem.rtfd.io}
+       & \href{https://empymod.github.io}{empymod.github.io}
+       & \href{http://petgem.bsc.es}{petgem.bsc.es}
+       & \href{https://docs.simpeg.xyz}{simpeg.xyz} \\
+  License & GPL-3.0 & Apache-2.0 & GPL-3.0 & MIT \\
+  Installation & \texttt{pip}; \texttt{conda}
+               & \texttt{pip}; \texttt{conda}
+               & \texttt{conda}
+               & \texttt{pip}; \texttt{conda} \\
+  Comp. Dom. & frequency \& time & frequency & frequency & frequency \& time \\
+  Method & FE & FV & FE & FV \\
+  Mesh & tetrahedral & rectilinear & tetrahedral & recti- \& curvilinear \\
+  BC & PMC; PEC & PEC & PEC & PEC; PMC \\
+  Solver & \texttt{MUMPS} & \emg3d & \texttt{PETSc}; \texttt{MUMPS} &
+           \texttt{PARDISO}; \texttt{MUMPS} \\
+  %
+  \bottomrule
+\end{tabularx}}%
+%
+
+%
+\tabl[btp]{machines}{List of computer and operating system (hardware and
+software) on which the different codes were run, together with the operator.}{
+  \centering
+  \footnotesize
+  \begin{tabularx}{\linewidth}{lXl}
+  \toprule
+  %
+  Code & Computer and Operating System & Operator \\
+  \midrule
+  %
+  \custem & PowerEdge R940 server; 144 Xeon Gold 6154 CPU @2.666 GHz; ~3 TB
+            DDR4 RAM; Ubuntu 18.04
+          & Raphael Rochlitz \\
+  \emg3d  & Laptop; i7-6600U CPU@2.6 GHz x4; 16 GB of memory, Ubuntu 18.04
+          & Dieter Werthmüller \\
+  \petgem & Marenostrum4. Intel Xeon Platinum from Skylake generation; 2
+            sockets Intel Xeon Platinum 8160 CPU with 24 cores each @2.10GHz
+            for a total of 48 cores per node; 386 Gb DDR4 RAM per node; SuSE
+            Linux Enterprise
+          & Octavio Castillo-Reyes \\
+  \simpeg & ???
+          & Lindsey Heagy \\
+  %
+  \bottomrule
+\end{tabularx}}%
+%
+
+
+\itodo{
+Each code should be briefly summarized by three points:\\
+- Brief intro\\
+- Main selling point\\
+- Planned features\\
+I think in a first round \textbf{everyone should just write what they want to
+write and think is important for their code}. In a second round we should then
+homogenize it, such that all codes have more or less the same length/weight and
+also similar topic/layout.
+}
+
+\clearpage  % TODO: Just for now while drafting, remove later!
+\subsection{custEM}
+
+TODO
+
+
+\subsection{emg3d}
+
+The 3D CSEM modeller \emg3d is a multigrid \citep{CMMP.64.Fedorenko} solver for
+3D electromagnetic diffusion following \cite{GP.06.Mulder}, with tri-axial
+electrical anisotropy, isotropic electric permittivity, and isotropic magnetic
+permeability. The matrix-free solver can be used as main solver or as
+preconditioner for one of the Krylov subspace methods implemented in SciPy, and
+the governing equations are discretized on a staggered grid by the
+finite-integration technique \citep{AEU.77.Weiland}, which is a finite-volume
+generalization of a Yee grid. The code is written completely in Python using
+the NumPy and SciPy stacks, where the most time- and memory-consuming parts are
+sped up through jitted (just-in-time compiled) functions using Numba
+\citep{LLVM.15.Lam}. The code computes the electric field due to an electric
+source in the frequency-domain, which is its main application (frequency-domain
+CSEM). However, there are also routines to obtain the magnetic field due to an
+electric source, to obtain the electric and magnetic fields due to a magnetic
+source, and to obtain time-domain responses.
+
+The multigrid method is characterized by almost linear scaling both in terms of
+runtime (CPU) and memory (RAM) usage, and it is therefore a comparably
+low-memory consumption solver. It is also minimal in terms of requirements,
+only NumPy, SciPy, and Numba are required, with Python 3.7+. The current
+development is focused on adding basic inversion capabilities, and a further
+plan is to implement a hook in order to use \emg3d as a frequency-domain CSEM
+solver within the grander \simpeg framework.
+
+\subsection{PETGEM}
+
+TODO
+
+
+\subsection{SimPEG}
+
+TODO
+
+
+\clearpage  % TODO: Just for now while drafting, remove later!
+\section{Numerical Verifications}
+
+In this numerical section we compute the responses for two different models to
+verify that these different 3D codes yield the same electromagnetic responses.
+The first model is a simple one consisting of a layered, anisotropic
+background, in which three blocks are embedded, and the second model is a very
+complex, realistic model.
+
+\subsection{Block Model}
+
+\cite{GJI.13.Miensopust} published a review of two workshops dealing with the
+verification of magnetotelluric forward and inversion codes, hence a similar
+exercise to what we do here for CSEM codes. The block model is a derivation of
+the \emph{Dublin Test Model 1}, a model from their first workshop. We took the
+same layout of the blocks but adjusted the dimensions and resistivities to a
+typical, marine CSEM problem, as shown in Figure~\ref{fig:block-model}. We
+additionally added a layered background with vertical transverse isotropy
+(VTI).
+%
+\plot*{block-model}{width=.6\textwidth}{
+  Sketch of the block model. The layered model consists of an air layer, a
+  water layer, a thin top-layer followed by a thick, anisotropic background
+  layer, and at the bottom a resistive basement layer. All three blocks are
+  embedded in the thick background layer, which has VTI with
+  $\lambda=\sqrt{2}$.
+}
+%
+
+The layered model consists of an upper halfspace of air, a 600\,m deep water
+layer, followed by a 150\,m thick, isotropic layer of 1\,\ohmm, a 3.3\,km
+thick, anisotropic layer of $\rho_\text{h}=2\,\ohmm$ and
+$\rho_\text{v}=4\,\ohmm$, and finally a resistive basement consisting of a
+lower halfspace of $1000\,\ohmm$. The 200\,m long, $x$-directed source is
+located 50\,m above the seafloor from $x=-50$ to $x=50\,$m in $x$-direction, at
+$y=0\,$m. The $x$-directed receivers are placed on the seafloor every 200\,m
+from $x=-10\,$km to $x=+10\,$km in three lines for $y=-3, 0, 3\,$km.
+
+In a first step we compare the layered background to the semi-analytical
+solutions of a 1D code, for which we use \empymod \citep{GEO.17.Werthmuller}.
+Figures~\ref{fig:results-layered-0} and \ref{fig:results-layered--3} show the
+actual responses in the top rows, and the relative error in the bottom rows
+for receiver line $y=0\,$km and $y=-3\,$km, respectively (for the layered
+background the responses for the two receiver-lines of $y=\pm3$\,km are
+identical, so we only show one here).
+
+Figure~\ref{fig:results-layered-0} shows in the top-row the inline responses
+for offsets $r>0.5\,$km. As all codes compute the same we only show the
+semi-analytical result for the real and imaginary amplitudes, and then in the
+bottom row the relative error of the 3D codes. The results show that the codes
+are literally yielding the same result, the relative error is for big parts
+below 1\,\%, and for almost all parts below a few percent. Some differences are
+due to the chosen discretizations. E.g., \emg3d is less precise close to the
+200\,m long source. This could be improved by choosing smaller cell sizes, at
+the cost of computation time. At large offsets, on the other hand, \emg3d seems
+to do a very good job.
+%
+\plot*{results-layered-0}{width=.8\textwidth}{
+   Comparison of the layered model for the inline receivers ($y=0\,$km).
+   Top row shows the semi-analytical responses from \empymod, and bottom row
+   shows the relative error (\%) of \custem, \emg3d, \petgem, and \simpeg.
+}
+%
+
+The corresponding broadside responses for $y=-3\,$km is shown in
+Figure~\ref{fig:results-layered--3}, and the required CPU and RAM is shown in
+Table~\ref{tbl:comp-layered}.
+%
+\plot*{results-layered--3}{width=.8\textwidth}{
+   Comparison of the layered model for the broadside receivers ($y=-3\,$km).
+   Top row shows the semi-analytical responses from \empymod, and bottom row
+   show the relative error (\%) of \custem, \emg3d, \petgem, and \simpeg.
+}
+%
+
+%
+\tabl[btp]{comp-layered}{Comparison of used CPU and RAM and of number of cells
+  used to discretize the layered model. \imycom[DW]{I will fill this table out
+  once we all submitted the final versions of the results.}}{
+  \centering
+\begin{tabular}{lS[table-format=4.2]rS[table-format=4.2]rl}
+  \toprule
+  %
+  Code & {CPU} & \#Procs & RAM     & \#Cells \\
+       & {(s)} &         & {(GiB)} &         \\
+  \midrule
+  %
+  \custem & 0.0 &  0 & 0.0 & 0 \\
+  \emg3d  & 0.0 &  0 & 0.0 & 0 \\
+  \petgem & 0.0 &  0 & 0.0 & 0 \\
+  \simpeg & 0.0 &  0 & 0.0 & 0 \\
+  %
+  \bottomrule
+\end{tabular}}%
+%
+
+
+
+Three resistive blocks are added in the 3.3\,km-thick, anisotropic background
+layer, as shown in Figure~\ref{fig:block-model}. They have resistivities of
+$\rho=10\,\ohmm$ (shallow beam perpendicular to survey lines),
+$\rho=100\,\ohmm$ (thin plate, South-East), $\rho=500\,\ohmm$ (cube,
+North-West). As there are no analytical solutions for this model we show the
+normalized difference between different codes, instead of the relative error,
+where the normalized difference of two responses $p$ and $q$ is given by
+%
+\begin{equation}
+  \mr{NRMSD~(\%)} = 200 \frac{|p - q|}{|p| + |q|}\ .
+  \label{eq:nrmsd}
+\end{equation}
+%
+\imycom[DW]{NRMSD: Comparing all codes to all would make the
+figures too cluttered, and I don't think it would add a lot insights. My idea
+is therefore to compare \emg3d/\simpeg (the two FV ones), \custem/\petgem (the
+two FE ones), and \emg3d/\custem (a cross-comparison). What do you think?}
+
+The results for the three receiver lines $y=-3,0,3\,$km are shown in
+Figures~\ref{fig:results-block--3}, \ref{fig:results-block-0}, and
+\ref{fig:results-block-3}, respectively, and the corresponding CPU and RAM in
+Table~\ref{tbl:comp-block}. What we can conclude from the NRMSD is that similar
+codes have a smaller NRMSD than cross-comparison, hence \emg3d and \simpeg are
+very similar, as well as are \custem and \petgem.
+\mycom[DW]{Write in detail when all results are available}
+%
+\plot*{results-block--3}{width=.8\textwidth}{
+   Comparison of the block model for the broadside receivers at $y=-3\,$km.
+   Top row shows the responses and bottom row the NRMSDs (\%)
+   between \emg3d--\custem, \custem--\petgem, and \emg3d--\simpeg.
+}
+%
+
+%
+\plot*{results-block-0}{width=.8\textwidth}{
+   Comparison of the block model for the inline receivers at $y=0\,$km.
+   Top row shows the responses and bottom row the NRMSDs (\%)
+   between \emg3d--\custem, \custem--\petgem, and \emg3d--\simpeg.
+}
+%
+
+%
+\plot*{results-block-3}{width=.8\textwidth}{
+   Comparison of the block model for the broadside receivers at $y=+3\,$km.
+   Top row shows the responses and bottom row the NRMSDs (\%) between
+   \emg3d--\custem, \custem--\petgem, and \emg3d--\simpeg.
+}
+%
+
+%
+\tabl[btp]{comp-block}{Comparison of used CPU and RAM and of number of cells
+  used to discretize the block model. \imycom[DW]{I will fill this table out
+  once we all submitted the final versions of the results.}}{
+  \centering
+\begin{tabular}{lS[table-format=4.2]rS[table-format=4.2]rl}
+  \toprule
+  %
+  Code & {CPU} & \#Procs & RAM     & \#Cells \\
+       & {(s)} &         & {(GiB)} &         \\
+  \midrule
+  %
+  \custem & 0.0 & 24 & 0.0 & 0 \\
+  \emg3d  & 0.0 &  1 & 0.0 & 0 \\
+  \petgem & 0.0 & 48 & 0.0 & 0 \\
+  \simpeg & 0.0 &    & 0.0 & 0 \\
+  %
+  \bottomrule
+\end{tabular}}%
+%
+
+The difference becomes only significant at offsets larger than 8\,km. However,
+this is due to a practical difference in the meshing: This simple block model
+is advantageous for FV codes, as it consists of rectangular blocks and
+horizontal layers, simple geometric objects. While having a very thin, shallow
+layer is straight-forward for FV codes, it requires many cells for a FE code.
+The thin layer was therefore limited in its horizontal extent
+to\mycom[DW]{Raphael, to what x/y exactly?} ???. This is the reason for the
+increased NRMSD at large offsets, and it has nothing to do with the accuracy of
+the computation itself.
+
+
+\clearpage  % TODO: Just for now while drafting, remove later!
+\subsection{Marlim R3D}
+
+The Marlim oil field is a giant reservoir in a turbidite sandstone horizon in
+the north-eastern part of the Campos Basin, offshore Brazil, which was
+discovered in 1985. \cite{BJG.17.Carvalho} created from seismic data and well
+log data a realistic resistivity model with vertical transverse isotropy (VTI),
+Marlim R3D (MR3D), which they released under an open-source license. Using this
+model \cite{GEO.19.Correa} computed CSEM data for six frequencies from
+0.125\,Hz to 1.25\,Hz, which they also released under an open-source license.
+To compute the data they used a state-of-the-art code from the industry
+\citep{GEO.07.Maao}. It is therefore an ideal case to verify our open-source
+codes against, as it is a complex, realistic model, and the data were computed
+by an industry-proofed code. Additionally, that code is a time-domain code,
+whereas the four codes under consideration here compute the results all in the
+frequency-domain.
+
+The detailed reservoir model consists of 1022 by 371 by 1229 cells, totalling
+to almost 466 million cells, where each cell has dimensions of 25 by 75 by
+5\,m. For the computation the model is upscaled to 515 by 563 by 310 cells,
+totalling to almost 90 million cells, where each cell has dimensions of 100 by
+100 by 20\,m.
+
+The published data set consists of a regular grid of receivers of 20 in
+eastern direction by 25 in northern direction, 500 receivers in total, with
+1\,km spacing located on the irregular seafloor. 45 source-towlines were
+located on the same grid, 50\,m above the seafloor, with shots every 100\,m. In
+\cite{GEO.19.Correa} the actual responses for one receiver with the
+corresponding East-West inline and one East-West broadside acquisition line are
+shown, which is the data we chose for our comparison. The cross-section of the
+resistivity model along the chosen inline acquisition line is shown in
+Figure~\ref{fig:model-marlim}, together with the acquisition information.
+%
+\plot*{model-marlim}{width=\textwidth}{
+  This figure obviously needs to be improved massively (at least a colorbar).
+  What would you like to show from the actual data here?
+  A nice figure would  be Figure 2 in \cite{GEO.19.Correa}; however, note that
+  the drawn survey line in that figure are plainly wrong. If someone is
+  familiar with GMT and happy to make a make that would be great. Also, the
+  cross-section is currently heavily vertically exaggerated.
+}
+%
+
+We computed all all six frequencies for all components ($E_x$, $E_y$, $E_z$)
+for both inline and broadside acquisition lines. However, we show here only
+the three frequencies and the responses with the strongest amplitudes (which
+are generally used in processing), which are $E_x$ inline and broadside and
+$E_y$ broadside. The comparison is shown in Figure~\ref{fig:results-marlim}.
+%
+\plot*{results-marlim}{width=\textwidth}{
+  This is one heck of a figure. Just an idea, please make suggestions how to
+  improve it (currently, \petgem data is a copy of \custem data, and \simpeg
+  data is a copy of \emg3d data).
+}
+%
+
+
+\imycom[DW]{There are some interesting features we should highlight. But again,
+we first need all results. E.g.}
+\begin{itemize}
+  \item 0.125\,Hz: on the left side, \custem and \emg3d are almost identical,
+    but very different from MR3D. So there I actually trust more our
+    calculation, or there is a difference in the model that we did not take
+    into account.
+  \item 0.125\,Hz: on the right side, \custem is very similar to MR3D, whereas
+    \emg3d is off.
+  \item 0.125\,Hz and 0.5\,Hz: on the right side, \custem seems to very similar
+    to MR3D.
+\end{itemize}
+
+
+
+%
+\tabl[btp]{comp-marlim}{Comparison of used CPU and RAM and of number of cells
+  used to discretize the Marlim R3D model. \imycom[DW]{I will fill this table
+  out once we all submitted the final versions of the results.}}{
+  \centering
+\begin{tabular}{lS[table-format=4.2]rS[table-format=4.2]rl}
+  \toprule
+  %
+  Code & {CPU} & \#Procs & RAM     & \#Cells \\
+       & {(s)} &         & {(GiB)} &         \\
+  \midrule
+  %
+  \custem & 0.0 &  0 & 0.0 & 0 \\
+  \emg3d  & 0.0 &  0 & 0.0 & 0 \\
+  \petgem & 0.0 &  0 & 0.0 & 0 \\
+  \simpeg & 0.0 &  0 & 0.0 & 0 \\
+  %
+  \bottomrule
+\end{tabular}}%
+%
+
+
+\clearpage  % TODO: Just for now while drafting, remove later!
+\section{Discussion}
+%
+% enago.com/academy/discussion-conclusion-know-difference-drafting-manuscript/
+%
+% In order to make your discussion section engaging, you should include the
+% following information:
+% - The major findings of your study
+% - The meaning of those findings
+% - How these findings relate to what others have done
+% - Limitations of your findings
+% - An explanation for any surprising, unexpected, or inconclusive results
+% - Suggestions for further research
+%
+% Your discussion should NOT include any of the following information:
+% - New results or data not presented previously in the paper
+% - Unwarranted speculation
+% - Tangential issues
+% - Conclusions not supported by your data
+%
+
+\imycom[DW]{Maybe we should create a Google-Doc for working on the Discussion
+collaboratively at the same time?}
+
+We compared four different, open-source 3D CSEM modellers by computing
+responses for (a) a layered, anisotropic model without and with three resistive
+blocks, and (b) a realistic 3D model. The comparison shows that the codes do
+yield the same responses. As such we could verify the accuracy of these four
+codes.
+
+This is a very important insight. The possibilities to verify the accuracy of
+3D CSEM codes are limited. One can compare them to analytical and
+semi-analytical solutions, but they only exist for very simple models. For
+complex models comparisons to other codes is the only possibility.
+It is therefore really important to have more test models, and importantly, for
+various scenarios, and that they are easily accessible. Our data should also
+make it very easy for new codes to have a readily available data set to test
+against and verify.
+
+A similar exercise has be done for magnetotelluric (MT) 3D modelling and
+inversion by \cite{GJI.13.Miensopust}, but we are not aware of anything like
+this for CSEM data. However, we do hope that more comparisons will emerge in
+the future, particularly with the current increase in open-source codes as well
+as open-source data.
+
+The codes under consideration consisted of finite element and finite
+differences. However, it has to be noted that the chosen models are better
+suited for finite differences codes. The first model for obvious reasons, as it
+is a layered background containing blocks, all aligned in Cartesian
+coordinates. The second model, Marlim R3D, could be an ideal case for FE codes,
+as it comes with lithological horizons from seismic data. However, the
+corresponding, published resistivity model uses a Cartesian grid. An extension
+of this work could be to use a complex model tailored for a FE code, and
+compare how the FD codes cope with it.
+
+The codes under consideration use direct and indirect solvers, \dots blabla say
+something. Having calculated in each model only one source favours in the
+runtime comparison the iterative solver and therefore \emg3d. For the iterative
+solvers additional sources would come at almost no cost, whereas for \emg3d it
+would come at the same cost as the first source. This is something to keep in
+mind when choosing the appropriate modeller for a problem at hand.
+
+\imycom[DW]{I would like to capture as many as possible of the (I) differences,
+(II) difficulties, (III) advantages, and (IV) disadvantages, that we
+encountered in this exercise. This includes differences from direct to
+iterative solver and differences from FE to FD codes etc. Please just jot down
+things that come to your mind.}
+
+Finally, the comparison in our study is limited to marine CSEM cases in the
+frequency-domain. We hope that similar studies will be carried out for land
+CSEM data and for time-domain data as well.
+
+We see this only as the start. Much more comparisons and examples are required.
+3D CSEM modelling is a difficult task, which requires many considerations: It
+starts with the selection of the right code for the problem; then the meshing
+is particularly difficult, choosing cells small enough to appropriately
+represent the model yet to be as coarse as possible still achieving the desired
+precision; the required model extent, particularly for shallow and marine cases
+where the airwave has to be considered. The tricky part is that even if the
+result is not correct it may look completely valid. The only options to verify
+results are (a) by comparing different discretizations, and (b) by comparing
+different codes.
+
+
+\clearpage  % TODO: Just for now while drafting, remove later!
+\section{Conclusions}
+%
+% enago.com/academy/discussion-conclusion-know-difference-drafting-manuscript/
+%
+% Your conclusion should:
+% - Restate your hypothesis or research question
+% - Restate your major findings
+% - Tell the reader what contribution your study has made to the existing
+%   literature
+% - Highlight any limitations of your study
+% - State future directions for research/recommendations
+%
+% Your conclusion should NOT:
+% - Introduce new arguments
+% - Introduce new data
+% - Fail to include your research question
+% - Fail to state your major results
+%
+
+\imycom[DW]{Maybe we should create a Google-Doc for working on the Conclusions
+collaboratively at the same time?}
+
+\imycom[DW]{I obviously haven't really done this section, just af few thoughts
+that I noted over time. I think the discussion (as the abstract) has to be
+tackled once the rest is at least in a draft status and all data is ready.}
+
+The landscape in 3D CSEM modelling greatly changed in the last five years or
+so. While before there were only closed-source codes owned by companies or
+consortia, or codes that you had to obtain from the authors, often without much
+documentation, there was recently a wave of openly released codes.
+
+What is missing for these emerging codes is a comparison and verification
+suite, test models beyond the usual, analytical fullspace and halfspace models
+and the semi-analytical layered Earth models. We hope that our efforts help to
+the confidence in the available open-source codes\dots
+
+Also, the runtime and memory consumption comparison together with the meshing
+differences should help to decide which modeller is used best for which tasks,
+as there is not one method which is best for all problems.
+
+\clearpage  % TODO: Just for now while drafting, remove later!
+\section{Acknowledgment}
+
+\imycom[DW]{Write here your fundings; and potentially also minor contributors
+etc.}
+
+We would like to thank Paulo Menezes for the help and explanations with regards
+to the Marlim R3D model and corresponding CSEM data, and for making their
+actual computation model available under an open-source license.
+
+The work of D.W. was conducted within the Gitaro.JIM project funded through
+MarTERA, a EU Horizon 2020 research and innovation programme (No 728053);
+\href{https://www.martera.eu}{martera.eu}.
+
+\clearpage  % TODO: Just for now while drafting, remove later!
+\section{Data}
+
+All files to rerun the different models with the four codes and reproduce the
+shown results are available at \dots.
+\itodo{Put up on Zenodo, link here.}
+
+
+\clearpage  % TODO: Just for now while drafting, remove later!
+% REFERENCES
+\bibliographystyle{Refs}          % Modified SEG bibliography style.
+\bibliography{Refs}
+
+\end{document}

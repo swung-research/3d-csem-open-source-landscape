@@ -1,0 +1,30 @@
+###############################################################################
+# PETGEM parameters file
+###############################################################################
+# Model parameters
+model:
+  mesh_file: mesh_p1.msh                # Mesh file (gmsh format v2)
+  basis_order: 1                        # Vector basis order (1,2,3,4,5,6)
+  frequency: 1.0                        # Frequency
+  src_position: [0., 0., -550.]   # Source position (xyz)
+  src_azimuth: 0                        # Source rotation in xy plane
+  src_dip: 0                            # Source rotation in xz plane
+  src_current: 800.                     # Source current
+  src_length: 200.                      # Source length
+  # Comment/uncomment the following lines as appropriate
+  # Conductivity values for block model
+  sigma_horizontal: [.00000001, 3.3333, 1., 0.5, .001, .1, .01, .0020]   # Horizontal conductivity for each material
+  sigma_vertical: [.00000001, 3.3333, 1., .25, .001, .1, .01, .0020]     # Vertical conductivity for each material
+  # Conductivity values for layered model
+  #sigma_horizontal: [.00000001, 3.3333, 1., 0.5, .001, .5, .5, .5]   # Horizontal conductivity for each material
+  #sigma_vertical: [.00000001, 3.3333, 1., .25, .001, .25, .25, .25]  # Vertical conductivity for each material
+  receivers_file: receiver_pos.h5       # Receiver positions file (xyz)
+
+# Execution parameters
+run:
+  cuda: False                           # Flag to activate/deactivate cuda support
+
+# Output parameters
+output:
+  directory: out               # Directory for output (results)
+  directory_scratch: tmp       # Directory for temporal files
