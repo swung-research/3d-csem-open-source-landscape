@@ -169,7 +169,7 @@ Codes distributed that way were often provided with the request to not share the
 Also, at times there can be significant hurdles to install a code.
 
 The meaning of the term open-source evolved rapidly in the last two decades.
-Today, open-source generally not only means that a code is available (with a proper license), but also that the code is hosted online, is under version control, has the possibility to file issues and make pull requests to fix bugs. These are important requirements for reproducible research «\emph{to provide the means by which the reader can verify the validity of the results and make use of them in further research}» \citep{broggini2017reproducible}.
+Today, open-source generally not only means that a code is available (with a proper license), but also that the code is hosted online, is under version control, has the possibility to file issues and make pull requests to fix bugs. These are important requirements for reproducible research «\emph{to provide the means by which the reader can verify the validity of the results and make use of them in further research}» \citep{GEO.17.Broggini}.
 Well maintained codes often have continuous integration that includes testing of the code base and online hosted documentation, often including examples and tutorials.
 As such, the term has shifted from purely open-source codes to developments in the open with increasingly building a global community.
 Related projects within the realm of geophysical exploration are e.g., pyGIMLi \citep{CAG.17.Rucker} or Fatiando \citep{JOSS.18.Uieda}. \mycom[DW]{Others coming to your mind?}\mycom[RR]{no thoughts about geophysics, but there are many projects for related topics such as gmt, gis, mesh-gen}
@@ -302,14 +302,14 @@ also similar topic/layout.
 
 The customisable electromagnetic modeling Python toolbox custEM was developed for simulating arbitrary complex 3D CSEM geometries with focus on semi-airborne setups, but it supports also land-based, airborne, coastal  or marine environments.
 Multiple electric or magnetic field or potential finite-element approaches were implemented as total or secondary field formulations.
-The finite-element kernel, including higher order basis functions and parallelisation, relies on the FEniCS project \citep{logg2012, langtangen2016}.
+The finite-element kernel, including higher order basis functions and parallelisation, relies on the FEniCS project \citep{B.SPR.12.Logg, B.SPR.16.Langtangen}.
 The resulting systems of linear equations are solved with MUMPS \citep{SIAM.01.Amestoy}, which is a very robust but memory consuming choice. 
-Primary field solutions are supplied by the COMET \citep{skibbe2020coupled} package.
+Primary field solutions are supplied by the COMET \citep{GEO.20.Skibbe} package.
 
 The toolbox considers generally anisotropic petrophysical properties.
 Even though changes of the conductivity is mainly of interest for CSEM modeling, the electric permittivity and magnetic permeability can be taken into account using the preferred electric field approach on Nédélec elements.
 Recently, induced polarization parameters in frequency-domain and three methods for simulating time-domain responses were added to custEM.
-The provided meshing tools based on TetGen \citep{si2015tetgen} and functionalities of pyGIMLi \citep{CAG.17.Rucker} facilitate the generation of tetrahedral meshes including layered-earth geometries with topography or bathymetry and anomalous bodies which are allowed to be connected or to reach the surface.
+The provided meshing tools based on TetGen \citep{TOM.15.Si} and functionalities of pyGIMLi \citep{CAG.17.Rucker} facilitate the generation of tetrahedral meshes including layered-earth geometries with topography or bathymetry and anomalous bodies which are allowed to be connected or to reach the surface.
 
 The custEM toolbox is under steady development and maintenance.
 Future enhancements comprise adding iterative solution techniques, provided by FEniCS, as well as further functionalities for automatically incorporating intersecting bodies such as folds or faults in meshes. 
