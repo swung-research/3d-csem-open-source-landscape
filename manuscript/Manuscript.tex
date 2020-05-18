@@ -200,10 +200,10 @@ We conclude with a summary of our results and a motivation for the EM community 
 
 
 \imycom[RR]{Regarding "It is worth mentioning that there are many more 3D EM codes developed in other fields than geophysics such as communication systems (antennas, radar, satellites), medical imaging, or civil engineering.
-	There are various open-source codes in these fields too, e.g., Elmer ([DW]: Add 2-3 proper references) (\href{http://www.csc.fi/elmer}{csc.fi/elmer}, couldn't find a publication, just a poster).
-	While these codes could potentially be used for the same goals as presented here we restrict our review to codes purpose-built and ready without further adjustments for geophysical applications."
-	
-	I thought a lot about this but I just think the previous paragraph is not required in our introduction and haven't find a location where it fits considering different logical structures. I think it is also not important for this paper to tell "that there are more codes in EM than only geophysics", that's quite obvious. Maybe delete or shorten to 1 sentences to add Elmer and place this sentence somewhere else? I think, an appropriate list of all non-geophysical open-source EM codes should be very long anyway, we just don't know them or at least I'm not familiar with them.}
+    There are various open-source codes in these fields too, e.g., Elmer ([DW]: Add 2-3 proper references) (\href{http://www.csc.fi/elmer}{csc.fi/elmer}, couldn't find a publication, just a poster).
+    While these codes could potentially be used for the same goals as presented here we restrict our review to codes purpose-built and ready without further adjustments for geophysical applications."
+    
+    I thought a lot about this but I just think the previous paragraph is not required in our introduction and haven't find a location where it fits considering different logical structures. I think it is also not important for this paper to tell "that there are more codes in EM than only geophysics", that's quite obvious. Maybe delete or shorten to 1 sentences to add Elmer and place this sentence somewhere else? I think, an appropriate list of all non-geophysical open-source EM codes should be very long anyway, we just don't know them or at least I'm not familiar with them.}
 
 
 
@@ -518,17 +518,15 @@ the computation itself.\mycom[RR]{see imycom below figure 6}
 \imycom[RR]{60 x 60 km (30 km in each direction from center). I already added a paragraph about mesh generation in the beginning, I suggest to remove this description here and jsut refer to like "Similar to the layered earth model, the largest errors occur at offsets $>8$\,km due to the differences in mesh design."
 We should also mention that relative errors are related to the magnitudes, as real is so much weaker at larger offsets, it is clear that errors increase significantly. Alternatively, we could show absolute magnitude or phase errors such as in the Marlim model.}
 
-
-\begin{figure}
-	\centering
-	\includegraphics[width=5cm]{figures/median-stats-block--3.pdf}\hfill
-	\includegraphics[width=5cm]{figures/median-stats-block-0.pdf}\hfill
-	\includegraphics[width=5cm]{figures/median-stats-block-3.pdf}
-	\caption[Median errors]{Overall misfit relations between all codes for the three receiver lines y=-3, y=0 \& y=3 f.l.t.r. Colors indicate the median values of the 101 calculated NRMSD arguments for each line between all codes. Errors for real parts are shown in the lower triangle, for imaginary parts in the upper triangle.}
-	\label{medianmisfits}	
-\end{figure}
-
-
+%
+\plot*{median-stats-block}{width=\textwidth}{
+    Overall misfit relations between all codes for the three receiver lines
+    y=-3, y=0, and y=3 (f.l.t.r.). Colors indicate the median values of the 101
+    calculated NRMSD arguments for each line between all codes. Errors for real
+    parts are shown in the lower triangle, for imaginary parts in the upper
+  triangle.
+}
+%
 
 \clearpage  % TODO: Just for now while drafting, remove later!
 \subsection{Marlim R3D}
@@ -687,10 +685,10 @@ Considering for instance  this study, it would be very optimistic to estimate th
 However, each modeller could run multiple simulations with different configurations to increase the reliability of the obtained results.
 
 \imycom[DW]{I would like to capture as many as possible of the (I) differences,
-	(II) difficulties, (III) advantages, and (IV) disadvantages, that we
-	encountered in this exercise. This includes differences from direct to
-	iterative solver and differences from FE to FD codes etc. Please just jot down
-	things that come to your mind.}
+    (II) difficulties, (III) advantages, and (IV) disadvantages, that we
+    encountered in this exercise. This includes differences from direct to
+    iterative solver and differences from FE to FD codes etc. Please just jot down
+    things that come to your mind.}
 
 \clearpage  % TODO: Just for now while drafting, remove later!
 \section{Conclusions \& Outlook}
