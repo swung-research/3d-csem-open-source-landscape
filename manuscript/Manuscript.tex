@@ -8,6 +8,7 @@
 
 % Remove once done
 \usepackage[textsize=footnotesize, textwidth=2.8cm]{todonotes}
+% \usepackage[textsize=footnotesize, textwidth=2.8cm, disable]{todonotes}
 
 % Additional packages to geophysics.cls
 \usepackage[UKenglish]{babel}
@@ -112,7 +113,11 @@ everyone once.}
   For comments in the margin, use:\\[.2cm]
   \qquad\texttt{\textbackslash mycom[YOURINITIALS]\{comment\}}\\[.2cm]
   and for inline comments, use:\\[.2cm]
-  \qquad\texttt{\textbackslash imycom[YOURINITIALS]\{comment\}}
+  \qquad\texttt{\textbackslash imycom[YOURINITIALS]\{comment\}}\\[.5cm]
+  If you want to compile it without comments, comment the line\\[.2cm]
+  \qquad\texttt{\textbackslash usepackage[textsize=footnotesize, textwidth=2.8cm]\{todonotes\}}\\[.2cm]
+  and uncomment the line\\[.2cm]
+  \qquad\texttt{\% \textbackslash usepackage[textsize=footnotesize, textwidth=2.8cm, disable]\{todonotes\}}
 }
 
 \itodo{
@@ -142,24 +147,24 @@ communities as well.}
   used to AE, but Dieter started with (at least what I can identify) mainly BE,
   so I tried to follow (mainly s instead of z and ou instead of o in some
   words). I hope there are not too many inconsistencies, as probably Lindsey
-  has to fix all these mistakes in the end:-)}
+  has to fix all these mistakes in the end:-)
 \imycom[DW]{Be aware of Canadian English and Australian English :-D -- You are
   of course right. I am usually mostly BE, having done my PhD in Scotland.
   However, I don't think it matters at the moment, because it will depend to
   what journal we submit. With an appropriate spellchecker that should be a
-  quick thing then.}
+  quick thing then.}}
 
 Controlled-source electromagnetic (CSEM) measurements are a frequently applied
 method in various geophysical exploration fields, such as geothermal and
 groundwater, oil and gas, mining, civil engineering, or geo-hazards. Modelling
 these electromagnetic fields is therefore of great interest to design survey
-layouts, understand the measured data and inversion purposes. Publications
-regarding 3D modelling in electromagnetic methods started to appear as early as
-the 1970's and 1980's. These early publications were integral equation (IE)
-methods, having an anomaly embedded within a layered medium, mostly for
-loop-loop type transient EM measurements \citep{GJI.74.Raiche, GEO.75.Hohmann,
-GJI.82.Das, GEO.86.Newman} and magnetotelluric (MT) measurements
-\citep{GEO.84.Wannamaker}.
+layouts, to understand the measured data, and for inversion purposes.
+Publications regarding 3D modelling in electromagnetic methods started to
+appear as early as the 1970's and 1980's. These early publications were
+integral equation (IE) methods, having an anomaly embedded within a layered
+medium, mostly for loop-loop type transient EM measurements
+\citep{GJI.74.Raiche, GEO.75.Hohmann, GJI.82.Das, GEO.86.Newman} and
+magnetotelluric (MT) measurements \citep{GEO.84.Wannamaker}.
 
 In the 1990's, computer became sufficiently powerful that 3D modelling gained
 traction, which resulted amongst other publications in the book
@@ -207,12 +212,12 @@ and inverse solutions into the public domain, at least after some time. This
 would have a strong impact on the whole subject and the developers would
 benefit from feedback regarding the real needs of the end-users.}» Some major
 exploration service companies as well as certain research consortia and
-research groups own their 3D CSEM codes, but how about codes that are
+research groups have their own 3D CSEM codes, but how about codes that are
 open-source? Academic codes were traditionally often available upon request by
 authors. Codes distributed that way were often provided with the request to not
 share the code, and they often come without a license attached which means that
-they are not open-source. Also, at times there can be significant hurdles to
-install a code.
+they are, legally, not open-source. Also, at times there can be significant
+hurdles to install a code.
 
 The meaning of the term open-source evolved rapidly in the last two decades.
 Today, open-source generally not only means that a code is available (with a
@@ -225,13 +230,10 @@ codes often have continuous integration that includes testing of the code base
 and online hosted documentation, often including examples and tutorials. As
 such, the term has shifted from purely open-source codes to developments in the
 open with increasingly building a global community. Related projects within the
-realm of geophysical exploration are e.g., pyGIMLi \citep{CAG.17.Rucker} or
-Fatiando \citep{JOSS.18.Uieda}. \mycom[DW]{Others coming to your
-mind?}\mycom[RR]{no thoughts about geophysics, but there are many projects for
-related topics such as gmt, gis, mesh-gen}
-
-\imycom[RR]{i suggest to use also "emph" style for all other package names, not
-only ours}
+realm of geophysical exploration are e.g., \texttt{pyGIMLi}
+\citep{CAG.17.Rucker} or \texttt{Fatiando} \citep{JOSS.18.Uieda}.
+\imycom[DW]{Others coming to your mind?\imycom[RR]{no thoughts about geophysics,
+  but there are many projects for related topics such as gmt, gis, mesh-gen}}
 
 We continue addressing the topic of open-source developments with respect to 3D
 CSEM modeling. Even though it comprises still the minority of developments, the
@@ -268,19 +270,22 @@ computational performance. Beyond that, we extensively discuss important points
 that control the performance and suitability of our FD and FE codes, including
 mainly considerations about the mesh design and the choice of solvers. We
 conclude with a summary of our results and a motivation for the EM community to
-continue not only extending the landscape of open-source codes and also
-creating a landscape of open-source benchmark models.
+not only continue to extend the landscape of open-source codes but to also
+create a landscape of open-source benchmark models.
 
-\imycom[RR]{Regarding "It is worth mentioning that there are many more 3D EM
+\imycom[RR]{Regarding
+  \todo[inline, color=white]{
+  "It is worth mentioning that there are many more 3D EM
   codes developed in other fields than geophysics such as communication systems
   (antennas, radar, satellites), medical imaging, or civil engineering. There
-  are various open-source codes in these fields too, e.g., Elmer ([DW]: Add 2-3
-  proper references) (\href{http://www.csc.fi/elmer}{csc.fi/elmer}, couldn't
-  find a publication, just a poster). While these codes could potentially be
-  used for the same goals as presented here we restrict our review to codes
-  purpose-built and ready without further adjustments for geophysical
-  applications."
-
+  are various open-source codes in these fields too, e.g., Elmer
+  (\href{http://www.csc.fi/elmer}{csc.fi/elmer}, couldn't
+  find a publication, just a poster).
+  \todo[inline, color=gray]{(\textbf{[DW]}: Add 2-3 proper references)}
+  While these codes could potentially be used for the same goals as presented
+  here we restrict our review to codes purpose-built and ready without further
+  adjustments for geophysical applications."
+}
   I thought a lot about this but I just think the previous paragraph is not
   required in our introduction and haven't find a location where it fits
   considering different logical structures. I think it is also not important
@@ -326,13 +331,11 @@ approximation, hence neglecting displacement currents. The machines on which
 the different codes were run are listed in Table~\ref{tbl:machines}, together
 with the responsible operator.
 
-\imycom[RR]{too much info (redundancy to text) for table caption}
-
-\tabl[btp]{codecomparison}{All codes solve the weak form of Maxwell's equations
-  in its differential form (DE) under the quasistatic approximation. Note that
-  \emg3d is a solver on its own, while the other codes implement third-package
-  solvers such as \texttt{PETSc} \citep{Preprint.Abhyankar}, \texttt{MUMPS}
-  \citep{SIAM.01.Amestoy}, or \texttt{PARDISO} \citep{FGCS.04.Schenk}.
+\tabl[btp]{codecomparison}{Comparison of the four codes under consideration.
+  Note that \emg3d is a solver on its own, while the other codes implement
+  third-package solvers such as \texttt{PETSc} \citep{Preprint.Abhyankar},
+  \texttt{MUMPS} \citep{SIAM.01.Amestoy}, or \texttt{PARDISO}
+  \citep{FGCS.04.Schenk}.
 }{
   \centering
   \footnotesize
@@ -475,15 +478,12 @@ TODO
 \section{Numerical Verifications}
 
 We computed the responses for two different models to verify that all different
-3D codes yield the same electromagnetic responses. The first simple Block model
-consists of a layered, anisotropic background with three embedded blocks. The
-second Marlim R3D model is based on a very complex, realistic marine CSEM
-setup.
+3D codes yield the same electromagnetic responses. The first simple \emph{Block
+model} consists of a layered, anisotropic background with three embedded
+blocks. The second Marlim R3D model is based on a very complex, realistic
+marine CSEM setup.
 
-\subsection{Block model}
-
-\imycom[RR]{I think the miensopust argument is rather suited to motivate our
-work in the introduction, i hope its fine that i moved this argument}
+\subsection{Block Model}
 
 The block model is a derivation of the \emph{Dublin Test Model 1} from the
 first EM modeling workshop described by \cite{GJI.13.Miensopust}. We took the
@@ -535,10 +535,8 @@ with errors of around 1\,\% in most parts and overall below a few percent,
 disregarding locations affected by sign reversals. The differences can be
 mainly attributed to the chosen discretisations. The FE codes show the
 strongest misfits at large offsets, most likely caused by the utilized boundary
-mesh, whereas \emg3d seems to do a very good job\mycom[RR]{maybe reformulate to
-something like: whereas emg3d appears to be not affected by boundary effects}.
-Close to the 200\,m long source, emg3d is less precise which is attributed to
-comparatively large cell sizes in this region.
+mesh. Very low errors at large offsets are achieved by \emg3d, whereas it
+suffers at short offsets from a coarse grid.
 %
 \plot*{results-layered-0}{width=.8\textwidth}{
    Comparison of the layered model for the inline receivers ($y=0\,$km).
@@ -599,7 +597,7 @@ error, where the normalized difference of two responses $p$ and $q$ is given by
 \imycom[DW]{NRMSD: Comparing all codes to all would make the figures too
 cluttered, and I don't think it would add a lot insights. My idea is therefore
 to compare \emg3d/\simpeg (the two FV ones), \custem/\petgem (the two FE ones),
-and \emg3d/\custem (a cross-comparison). What do you think?}
+and \emg3d/\custem (a cross-comparison). What do you think?
 
 \imycom[RR]{Agreed. Another suggestion, I solved this visualization problem
   with a color coded matrix plot, showing 90th percentiles or median values of
@@ -609,13 +607,13 @@ and \emg3d/\custem (a cross-comparison). What do you think?}
   triangle and for block model in upper triangle. With help of this plot, one
   could easily say if differences are higher for block model and which codes
   fit to each other well.}
-
 \imycom[RR]{If using the mentioned matrix plots, we would need only one of the
   figures 4-6, and could show the other data comprehensively. I added a python
   script to generate an example of my plotting suggestion in the model-block
   directory and a new Figure 7 in the manuscript that illustrates what I mean.
   Of course, any upgrade suggestion for this initial idea is welcome, aside
   from making it looking nice with labels  and annotations.}
+}
 
 The results for the three receiver lines $y=-3,0,3\,$km are shown in
 Figures~\ref{fig:results-block--3}, \ref{fig:results-block-0}, and
@@ -673,23 +671,14 @@ The difference becomes only significant at offsets larger than 8\,km. This is
 due to a practical difference in the meshing: This simple block model is
 advantageous for FV codes, as it consists of rectangular blocks and horizontal
 layers, simple geometric objects. While having a very thin, shallow layer is
-straight-forward for FV codes, it requires many cells for a FE code. The thin
-layer was therefore limited in its horizontal extent to\mycom[DW]{Raphael, to
-what x/y exactly?} ???. This is the reason for the increased NRMSD at large
-offsets, and it has nothing to do with the accuracy of the computation
-itself.\mycom[RR]{see imycom below figure 6}
-
-\imycom[RR]{60 x 60 km (30 km in each direction from center). I already added a
-  paragraph about mesh generation in the beginning, I suggest to remove this
-  description here and jsut refer to like "Similar to the layered earth model,
-  the largest errors occur at offsets $>8$\,km due to the differences in mesh
-  design." We should also mention that relative errors are related to the
-  magnitudes, as real is so much weaker at larger offsets, it is clear that
-  errors increase significantly. Alternatively, we could show absolute
-  magnitude or phase errors such as in the Marlim model.}
+straight-forward for FV codes, it requires many cells for a FE code, and
+a similar approach as for the Block Model was used. This is the reason for the
+increased NRMSD at large offsets, and it has nothing to do with the accuracy of
+the computation itself.
 
 %
 \plot*{median-stats-block}{width=\textwidth}{
+  {\imycom[DW]{Suggestion from Raphael for a statistics plot.}}
     Overall misfit relations between all codes for the three receiver lines
     y=-3, y=0, and y=3 (f.l.t.r.). Colors indicate the median values of the 101
     calculated NRMSD arguments for each line between all codes. Errors for real
@@ -711,9 +700,11 @@ Marlim R3D (MR3D), which they released under an open-source license.
 a state-of-the-art code from the industry \citep{GEO.07.Maao}. It is therefore
 an ideal case to verify our open-source codes against, as it is a complex,
 realistic model and the data were computed by an industry-proofed
-code.\mycom[RR]{I would delete this sentence, not that important and a bit
-redundant} Additionally, that code is a time-domain code, whereas the four
-codes under consideration here compute the results all in the frequency-domain.
+code. Additionally, that code is a time-domain code, whereas the four codes
+under consideration here compute the results all in the frequency-domain.
+\imycom[RR]{I would delete this sentence, not that important and a bit
+redundant.\imycom[DW]{Did you refer to the last sentence or the one before? I
+think the last sentence contains quite important info.}}
 
 The detailed reservoir model consists of 1022 by 371 by 1229 cells, totalling
 to almost 466 million cells, where each cell has dimensions of 25 by 75 by
@@ -731,21 +722,22 @@ shown, which is the data we chose for our comparison. The cross-section of the
 resistivity model along the chosen inline acquisition line is shown in
 Figure~\ref{fig:model-marlim}, together with the acquisition information.
 
-\imycom[RR]{I used gmt the last time 7 years ago , in between I tried the
-  gmt4py tools, but they did not work well on my machine. I suggest to use two
-  plots next to each other, a similar figure as in the notebook and a simple
-  x-y coord sketch (identical extent as the bird perspective view in the other
-  plot) with all Tx / Rx locations, highlighting the relevant line and Rx for
-  us.}
 
 %
 \plot*{model-marlim}{width=\textwidth}{
   This figure obviously needs to be improved massively (at least a colorbar).
   What would you like to show from the actual data here?
   A nice figure would  be Figure 2 in \cite{GEO.19.Correa}; however, note that
-  the drawn survey line in that figure are plainly wrong. If someone is
+  the drawn survey line in that figure are plainly wrong.
+  {\imycom[DW]{If someone is
   familiar with GMT and happy to make that would be great. Also, the
-  cross-section is currently heavily vertically exaggerated.
+cross-section is currently heavily vertically exaggerated.
+\imycom[RR]{I used gmt the last time 7 years ago , in between I tried the
+  gmt4py tools, but they did not work well on my machine. I suggest to use two
+  plots next to each other, a similar figure as in the notebook and a simple
+  x-y coord sketch (identical extent as the bird perspective view in the other
+  plot) with all Tx / Rx locations, highlighting the relevant line and Rx for
+  us.}}}
 }
 %
 
@@ -822,14 +814,14 @@ we first need all results. E.g.}
 %
 
 \imycom[DW]{Maybe we should create a Google-Doc for working on the Discussion
-collaboratively at the same time?}
-
+collaboratively at the same time?
 \imycom[RR]{if you prefer ok, but I don't think this is necessary, if everyone
   adds the own thoughts when he receives the manuscript. Same for conclusions.
   We need to take care to not mix discussion and conclusions, some of the
   statements from here belong rather to the conclusions, I hope it's fine that
   I reorganized the content. Aside from that, I already added all thoughts of
   mine.}
+}
 
 Even if modeling results may look completely valid, they could not be correct
 at all. Verifying the performance of 3D CSEM codes for real 3D problems is only
