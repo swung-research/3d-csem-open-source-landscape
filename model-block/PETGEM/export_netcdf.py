@@ -1,12 +1,12 @@
-"""
-@author: Octavio Castillo-Reyes
-         octavio.castillo@bsc.es
-"""
+#!/usr/bin/env python3
+# Author:  Octavio Castillo Reyes
+# Contact: octavio.castillo@bsc.es
+''' Export layered earth and blocky model results using PETGEM to netcdf format
+'''
 
-# ########################################################################### #
-# # # # #               layered earth and blocky model                # # # # #
-# ########################################################################### #
-
+# ---------------------------------------------------------------
+#                 LAYERED EARTH AND BLOCKY MODEL
+# ---------------------------------------------------------------
 import xarray as xr
 from datetime import datetime
 import numpy as np
@@ -19,7 +19,7 @@ ds = xr.load_dataset('../block_model_and_survey.nc', engine='h5netcdf')
 lines = ['l1m_line_x', 'l2m_line_x', 'l3m_line_x']
 
 # ---------------------------------------------------------------
-# Load petgem solution
+# Open PETGEM results file
 # ---------------------------------------------------------------
 sol_block = h5py.File('out/block.h5', 'r')
 
@@ -42,13 +42,10 @@ real_line3 = sol_block.get('line3')[()].conjugate().real
 imag_line3 = sol_block.get('line3')[()].conjugate().imag
 ds.line_3.data = np.vstack((real_line3, imag_line3)).ravel('F')
 
-# Save memory (Gb)
-mem_in_gib = sol_block.get('max_mem')[()]
-
 # Add info
 ds.attrs['runtime'] = str(int(sol_block.get('runtime')[()])) + ' s'
 ds.attrs['n_procs'] = sol_block.get('n_procs')[()]
-ds.attrs['max_ram'] = '{:5.1f}'.format(mem_in_gib) + ' GiB'
+ds.attrs['max_ram'] = '{:5.1f}'.format(sol_block.get('max_mem')[()]) + ' GiB'
 ds.attrs['n_cells'] = sol_block.get('n_cells')[()]
 ds.attrs['n_nodes'] = sol_block.get('n_nodes')[()]
 ds.attrs['n_dof'] = sol_block.get('n_dof')[()]
@@ -94,13 +91,10 @@ real_line3 = sol_layered.get('line3')[()].conjugate().real
 imag_line3 = sol_layered.get('line3')[()].conjugate().imag
 ds.line_3.data = np.vstack((real_line3, imag_line3)).ravel('F')
 
-# Save memory (Gb)
-mem_in_gib = sol_layered.get('max_mem')[()]
-
 # Add info
 ds.attrs['runtime'] = str(int(sol_layered.get('runtime')[()])) + ' s'
 ds.attrs['n_procs'] = sol_layered.get('n_procs')[()]
-ds.attrs['max_ram'] = '{:5.1f}'.format(mem_in_gib) + ' GiB'
+ds.attrs['max_ram'] = '{:5.1f}'.format(sol_layered.get('max_mem')[()]) + ' GiB'
 ds.attrs['n_cells'] = sol_layered.get('n_cells')[()]
 ds.attrs['n_nodes'] = sol_layered.get('n_nodes')[()]
 ds.attrs['n_dof'] = sol_layered.get('n_dof')[()]

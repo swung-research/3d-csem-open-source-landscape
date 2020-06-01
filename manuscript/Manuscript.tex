@@ -29,7 +29,7 @@
 \usepackage[pdftex, final]{hyperref}
 % \usepackage[pdftex, hidelinks]{hyperref}
 \hypersetup{allcolors=blue, allbordercolors={0 0 .5}, colorlinks=true}
-
+	
 % Figures
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
 \renewcommand{\figdir}{./figures}
@@ -140,6 +140,8 @@ at all.
 \mycom[RR]{GMD looks very interesting, my only concern is that it might not be
 in the scope of EM modelers, but we can probably reach modeleres from other
 communities as well.}
+\mycom[OCR]{I also find GMD very interesting, in fact it was my first option to publish the first petgem version (2 years ago). The answer was: "manuscript outside of journal's scope". In this sense I agree with Raphael. My vote is for SIG}
+
 
 \section{Introduction}
 
@@ -153,6 +155,8 @@ communities as well.}
   However, I don't think it matters at the moment, because it will depend to
   what journal we submit. With an appropriate spellchecker that should be a
   quick thing then.}}
+
+\imycom[OCR]{In general, I believe that the content is adequate and the ideas are clear and in accordance with the objective that we have initially set. However, I want to highlight the task of being careful when justifying the absence of the SimPEG results for the marlim model (I have read it in slack, although it may not be definitive). I believe that this may or may not be a weak point depending on how we explain it. I know that perhaps it is not serious, I only make this comment so that the speech justifies the facts. }
 
 Controlled-source electromagnetic (CSEM) measurements are a frequently applied
 method in various geophysical exploration fields, such as geothermal and
@@ -175,6 +179,7 @@ time-domain modelling using a Yee grid and a global Krylov subspace
 approximation; and \cite{RS.96.Alumbaugh, GJI.97.Newman}, low-to-high frequency
 computation on massively parallel computers.
 
+\mycom[OCR]{I have rearranged some references according to the year of publication (here and in the rest of the paper)}
 The continuous improvement of computing power and the CSEM boom in the early
 2000's in the hydrocarbon industry led to a wealth of developed numerical
 solutions and according publications. The most common applied methods to solve
@@ -182,11 +187,10 @@ Maxwell's equation are the IE method \citep{GJI.74.Raiche, RS.02.Hursan,
 GEO.06.Zhdanov, GP.10.Tehrani, CAG.16.Kruglyakov, MGS.17.Kruglyakov} and
 different variations of the differential equation (DE) method, such as finite
 differences (FD) \citep{IEEE.66.Yee, GEO.93.Wang, RSC.94.Mackie, RS.94.Druskin,
-GEO.09.Streich, CAG.13.Sommer}, finite elements (FE) \citep{GJI.11.Schwarzbach,
-GEO.04.Commer, GEO.12.daSilva, GJI.13.Puzyrev, GJI.13.Grayver, SEG.16.Zhang},
-and finite volumes (FV) \citep{EM.90.Madsen, ECP.07.Haber, GEO.14.Jahandari,
-PIER.01.Clemens, GP.06.Mulder}. There are also many different types of
-discretisation, where the most common ones are regular grids (Cartesian,
+GEO.09.Streich, CAG.13.Sommer}, finite elements (FE) \citep{GEO.04.Commer,
+GJI.11.Schwarzbach,GEO.12.daSilva, GJI.13.Grayver, GJI.13.Puzyrev, SEG.16.Zhang},
+and finite volumes (FV) \citep{EM.90.Madsen, PIER.01.Clemens, GP.06.Mulder, ECP.07.Haber, GEO.14.Jahandari}. There are also many different types of
+discretisation, where the most common ones are regular grids (cartesian,
 rectilinear), mostly using a Yee grid \citep{IEEE.66.Yee} or a Lebedev grid
 \citep{CMMP.64.Lebedev}, but also unstructured tetrahedral grids
 \citep{SEG.16.Zhang, CAG.17.Cai}, hexagonal meshes \citep{CAG.14.Cai}, or
@@ -198,9 +202,8 @@ In the last 15 years, the publications with regards to 3D EM modelling grew
 tremendously, driven by the ever increasing computing power. One reason why
 there are so many reports about this topic results from the variety of solution
 techniques for the systems of linear equations (SLE). They can be distinguished
-between direct solvers \citep{GEO.09.Streich, GEO.15.Grayver, GP.14.Chung,
-GEO.14.Jaysaval, SEG.15.Oh, GJI.18.Wang}, indirect solvers \citep{GP.06.Mulder,
-GJI.15.Jaysaval}, or a combination of both, so-called hybrid solvers
+between direct solvers \citep{GEO.09.Streich, GP.14.Chung,
+GEO.14.Jaysaval, GEO.15.Grayver, SEG.15.Oh, GJI.18.Wang}, indirect solvers \citep{GP.06.Mulder, GJI.15.Jaysaval}, or a combination of both, so-called hybrid solvers
 \citep{GEO.18.Liu}. The solvers often use preconditioners such as the multigrid
 method \citep{SIAM.02.Aruliah, GP.06.Mulder, GJI.16.Jaysaval}.
 
@@ -211,8 +214,8 @@ community today is to convince software developers to put their 3-D EM forward
 and inverse solutions into the public domain, at least after some time. This
 would have a strong impact on the whole subject and the developers would
 benefit from feedback regarding the real needs of the end-users.}» Some major
-exploration service companies as well as certain research consortia and
-research groups have their own 3D CSEM codes, but how about codes that are
+exploration service companies, as well as certain research consortia and
+research groups, have their own 3D CSEM codes, but how about codes that are
 open-source? Academic codes were traditionally often available upon request by
 authors. Codes distributed that way were often provided with the request to not
 share the code, and they often come without a license attached which means that
@@ -233,13 +236,14 @@ open with increasingly building a global community. Related projects within the
 realm of geophysical exploration are e.g., \texttt{pyGIMLi}
 \citep{CAG.17.Rucker} or \texttt{Fatiando} \citep{JOSS.18.Uieda}.
 \imycom[DW]{Others coming to your mind?\imycom[RR]{no thoughts about geophysics,
-  but there are many projects for related topics such as gmt, gis, mesh-gen}}
+  but there are many projects for related topics such as gmt, gis, mesh-gen}
+  \imycom[OCR]{No idea from my side}}
 
 We continue addressing the topic of open-source developments with respect to 3D
 CSEM modeling. Even though it comprises still the minority of developments, the
 landscape in this field of research changed in the last five years. Before,
 there were only closed-source codes owned by companies or  consortia and
-individual projects, often without a proper documentation, that could be
+individual projects, often without proper documentation, that could be
 requested from the authors. We introduce and compare four recent open-source
 projects with focus on 3D CSEM modeling. All presented codes are in the Python
 ecosystem and use either the FD method on structured grids or the FE method on
@@ -251,7 +255,7 @@ magnetotelluric forward and inversion codes, but we are not aware of any
 comparable study or benchmark suite for CSEM data. Hence, we first conduct a
 similar exercise for CSEM codes. We want our efforts to help to ensure the
 reliability of simulations, not only carried out with the available open-source
-codes, but also for individual closed-source project. Analytical and
+codes, but also for individual closed-source projects. Analytical and
 semi-analytical solutions only exist for simple halfspace or layered-Earth
 models, which served mostly to verify new codes. Beyond them, the only
 objective possibility to ensure the accuracy of solutions is by comparing
@@ -307,7 +311,7 @@ create a landscape of open-source benchmark models.
 
 The four codes under consideration are, in alphabetical order, \custem
 \citep{GEO.19.Rochlitz}, \emg3d \citep{JOSS.19.Werthmuller}, \petgem
-\citep{GJI.19.CastilloReyes}, and \simpeg \citep{CAG.15.Cockett}. All four
+\citep{CAG.18.CastilloReyes, GJI.19.CastilloReyes}, and \simpeg \citep{CAG.15.Cockett}. All four
 codes have their user-facing routines written in Python; all of them make heavy
 use of \texttt{NumPy} \citep{CSE.11.VanDerWalt} and \texttt{SciPy}
 \citep{NM.20.Virtanen}. The four of them are “modern” open-source projects,
@@ -326,7 +330,7 @@ refer to their documentations for more details. An overview comparison of the
 different codes is given in Table~\ref{tbl:codecomparison}. All codes have in
 common that they solve the\mycom[DW]{are we all using the weak form?} weak
 formulation of Maxwell's equation in its differential form (DE) under the
-quasistatic or\mycom[DW]{are we all using the diff. approx?} diffusive
+quasistatic or\mycom[DW]{are we all using the diff. approx?}\mycom[OCR]{petgem consider the weak work of maxwell equations in their diffusive form (quasi-static approximation)} diffusive
 approximation, hence neglecting displacement currents. The machines on which
 the different codes were run are listed in Table~\ref{tbl:machines}, together
 with the responsible operator.
@@ -352,7 +356,7 @@ with the responsible operator.
   License & GPL-3.0 & Apache-2.0 & GPL-3.0 & MIT \\
   Installation & \texttt{conda}
                & \texttt{pip}; \texttt{conda}
-               & \texttt{conda}
+               & \texttt{pip}; \texttt{conda}
                & \texttt{pip}; \texttt{conda} \\
   Comp. Dom. & frequency \& time & frequency & frequency & frequency \& time \\
   Method & FE & FV & FE & FV \\
@@ -466,8 +470,15 @@ solver within the grander \simpeg framework.
 
 \subsection{PETGEM}
 
-TODO
+\petgem is a parallel code for frequency-domain 3D CSEM data from marine and land surveys. The high-order edge FE method (HEFEM) is used for the discretization of the governing equations in its diffusive form. This technique provides a suitable mechanism to obtain stable numerical solutions as well as a good trade-off between number of dof\mycom[OCR]{I assume we have previously mentioned the term dofs} and computational effort. The current implementation supports up to six-order tetrahedral vector basis functions. Moreover, because the HEFEM belongs to the FE family, the unstructured meshes can be used efficiently on complex geometries (e.g., models with topography and bathymetry). 
 
+\petgem permits to locate the source and receivers anywhere in the computational domain (e.g., sediments, seafloor, sea, ground), allowing to analyze the physical environment of the electric responses and how parameters impact them (e.g., frequency, conductivity, dependence on mesh setup, basis order, solver type, among others). Furthermore, \petgem implements a semi-adaptive mesh strategy ($hp$ mesh refinement) based on physical parameters and on polynomial order to satisfy quality criteria chosen by the user. Nonetheless, only Horizontal electric dipole (HED) has been implemented. 
+
+For the parallel forward modelling computations, a highly scalable MPI domain decomposition allows reducing run-times and the solution of large-scale modelling cases. This strategy is capable of exploiting the parallelism offered by both modest multi-core computers and cutting-edge clusters (e.g., High-performance Computing architectures).
+
+Based on the current state of the \petgem project, there are many possibilities
+to improve or to add additional features. For instance, in the short-term, more
+modeling routines and support for multi-source set-ups will be implemented. For the long-term, the obvious next step is to move to 3D CSEM data inversion.
 
 \subsection{SimPEG}
 
@@ -511,7 +522,7 @@ $y=0\,$m. The $x$-directed receivers are placed on the seafloor every 200\,m
 from $x=-10\,$km to $x=+10\,$km in three lines for $y=-3, 0, 3\,$km.
 
 The thin isotropic layer beneath the water requires many tetrahedra for a
-good-quality discretisation. Therefore, the FE codes custEM and PETGEM used the
+good-quality discretisation. Therefore, the FE codes \custem and \petgem used the
 same tetrahedral mesh with a horizontal layered-earth extent of 30\,km from the
 origin, surrounded by a ten times larger halfspace-like boundary mesh with
 water conductivities assigned to the subsurface. This approximation
@@ -613,6 +624,8 @@ and \emg3d/\custem (a cross-comparison). What do you think?
   directory and a new Figure 7 in the manuscript that illustrates what I mean.
   Of course, any upgrade suggestion for this initial idea is welcome, aside
   from making it looking nice with labels  and annotations.}
+\imycom[OCR]{I really liked this way of presenting the comparison, in addition to saving space, we gained in understanding. Looks really nice!}
+ 
 }
 
 The results for the three receiver lines $y=-3,0,3\,$km are shown in
@@ -649,7 +662,7 @@ all results are available}
 %
 \tabl[btp]{comp-block}{Comparison of used CPU and RAM and of number of cells
   used to discretize the block model. \imycom[DW]{I will fill this table out
-  once we all submitted the final versions of the results.}}{
+  once we all submitted the final versions of the results.\imycom[OCR]{I can help you to fill this table and with its analysis}}}{
   \centering
 \begin{tabular}{c c c c c}  %lS[table-format=4.2]rS[table-format=4.2]rl}
   \toprule
@@ -704,9 +717,9 @@ code. Additionally, that code is a time-domain code, whereas the four codes
 under consideration here compute the results all in the frequency-domain.
 \imycom[RR]{I would delete this sentence, not that important and a bit
 redundant.\imycom[DW]{Did you refer to the last sentence or the one before? I
-think the last sentence contains quite important info.}}
+think the last sentence contains quite important info. .\imycom[OCR]{If possible, I would like to uphold this sentence. I agree with dieter, it contains relevant information.}}}
 
-The detailed reservoir model consists of 1022 by 371 by 1229 cells, totalling
+The detailed reservoir model consists of 1022 by 371 by 1229 cells\mycom[OCR]{I prefer this notation $1022 \times 371 \times 1229$. Nothing special, just format}, totalling
 to almost 466 million cells, where each cell has dimensions of 25 by 75 by
 5\,m. For the computation the model is upscaled to 515 by 563 by 310 cells,
 totalling to almost 90 million cells, where each cell has dimensions of 100 by
@@ -744,7 +757,7 @@ cross-section is currently heavily vertically exaggerated.
 We computed all all six frequencies for all components ($E_x$, $E_y$, $E_z$)
 for both inline and broadside acquisition lines. However, we show here only the
 three frequencies and the responses with the strongest amplitudes (which are
-generally used in processing), which are $E_x$ inline and broadside and $E_y$
+generally used in processing), which are $E_x$ inline and broadside, and $E_y$
 broadside. The comparison is shown in Figure~\ref{fig:results-marlim}.
 %
 \plot*{results-marlim}{width=\textwidth}{
@@ -773,7 +786,7 @@ we first need all results. E.g.}
 %
 \tabl[btp]{comp-marlim}{Comparison of used CPU and RAM and of number of cells
   used to discretize the Marlim R3D model. \imycom[DW]{I will fill this table
-  out once we all submitted the final versions of the results.}}{
+  out once we all submitted the final versions of the results.\imycom[OCR]{I can help you to fill this table and with its analysis}}}{
   \centering
 \begin{tabular}{c c c c c}  %{ls[table-format=4.2]rs[table-format=4.2]rl}
   \toprule
@@ -850,8 +863,8 @@ primary design from \cite{GEO.19.Correa} uses a regular discretisation. At
 least theoretically, the exact geometry might be reconstructed with
 unstructured meshes, but it is never possible to convert an irregular geometry
 to a regular grid without approximations. Hence, the chosen examples favoured
-the finite-difference codes, since they used either regular grids or
-octree-meshes, whereas the two finite-element codes were required to
+the FD codes, since they used either regular grids or
+octree-meshes, whereas the two FE codes were required to
 tetrahedralise the model geometries.
 
 In the first model, the necessity of discretising regular structures with
@@ -934,7 +947,11 @@ configurations to increase the reliability of the obtained results.
   (II) difficulties, (III) advantages, and (IV) disadvantages, that we
   encountered in this exercise. This includes differences from direct to
   iterative solver and differences from FE to FD codes etc. Please just jot
-  down things that come to your mind.}
+  down things that come to your mind.
+  \imycom[OCR]{ I think an important point is the user experience (modeler). I know this is an intangible element but perhaps we could add a line about it. It is my opinion}}
+  
+  
+ 
 
 \clearpage  % TODO: Just for now while drafting, remove later!
 \section{Conclusions \& Outlook}
@@ -988,7 +1005,7 @@ on unstructured meshes, and to compare how the FD codes can cope with it.
 We encourage the community to not only work on new open-source code
 developments but also to create a landscape of easily accessible benchmark
 models for increasing the number of reliable and reproducible solutions. Our
-study could provide one of the primary inputs for this task.  We are confident
+study could provide one of the primary inputs for this task. We are confident
 that the mentioned development will and should be taking place, taking into
 account the current general trend in science to open-source papers, codes or
 data.
@@ -1008,10 +1025,10 @@ actual computation model available under an open-source license.
 
 The work of D.W. was conducted within the Gitaro.JIM project funded through
 MarTERA, a EU Horizon 2020 research and innovation programme (No 728053);
-\href{https://www.martera.eu}{martera.eu}. The development of custEM as part of
+\href{https://www.martera.eu}{martera.eu}. The development of \custem as part of
 the DESMEX project was funded by the Germany Ministry for Education and
 Research (BMBF) in the framework of the research and development program
-Fona-r4 under grant 033R130D.
+Fona-r4 under grant 033R130D. The work of O.C-R. has received funding from the \textit{European Union\textquotesingle s Horizon 2020 programme} under the \textit{Marie Sklodowska-Curie} grant agreement N$^\circ$ 777778. Further, the development of \petgem has received funding from the \textit{European Union\textquotesingle s Horizon 2020 programme}, grant agreement N$^\circ$ 828947, and from the Mexican Department of Energy, CONACYT-SENER Hidrocarburos grant agreement N$^\circ$ B-S-69926. Furthermore, O.C-R. has been 65\% cofinanced by the European Regional Development Fund (ERDF) through the Interreg V-A Spain-France-Andorra program (POCTEFA2014-2020). POCTEFA aims to reinforce the economic and social integration of the French-Spanish-Andorran border. Its support is focused on developing economic, social and environmental cross-border activities through joint strategies favouring sustainable territorial development.\mycom[OCR]{My apologies for these long acks, but they are the projects in which I am participating and the BSC makes a lot of emphasis on complying verbatim with the thansk sentences (too rigorous in my opinion)}
 
 \clearpage  % TODO: Just for now while drafting, remove later!
 \section{Data}
