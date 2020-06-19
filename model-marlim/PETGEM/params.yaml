@@ -3,26 +3,26 @@
 ###############################################################################
 # Model parameters
 model:
-  mesh_file: block_layered.msh                # Mesh file (gmsh format v2)
+  mesh_file: marlim_reciprocal.vtk      # Mesh file (vtk format v2)
   basis_order: 2                        # Vector basis order (1,2,3,4,5,6)
-  frequency: 1.0                        # Frequency
-  src_position: [0., 0., -550.]   # Source position (xyz)
+  frequency: [0.125, 0.25, 0.5, 0.75, 1., 1.25]                        # Frequency
+  src_position: [0., 0., 0.]            # This information is provided by modify_marlim_input_data.py and used in run_preprocessing.py
   src_azimuth: 0                        # Source rotation in xy plane
   src_dip: 0                            # Source rotation in xz plane
-  src_current: 800.                     # Source current
-  src_length: 200.                      # Source length
+  src_current: 1.                     # Source current
+  src_length: 10.                      # Source length
   # Comment/uncomment the following lines as appropriate
   # Conductivity values for block model
-  sigma_horizontal: [.00000001, 3.3333, 1., 0.5, .001, .1, .01, .0020]   # Horizontal conductivity for each material
-  sigma_vertical: [.00000001, 3.3333, 1., .25, .001, .1, .01, .0020]     # Vertical conductivity for each material
+  sigma_horizontal: None   # Horizontal conductivity for each material (This information is provided by modify_marlim_input_data.py and used in run_preprocessing.py)
+  sigma_vertical: None     # Vertical conductivity for each material (This information is provided by modify_marlim_input_data.py and used in run_preprocessing.py)
   # Conductivity values for layered model
   #sigma_horizontal: [.00000001, 3.3333, 1., 0.5, .001, .5, .5, .5]   # Horizontal conductivity for each material
   #sigma_vertical: [.00000001, 3.3333, 1., .25, .001, .25, .25, .25]  # Vertical conductivity for each material
   # Please uncomment the following line if a file with the conductivity model is provided.
   # (1 row per element and 2 conductivity values per row (sigma_horizontal and sigma_vertical))
   # If sigma_file is provided, sigma_horizontal and sigma_vertical are ignored
-  # sigma_file: my_conductivity_file.h5
-  receivers_file: receiver_pos.h5       # Receiver positions file (xyz)
+  sigma_file: None           # This information is provided by modify_marlim_input_data.py and used in run_preprocessing.py
+  receivers_file: None       # This information is provided by modify_marlim_input_data.py and used in run_preprocessing.py
 
 # Execution parameters
 run:

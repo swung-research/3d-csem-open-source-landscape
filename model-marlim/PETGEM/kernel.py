@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Author:  Octavio Castillo Reyes
 # Contact: octavio.castillo@bsc.es
-''' **PETGEM** kernel for 3D CSEM forward modelling using higg order
+''' **PETGEM** kernel for 3D CSEM forward modelling using high order
 vector elements.
 '''
 
@@ -12,6 +12,7 @@ if __name__ == '__main__':
     import sys
     import petsc4py
     import numpy as np
+    import meshio
     # ---------------------------------------------------------------
     # PETSc init
     # ---------------------------------------------------------------
@@ -46,37 +47,59 @@ if __name__ == '__main__':
     Print.header()
 
     # ---------------------------------------------------------------
-    # Initialize preprocessing and timers
-    # ---------------------------------------------------------------
-    Print.master(' ')
-    Print.master('  Data preprocessing')
-
-    # Create a preprocessing instance and output directory
-    preprocessing = Preprocessing()
-
-    # Run preprocessing
-    preprocessing.run(inputSetup)
-
-    # ---------------------------------------------------------------
     # Initialize and execute the solver
     # ---------------------------------------------------------------
     Print.master(' ')
     Print.master('  Run modelling')
 
     # Create a solver instance
-    csem_solver = Solver()
+    frequencies = inputSetup.model.frequency
 
-    # Setup solver (import files from preprocessing stage)
-    csem_solver.setup(inputSetup)
+    for i in np.arange(len(frequencies)):
+        inputSetup.model.frequency = frequencies[i]
+        csem_solver = Solver()
 
-    # Assembly linear system
-    csem_solver.assembly(inputSetup)
+        # Setup solver (import files from preprocessing stage)
+        csem_solver.setup(inputSetup)
 
-    # Set dirichlet boundary conditions
-    csem_solver.solve()
+        # Assembly linear system
+        csem_solver.assembly(inputSetup)
 
-    # Compute electromagnetic responses
-    csem_solver.postprocess(inputSetup)
+        # Set dirichlet boundary conditions
+        csem_solver.solve()
+
+        # Compute electromagnetic responses
+        csem_solver.postprocess(inputSetup)
+
+        if parEnv.rank==0:
+            if i==0:
+                # Create file to store measures for all frequencies
+                fileID_out = h5py.File(inputSetup.output.directory+'/results.h5', 'w')
+
+                # Open file to read measures for frequency i
+                fileID_in = h5py.File(inputSetup.output.directory+'/electric_fields.h5', 'r')
+
+                data_i = fileID_in.get('electric_fields')[()].conjugate()
+
+                # Create dataset for frequency i
+                dset = fileID.create_dataset('freq'+str(frequencies[i]), data=data_i)
+
+                fileID_out.close()
+                fileID_in.close()
+            else:
+                # Create file to store measures for all frequencies
+                fileID_out = h5py.File(inputSetup.output.directory+'/results.h5', 'r')
+
+                # Open file to read measures for frequency i
+                fileID_in = h5py.File(inputSetup.output.directory+'/electric_fields.h5', 'r')
+
+                data_i = fileID_in.get('electric_fields')[()].conjugate()
+
+                # Create dataset for frequency i
+                dset = fileID.create_dataset('freq'+str(frequencies[i]), data=data_i)
+
+                fileID_out.close()
+                fileID_in.close()
 
     # ---------------------------------------------------------------
     # End of PETGEM kernel

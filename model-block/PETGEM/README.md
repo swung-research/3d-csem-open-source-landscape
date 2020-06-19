@@ -16,6 +16,7 @@ Calculate layered earth and block model results
     - params.yaml --> model parameters
     - block_layered.msh --> tetrahedral mesh
     - receiver_pos.h5 --> spatial receiver locations
+    - petsc.opts
 
    Run the following command:
 

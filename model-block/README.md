@@ -73,10 +73,6 @@ A note regarding `runtime` and `max_ram`: Only profile the solution of the
 actual system `Ax=b`. Mesh creation, model and field interpolation, and all
 other pre- and post-processing steps do not fall under this measure.
 
-=> **PETGEM**: Please save data as `data.conj()`. PETGEM has, as far as I could
-see, the opposite Fourier definition than custEM/emg3d/SimPEG. It is best we
-save it all with the same definition.
-
 
 ## Info
 
