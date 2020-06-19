@@ -1,9 +1,10 @@
 name: csem
 
 channels:
-  - defaults
   - conda-forge
+  - defaults
   - gimli
+  
 dependencies:
   - custem
   - discretize
@@ -17,6 +18,7 @@ dependencies:
   - mkl
   - numba
   - numpy
+  - pymatsolver
   - python>=3.6
   - scipy
   - scooby
