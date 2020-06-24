@@ -44,16 +44,22 @@ conda activate csem
 conda deactivate
 ```
 
+To use this environment in the Jupyter notebook, you have to register it first:
+```bash
+python -m ipykernel install --user --name csem
+```
+Then, in Jupyter, you can select it by going to `Kernel`->`Change kernel` and
+select `csem`.
+
 To completely remove the environment run
 ```bash
 conda remove --name csem --all
 ```
 
-`emg3d` requires at least Python 3.6, so this has to be the minimum version.
+`emg3d` requires at least Python 3.7, so this has to be the minimum version.
 Python 3.5 reaches EOL in September, so it does not make sense to support it
-anyway. To make it verbose to the user, I added the line `python>=3.6` to the
-`environment.yml`. We can also increase it to 3.7 if someone has a strong
-preference.
+anyway. To make it verbose to the user, I added the line `python>=3.7` to the
+`environment.yml`.
 
 ## Manuscript
 

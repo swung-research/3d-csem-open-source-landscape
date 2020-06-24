@@ -14,7 +14,7 @@ dependencies:
   - matplotlib
   - memory_profiler
   - mkl
-  - python>=3.6
+  - python>=3.7
   - scooby
   - segyio
   - xarray
