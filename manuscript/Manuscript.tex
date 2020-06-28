@@ -630,7 +630,7 @@ cell edges and fluxes on cell faces \citep{IEEE.66.Yee} (for an overview of
 discretizing Maxwell's equations, we recommend \cite{Haber2014b}). There are
 two different discretization strategies implemented for Maxwell's equations: (
 a) the EB-formulation, which discretizes the electric field ($\vec{e}$) on
-cell edges and the magnetic flux density ($\vec{h}$) on cell faces, and (b)
+cell edges and the magnetic flux density ($\vec{b}$) on cell faces, and (b)
 the HJ-formulation, which discretizes the magnetic field ($\vec{h}$) on cell
 edges and the current density ($\vec{j}$) on cell faces. In both cases the
 physical properties: electrical conductivity / resistivity and magnetic
@@ -1119,7 +1119,16 @@ configurations to increase the reliability of the obtained results.
   It is my opinion}
 }
 
+\imycom[LH]{From the discussion in slack - also a TODO on adding points on if there were any changes (or new motivation for development) based on this exercise --> goal: highlight benefits of open source collaborations.
 
+Within SimPEG: This work has motivated feature development including: (a)
+interpolation and averaging strategies from mapping physical properties on a
+fine mesh to a coarser mesh for computation and (b) new examples to include in
+the documentation for designing OcTree meshes. Furthermore, as a part of
+a broader development objective of interoperating with other
+forward-simulation engines, connecting \emg3d and \simpeg provided a
+motivating use-case for the latest refactor and release of \simpeg 0.14.0
+\citep{simpeg0.14.0}. }
 
 
 \clearpage  % TODO: Just for now while drafting, remove later!
