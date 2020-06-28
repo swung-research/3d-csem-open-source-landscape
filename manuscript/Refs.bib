@@ -927,6 +927,65 @@ volume = {0},
 year = {2019}
 }
 
+@article{Heagy2017,
+abstract = {Simulations and inversions of electromagnetic geophysical data are paramount for discerning meaningful information about the subsurface from these data. Depending on the nature of the source electromagnetic experiments may be classified as time-domain or frequency-domain. Multiple heterogeneous and sometimes anisotropic physical properties, including electrical conductivity and magnetic permeability, may need be considered in a simulation. Depending on what one wants to accomplish in an inversion, the parameters which one inverts for may be a voxel-based description of the earth or some parametric representation that must be mapped onto a simulation mesh. Each of these permutations of the electromagnetic problem has implications in a numerical implementation of the forward simulation as well as in the computation of the sensitivities, which are required when considering gradient-based inversions. This paper proposes a framework for organizing and implementing electromagnetic simulations and gradient-based inversions in a modular, extensible fashion. We take an object-oriented approach for defining and organizing each of the necessary elements in an electromagnetic simulation, including: the physical properties, sources, formulation of the discrete problem to be solved, the resulting fields and fluxes, and receivers used to sample to the electromagnetic responses. A corresponding implementation is provided as part of the open source simulation and parameter estimation project SIMPEG (http://simpeg.xyz). The application of the framework is demonstrated through two synthetic examples and one field example. The first example shows the application of the common framework for 1D time domain and frequency domain inversions. The second is a field example that demonstrates a 1D inversion of electromagnetic data collected over the Bookpurnong Irrigation District in Australia. The final example is a 3D example which shows how the modular implementation is used to compute the sensitivity for a parametric model where a transmitter is positioned inside a steel cased well.},
+archivePrefix = {arXiv},
+arxivId = {1610.00804},
+author = {Heagy, Lindsey J. and Cockett, Rowan and Kang, Seogi and Rosenkjaer, Gudni K. and Oldenburg, Douglas W.},
+doi = {10.1016/j.cageo.2017.06.018},
+eprint = {1610.00804},
+file = {:Users/lindseyjh/git/Library/1-s2.0-S0098300416303946-main.pdf:pdf},
+issn = {00983004},
+journal = {Computers and Geosciences},
+keywords = {Finite volume,Geophysics,Numerical modelling,Object oriented,Sensitivities},
+number = {July},
+pages = {1--19},
+publisher = {Elsevier Ltd},
+title = {{A framework for simulation and inversion in electromagnetics}},
+url = {http://dx.doi.org/10.1016/j.cageo.2017.06.018},
+volume = {107},
+year = {2017}
+}
+
+
+@article{Astic2020,
+abstract = {In a previous paper, we introduced a framework for carrying out petrophysically and geologically guided geophysical inversions. In that framework, petrophysical and geological information is modelled with a Gaussian Mixture Model (GMM). In the inversion, the GMM serves as a prior for the geophysical model. The formulation was confined to problems in which a single physical property model was sought, with a single geophysical dataset. In this paper, we extend that framework to jointly invert multiple geophysical datasets that depend on multiple physical properties. The petrophysical and geological information is used to couple geophysical surveys that, otherwise, rely on independent physics. This requires advancements in two areas. First, an extension from a univariate to a multivariate analysis of the petrophysical data, and their inclusion within the inverse problem, is necessary. Second, we address the practical issues of simultaneously inverting data from multiple surveys and finding a solution that acceptably reproduces each one, along with the petrophysical and geological information. To illustrate the efficacy of our approach and the advantages of carrying out multi-physics inversions, we invert synthetic gravity and magnetic data associated with a kimberlite deposit. The kimberlite pipe contains two distinct facies embedded in a host rock. Inverting the datasets individually leads to a binary geological model: background or kimberlite. A multi-physics inversion, with petrophysical information, differentiates between the two main kimberlite facies of the pipe. Through this example, we also highlight the capabilities of our framework to work with interpretive geologic assumptions when minimal quantitative information is available. In those cases, the dynamic updates of the Gaussian Mixture Model allow us to perform multi-physics inversions by learning a petrophysical model.},
+archivePrefix = {arXiv},
+arxivId = {2002.09515},
+author = {Astic, Thibaut and Heagy, Lindsey J. and Oldenburg, Douglas W.},
+eprint = {2002.09515},
+journal = {(in review) Geophysical Journal International},
+month = {feb},
+title = {{Petrophysically and geologically guided multi-physics inversion using a dynamic Gaussian mixture model}},
+url = {http://arxiv.org/abs/2002.09515},
+year = {2020}
+}
+
+@article{Haber2014,
+author = {Haber, Eldad},
+doi = {10.1137/1.9781611973808},
+file = {:Users/lindseyjh/Documents/Research/Library/EMBook.pdf:pdf},
+isbn = {978-1-61197-379-2},
+title = {{Computational Methods in Geophysical Electromagnetics}},
+url = {http://epubs.siam.org/doi/book/10.1137/1.9781611973808},
+year = {2014}
+}
+
+@article{Fournier2020,
+abstract = {Magnetic vector inversion (MVI) has received considerable attention over recent years for processing magnetic field data that are affected by remanent magnetization. However, the magnetization models obtained with current inversion algorithms are generally too smooth to be easily interpreted geologically. To address this, we have reviewed the MVI formulated in a spherical coordinate system. We tackle convergence issues posed by the nonlinear transformation from Cartesian to spherical coordinates by using an iterative sensitivity weighting approach and a scaling of the spherical parameters. The spherical formulation allows us to impose sparsity assumptions on the magnitude and direction of magnetization independently and, as a result, the inversion recovers simpler and more coherent magnetization orientations. The numerical implementation of our algorithm on large-scale problems is facilitated by discretizing the forward problem using tiled octree meshes. All of our results are generated using the open-source SimPEG software. We determine the enhanced capabilities of our algorithm on a large airborne magnetic survey collected over the Kevitsa Ni-Cu-platinum group elements (PGE) deposit. The recovered magnetization direction inside the ultramafic intrusion and in the host stratigraphy is consistent with laboratory measurements and provides evidence for tectonic deformation.},
+author = {Fournier, Dominique and Heagy, Lindsey J. and Oldenburg, Douglas W.},
+doi = {10.1190/geo2019-0244.1},
+issn = {0016-8033},
+journal = {GEOPHYSICS},
+month = {may},
+number = {3},
+pages = {J33--J49},
+title = {{Sparse magnetic vector inversion in spherical coordinates}},
+url = {https://library.seg.org/doi/10.1190/geo2019-0244.1},
+volume = {85},
+year = {2020}
+}
+
 
 
 

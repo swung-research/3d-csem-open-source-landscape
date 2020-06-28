@@ -386,6 +386,19 @@ create a landscape of open-source benchmark models.
   we just don't know them or at least I'm not familiar with them.}
 
 
+\imycom[LH]{Just a thought, but right now we don't state Maxwell's equations anywhere! That seems like something we should do :) That also provides an easy space for talking about Fourier Transform conventions and such too.
+
+% Following the conventions of Ward and Hohmann \cite{Ward1988}, the quasi-static Maxwell's equations are
+
+% \begin{equation}
+% \begin{split}
+%     \nabla \times \vec{E} &= -i \omega\vec{B}  \\
+%     \nabla \times \vec{H} &= \vec{J}
+% \end{split}
+% \label{eq:maxwell_freq_quasi}
+% \end{equation}
+}
+
 \clearpage  % TODO: Just for now while drafting, remove later!
 \section{Codes}
 
@@ -398,7 +411,7 @@ create a landscape of open-source benchmark models.
 The four codes under consideration are, in alphabetical order, \custem
 \citep{GEO.19.Rochlitz}, \emg3d \citep{JOSS.19.Werthmuller}, \petgem
 \citep{CAG.18.CastilloReyes, GJI.19.CastilloReyes}, and \simpeg
-\citep{CAG.15.Cockett}. All four codes have their user-facing routines written
+\citep{CAG.15.Cockett, Heagy2017}. All four codes have their user-facing routines written
 in Python; all of them make heavy use of \texttt{NumPy}
 \citep{CSE.11.VanDerWalt} and \texttt{SciPy} \citep{NM.20.Virtanen}. The four
 of them are “modern” open-source projects, meaning that they come with both, an
@@ -410,17 +423,17 @@ Docker, or pip significantly supported us to make our codes easily available
 and installable without any user-side compilations. Each one can be downloaded
 and installed with a single command.
 
-In the following a quick rundown of the codes. It is, however, beyond the scope
+In the following, we provide a quick overview of the codes. It is, however, beyond the scope
 of this article to go into every detail of the different modellers, and we
 refer to their documentations for more details. An overview comparison of the
 different codes is given in Table~\ref{tbl:codecomparison}. All codes have in
-common that they solve the\mycom[DW]{are we all using the weak form?} weak
+common that they solve the\mycom[DW]{are we all using the weak form?}\mycom[LH]{SimPEG uses weak form} weak
 formulation of Maxwell's equation in its differential form (DE) under the
 quasistatic or\mycom[DW]{are we all using the diff. approx?}\mycom[OCR]{petgem
 consider the weak work of maxwell equations in their diffusive form
-(quasi-static approximation)} diffusive approximation, hence neglecting
+(quasi-static approximation)}\mycom[LH]{SimPEG uses quasistatic approx.} diffusive approximation, hence neglecting
 displacement currents. The machines on which the different codes were run are
-listed in Table~\ref{tbl:machines}, together with the responsible operator.
+listed in Table~\ref{tbl:machines}\mycom[LH]{SimPEG also interfaces to the scipy solvers (but in practice those are use much less than Pardiso / mumps)}, together with the responsible operator.
 
 \tabl[btp]{codecomparison}{Comparison of the four codes under consideration.
   Note that \emg3d is a solver on its own, while the other codes implement
@@ -591,10 +604,48 @@ the long-term, the obvious next step is to move to 3D CSEM data inversion.
 
 \subsection{SimPEG}
 
-TODO
+\simpeg is a modular toolbox for simulations and gradient based inversions in
+geophysics. Current functionality includes modelling and inversion
+capabilities for gravity, magnetics, direct current resistivity, induced
+polarization, electromagnetics (time, frequency, as well as natural sources,
+e.g. magnetotellurics), and fluid flow (Richards equation). It is a community
+driven project that aims to support researchers by providing a flexible,
+extensible framework and to facilitate integration of data sets from a variety
+of geophysical methods, including joint inversions \citep{Astic2020}, by
+providing a common interface to each method.
+
+Meshes and finite volume differential operators are implemented in the
+\texttt{discretize} package. It currently includes tensor, OcTree,
+cylindrical, and logically rectangular meshes. Each mesh type inherits from a
+common structure and uses the same naming conventions for methods and
+properties. This allows us to decouple the implementation of a discretized
+partial differential equation from the details of the mesh geometry and
+therefore we can write a single implementation of discretized partial
+differential equation (or set of partial differential equations) in \simpeg
+that will support all mesh types implemented in \texttt{discretize}.
+
+The electromagnetics implementations use a staggered grid finite volume
+approach where physical properties are discretized at cell centers, fields on
+cell edges and fluxes on cell faces \citep{IEEE.66.Yee} (for an overview of
+discretizing Maxwell's equations, we recommend \cite{Haber2014}). There are
+two different discretization strategies implemented for Maxwell's equations: (
+a) the EB-formulation, which discretizes the electric field ($\vec{e}$) on
+cell edges and the magnetic flux density ($\vec{h}$) on cell faces, and (b)
+the HJ-formulation, which discretizes the magnetic field ($\vec{h}$) on cell
+edges and the current density ($\vec{j}$) on cell faces. In both cases the
+physical properties: electrical conductivity / resistivity and magnetic
+permeability are discretized at cell centers. Having multiple implementations
+allows for testing that compares results from each approach, as well as the
+representation of both electrical and magnetic sources on cylindrically
+symmetric meshes. \simpeg supports variable magnetic permeability and
+full-tensor anisotropy for the physical properties.
+
+% Support for domain decomposition approaches (see for example \cite{Fournier2020})
+
+\simpeg interfaces to various solvers including \texttt{PARDISO} \citep{FGCS.04.Schenk}, \texttt{MUMPS} \citep{SIAM.01.Amestoy}, as well as those implemented in the \texttt{scipy.sparse.linalg} module \citep{NM.20.Virtanen}. For problems with many sources (and reciprocity is not a natural solution, e.g. in 3D airborne EM), \simpeg contains machinery for domain-decomposition approaches; see for example \cite{Fournier2020}.
 
 
-\clearpage  % TODO: Just for now while drafting, remove later!
+\clearpage  % TODO: Just for now while drafting, remove late{}r!{}
 \section{Numerical Verifications}
 
 We computed the responses for two different models to verify that all different
