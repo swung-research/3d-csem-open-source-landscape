@@ -15,7 +15,7 @@ dependencies:
   - memory_profiler
   - mkl
   - pymatsolver
-  - python>=3.6
+  - python>=3.7
   - scooby
   - segyio
   - simpeg
