@@ -2,8 +2,8 @@ name: csem
 
 channels:
   - conda-forge
-  - gimli
   - defaults
+  - gimli
 dependencies:
   - custem
   - discretize
@@ -14,7 +14,9 @@ dependencies:
   - matplotlib
   - memory_profiler
   - mkl
+  - pymatsolver
   - python>=3.7
   - scooby
   - segyio
+  - simpeg
   - xarray

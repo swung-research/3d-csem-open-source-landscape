@@ -11,7 +11,7 @@
 % \usepackage[textsize=footnotesize, textwidth=2.8cm, disable]{todonotes}
 
 % Additional packages to geophysics.cls
-\usepackage[UKenglish]{babel}
+% \usepackage[UKenglish]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
@@ -77,7 +77,7 @@ Stevinweg 1 / PO-box 5048,
 2628 CN Delft;\\
 \footnotemark[2]TODO\\
 \footnotemark[3]TODO\\
-\footnotemark[4]TODO\\
+\footnotemark[4]University of California Berkeley, Department of Statistics\\
 E-mail: \href{mailto:Dieter@Werthmuller.org}{Dieter@Werthmuller.org};\\
 \textbf{Keywords}: CSEM, Open-Source, 3D modelling, FD, FE.
 }
@@ -144,6 +144,10 @@ publish the first petgem version (2 years ago). The answer was: "manuscript
 outside of journal's scope". In this sense I agree with Raphael. My vote is for
 SIG}
 }
+\imycom[LH]{SIG does look like a good option. Given the spirit of the paper, it
+would be nice to publish it open-access. Does anyone have a sense of how much that
+costs with SIG? I could likely get partial funding towards this. Solid Earth
+might be a nice option in that case because it is open-access by default. }
 
 \section{Introduction}
 
@@ -157,6 +161,7 @@ SIG}
   However, I don't think it matters at the moment, because it will depend to
   what journal we submit. With an appropriate spellchecker that should be a
   quick thing then.}}
+\imycom[LH]{It's true! Canadian English ends up being an interesting hybrid(!)}
 
 \imycom[OCR]{In general, I believe that the content is adequate and the ideas
 are clear and in accordance with the objective that we have initially set.
@@ -167,7 +172,7 @@ weak point depending on how we explain it. I know that perhaps it is not
 serious, I only make this comment so that the speech justifies the facts. }
 
 Controlled-source electromagnetic (CSEM) measurements are a frequently applied
-method in various geophysical exploration fields, such as geothermal and
+method in various geophysical exploration fields, such as geothermal,
 groundwater, oil and gas, mining, civil engineering, or geo-hazards. Modelling
 these electromagnetic fields is therefore of great interest to design survey
 layouts, to understand the measured data, and for inversion purposes.
@@ -176,7 +181,10 @@ appear as early as the 1970's and 1980's. These early publications were
 integral equation (IE) methods, having an anomaly embedded within a layered
 medium, mostly for loop-loop type transient EM measurements
 \citep{GJI.74.Raiche, GEO.75.Hohmann, GJI.82.Das, GEO.86.Newman} and
-magnetotelluric (MT) measurements \citep{GEO.84.Wannamaker}.
+magnetotelluric (MT) measurements \citep{GEO.84.Wannamaker}. \cite{Ward1988}
+assemble many of these solutions in ``Electromagnetic Theory for Geophysical
+Applications,'' which is widely viewed as an authoritative publication on
+electromagnetic geophysics.
 
 In the 1990's, computer became sufficiently powerful that 3D modelling gained
 traction, which resulted amongst other publications in the book
@@ -187,6 +195,8 @@ time-domain modelling using a Yee grid and a global Krylov subspace
 approximation; and \cite{RS.96.Alumbaugh, GJI.97.Newman}, low-to-high frequency
 computation on massively parallel computers.
 
+\imycom[LH]{I added a couple citations here - I think the Haber 2001 is important to include in the FV list (if we want to remove the 2007 one to reduce duplicating authors, I think that is okay as we cite it later)}
+
 The continuous improvement of computing power and the CSEM boom in the early
 2000's in the hydrocarbon industry led to a wealth of developed numerical
 solutions and according publications. The most common applied methods to solve
@@ -196,13 +206,13 @@ different variations of the differential equation (DE) method, such as finite
 differences (FD) \citep{IEEE.66.Yee, GEO.93.Wang, RSC.94.Mackie, RS.94.Druskin,
 GEO.09.Streich, CAG.13.Sommer}, finite elements (FE) \citep{GEO.04.Commer,
 GJI.11.Schwarzbach,GEO.12.daSilva, GJI.13.Grayver, GJI.13.Puzyrev,
-SEG.16.Zhang}, and finite volumes (FV) \citep{EM.90.Madsen, PIER.01.Clemens,
+SEG.16.Zhang}, and finite volumes (FV) \citep{EM.90.Madsen, Haber2001,PIER.01.Clemens,
 GP.06.Mulder, ECP.07.Haber, GEO.14.Jahandari}. There are also many different
 types of discretisation, where the most common ones are regular grids
 (cartesian, rectilinear), mostly using a Yee grid \citep{IEEE.66.Yee} or a
 Lebedev grid \citep{CMMP.64.Lebedev}, but also unstructured tetrahedral grids
 \citep{SEG.16.Zhang, CAG.17.Cai}, hexagonal meshes \citep{CAG.14.Cai}, or
-OcTree meshes\citep{ECP.07.Haber}. Very well written overviews about the
+OcTree meshes \citep{ECP.07.Haber}. Very well written overviews about the
 different approaches to 3D EM modelling are given by \cite{SG.05.Avdeev} and
 \cite{SG.10.Borner}.
 
@@ -216,8 +226,38 @@ GJI.15.Jaysaval}, or a combination of both, so-called hybrid solvers
 \citep{GEO.18.Liu}. The solvers often use preconditioners such as the multigrid
 method \citep{SIAM.02.Aruliah, GP.06.Mulder, GJI.16.Jaysaval}.
 
+\imycom[LH]{Here, I think that there
+is a point to make about duplication of efforts vs. new methodologies. Often
+the development of a new methodology requires that a new implementation be
+built from scratch. As a field though, we have matured to a point where we
+know what the methods / approaches are, and much of the next stage of
+advancements will be more incremental. (We argued this in Oldenburg et al,
+2019 - so to self-cite ;) (doi: https://doi.org/10.1080/08123985.2019.1580118,
+arxiv: https://arxiv.org/pdf/1902.08245.pdf). See what you think of the
+following framing for the next paragraph - we can discuss:
+
+Many of the advancements made in the EM modelling community over the past
+decades have required that authors develop new implementation from scratch.
+These codes often provided the research group or company with a competitive
+advantage for a time, and thus the source codes were often kept internal. In
+some cases, executables have been made available for academic purposes upon
+request or to sponsoring consortium members. As the field continues to mature,
+advancements become more incremental, and particularly in an applied field,
+many advancements are driven by new use-cases and applications that were not
+considered by the original authors. In his review on EM modelling and
+inversion \cite{SG.05.Avdeev} concludes with the
+following statement: «\emph{The most important challenge that faces the EM
+community today is to convince software developers to put their 3-D EM forward
+and inverse solutions into the public domain, at least after some time. This
+would have a strong impact on the whole subject and the developers would
+benefit from feedback regarding the real needs of the end-users.}» Further,
+\cite{Oldenburg2019} argue that an open-source paradigm has the potential to
+accelerate multidisciplinary research by encouraging the development of
+modular, interoperable tools that are supported by a community of researchers.
+}
+
 Probably the main reason for the numerous amount of code developments was
-already outlined by \cite{SG.05.Avdeev}, who finished his review with the
+outlined by \cite{SG.05.Avdeev}, who finished his review with the
 following statement: «\emph{The most important challenge that faces the EM
 community today is to convince software developers to put their 3-D EM forward
 and inverse solutions into the public domain, at least after some time. This
@@ -226,10 +266,42 @@ benefit from feedback regarding the real needs of the end-users.}» Some major
 exploration service companies, as well as certain research consortia and
 research groups, have their own 3D CSEM codes, but how about codes that are
 open-source? Academic codes were traditionally often available upon request by
-authors. Codes distributed that way were often provided with the request to not
+authors. Codes distributed that way are often provided with the request that users not
 share the code, and they often come without a license attached which means that
 they are, legally, not open-source. Also, at times there can be significant
 hurdles to install a code.
+
+\imycom[LH]{Here, I think it is worth discussing the distinction between
+open-source: source code available + openly licensed (with an Open Source
+Initiative (OSI, https://opensource.org) approved license), open-development:
+code is versioned, development and issue tracking happens publicly (e.g. on
+GitHub or similar), and open communities: actively soliciting contributions
+and pull requests which change the code. and then the push towards open
+development / open communities motivates best practices including continuous
+integration, documentation, etc. See what you think of my suggested adaptation
+below. There might be a few citations we can add for an open model of development / open community project. I will do some digging. Again, happy to discuss.
+
+In many domains of science, it is becoming more common for researchers to
+release source-code with an open license that allows use and modification (
+e.g. see the Open Source Initiative approved licenses:
+\href{https://opensource.org/licenses}{https://opensource.org/licenses}). This
+is an important step for improving reproducibility of research: «\emph{to
+provide the means by which the reader can verify the validity of the results
+and make use of them in further research}» \citep{GEO.17.Broggini}. Going a
+step beyond releasing open-source software, many groups adopt an open model of
+development where code is hosted and versioned in an online repository,
+all changes are public, and users can engage by submitting and track issues.
+Community oriented projects further engagement by encouraging pull-requests,
+which are suggested changes to the code. Successful, well-maintained projects
+often have unit-testing and continuous integration that runs those tests with
+any changes to the code. Additionally, documentation that includes examples
+and tutorials is an important component for on-boarding new users and
+contributors. As a result, in many areas of the geosciences, we are seeing a
+shift away from a one-way distribution of code towards building global
+communities around open projects. Related projects within the
+realm of geophysical exploration are e.g., \texttt{pyGIMLi}
+\citep{CAG.17.Rucker} or \texttt{Fatiando} \citep{JOSS.18.Uieda}
+}
 
 The meaning of the term open-source evolved rapidly in the last two decades.
 Today, open-source generally not only means that a code is available (with a
@@ -250,16 +322,17 @@ realm of geophysical exploration are e.g., \texttt{pyGIMLi}
 \imycom[RR]{no thoughts about geophysics, but there are many projects for
   related topics such as gmt, gis, mesh-gen}
 \imycom[OCR]{No idea from my side}
+\imycom[LH]{Could we cite: https://github.com/softwareunderground/awesome-open-geoscience ?. Maybe we could ask them to put it on zenodo so it has a doi?? Also Madagascar in seismic?}
 }
 
-We continue addressing the topic of open-source developments with respect to 3D
+In this paper, we discuss the topic of open-source developments with respect to 3D
 CSEM modeling. Even though it comprises still the minority of developments, the
-landscape in this field of research changed in the last five years. Before,
+landscape in this field of research changed in the last five years. Previously,
 there were only closed-source codes owned by companies or  consortia and
 individual projects, often without proper documentation, that could be
 requested from the authors. We introduce and compare four recent open-source
 projects with focus on 3D CSEM modeling. All presented codes are in the Python
-ecosystem and use either the FD method on structured grids or the FE method on
+ecosystem and use either the FV method on structured grids or the FE method on
 unstructured tetrahedral meshes.
 
 Furthermore, we deal with the topic of verification. \cite{GJI.13.Miensopust}
@@ -270,21 +343,21 @@ similar exercise for CSEM codes. We want our efforts to help to ensure the
 reliability of simulations, not only carried out with the available open-source
 codes, but also for individual closed-source projects. Analytical and
 semi-analytical solutions only exist for simple halfspace or layered-Earth
-models, which served mostly to verify new codes. Beyond them, the only
+models, which served mostly to verify new codes. Beyond these simple models, the only
 objective possibility to ensure the accuracy of solutions is by comparing
 results from different modellers. If different discretisations and
 implementations of Maxwell's equations yield the same result, it gives
 confidence in their accuracy.
 
 We simulate EM fields for a layered background model with vertical transverse
-isotropy, containing three blocks, and the complex marine Marlim R3D model.
+isotropy, containing three blocks, as well as for the complex marine Marlim R3D model.
 These two model designs as well as the corresponding results from four
 different codes provide a benchmark for new codes to be compared to and
 validated with. In the following section, we introduce the codes under
 consideration. Afterwards, we present the considered benchmark cases in detail
 and present the modeling results of our four codes in terms of accuracy and
 computational performance. Beyond that, we extensively discuss important points
-that control the performance and suitability of our FD and FE codes, including
+that control the performance and suitability of our FV and FE codes, including
 mainly considerations about the mesh design and the choice of solvers. We
 conclude with a summary of our results and a motivation for the EM community to
 not only continue to extend the landscape of open-source codes but to also
@@ -313,6 +386,19 @@ create a landscape of open-source benchmark models.
   we just don't know them or at least I'm not familiar with them.}
 
 
+\imycom[LH]{Just a thought, but right now we don't state Maxwell's equations anywhere! That seems like something we should do :) That also provides an easy space for talking about Fourier Transform conventions and such too.
+
+% Following the conventions of Ward and Hohmann \cite{Ward1988}, the quasi-static Maxwell's equations are
+
+% \begin{equation}
+% \begin{split}
+%     \nabla \times \vec{E} &= -i \omega\vec{B}  \\
+%     \nabla \times \vec{H} &= \vec{J}
+% \end{split}
+% \label{eq:maxwell_freq_quasi}
+% \end{equation}
+}
+
 \clearpage  % TODO: Just for now while drafting, remove later!
 \section{Codes}
 
@@ -325,7 +411,7 @@ create a landscape of open-source benchmark models.
 The four codes under consideration are, in alphabetical order, \custem
 \citep{GEO.19.Rochlitz}, \emg3d \citep{JOSS.19.Werthmuller}, \petgem
 \citep{CAG.18.CastilloReyes, GJI.19.CastilloReyes}, and \simpeg
-\citep{CAG.15.Cockett}. All four codes have their user-facing routines written
+\citep{CAG.15.Cockett, Heagy2017}. All four codes have their user-facing routines written
 in Python; all of them make heavy use of \texttt{NumPy}
 \citep{CSE.11.VanDerWalt} and \texttt{SciPy} \citep{NM.20.Virtanen}. The four
 of them are “modern” open-source projects, meaning that they come with both, an
@@ -337,17 +423,17 @@ Docker, or pip significantly supported us to make our codes easily available
 and installable without any user-side compilations. Each one can be downloaded
 and installed with a single command.
 
-In the following a quick rundown of the codes. It is, however, beyond the scope
+In the following, we provide a quick overview of the codes. It is, however, beyond the scope
 of this article to go into every detail of the different modellers, and we
 refer to their documentations for more details. An overview comparison of the
 different codes is given in Table~\ref{tbl:codecomparison}. All codes have in
-common that they solve the\mycom[DW]{are we all using the weak form?} weak
+common that they solve the\mycom[DW]{are we all using the weak form?}\mycom[LH]{SimPEG uses weak form} weak
 formulation of Maxwell's equation in its differential form (DE) under the
 quasistatic or\mycom[DW]{are we all using the diff. approx?}\mycom[OCR]{petgem
 consider the weak work of maxwell equations in their diffusive form
-(quasi-static approximation)} diffusive approximation, hence neglecting
+(quasi-static approximation)}\mycom[LH]{SimPEG uses quasistatic approx.} diffusive approximation, hence neglecting
 displacement currents. The machines on which the different codes were run are
-listed in Table~\ref{tbl:machines}, together with the responsible operator.
+listed in Table~\ref{tbl:machines}\mycom[LH]{SimPEG also interfaces to the scipy solvers (but in practice those are use much less than Pardiso / mumps)}, together with the responsible operator.
 
 \tabl[btp]{codecomparison}{Comparison of the four codes under consideration.
   Note that \emg3d is a solver on its own, while the other codes implement
@@ -518,10 +604,48 @@ the long-term, the obvious next step is to move to 3D CSEM data inversion.
 
 \subsection{SimPEG}
 
-TODO
+\simpeg is a modular toolbox for simulations and gradient based inversions in
+geophysics. Current functionality includes modelling and inversion
+capabilities for gravity, magnetics, direct current resistivity, induced
+polarization, electromagnetics (time, frequency, as well as natural sources,
+e.g. magnetotellurics), and fluid flow (Richards equation). It is a community
+driven project that aims to support researchers by providing a flexible,
+extensible framework and to facilitate integration of data sets from a variety
+of geophysical methods, including joint inversions \citep{Astic2020}, by
+providing a common interface to each method.
+
+Meshes and finite volume differential operators are implemented in the
+\texttt{discretize} package. It currently includes tensor, OcTree,
+cylindrical, and logically rectangular meshes. Each mesh type inherits from a
+common structure and uses the same naming conventions for methods and
+properties. This allows us to decouple the implementation of a discretized
+partial differential equation from the details of the mesh geometry and
+therefore we can write a single implementation of discretized partial
+differential equation (or set of partial differential equations) in \simpeg
+that will support all mesh types implemented in \texttt{discretize}.
+
+The electromagnetics implementations use a staggered grid finite volume
+approach where physical properties are discretized at cell centers, fields on
+cell edges and fluxes on cell faces \citep{IEEE.66.Yee} (for an overview of
+discretizing Maxwell's equations, we recommend \cite{Haber2014b}). There are
+two different discretization strategies implemented for Maxwell's equations: (
+a) the EB-formulation, which discretizes the electric field ($\vec{e}$) on
+cell edges and the magnetic flux density ($\vec{b}$) on cell faces, and (b)
+the HJ-formulation, which discretizes the magnetic field ($\vec{h}$) on cell
+edges and the current density ($\vec{j}$) on cell faces. In both cases the
+physical properties: electrical conductivity / resistivity and magnetic
+permeability are discretized at cell centers. Having multiple implementations
+allows for testing that compares results from each approach, as well as the
+representation of both electrical and magnetic sources on cylindrically
+symmetric meshes. \simpeg supports variable magnetic permeability and
+full-tensor anisotropy for the physical properties.
+
+% Support for domain decomposition approaches (see for example \cite{Fournier2020})
+
+\simpeg interfaces to various solvers including \texttt{PARDISO} \citep{FGCS.04.Schenk}, \texttt{MUMPS} \citep{SIAM.01.Amestoy}, as well as those implemented in the \texttt{scipy.sparse.linalg} module \citep{NM.20.Virtanen}. For problems with many sources (and reciprocity is not a natural solution, e.g. in 3D airborne EM), \simpeg contains machinery for domain-decomposition approaches; see for example \cite{Fournier2020}.
 
 
-\clearpage  % TODO: Just for now while drafting, remove later!
+\clearpage  % TODO: Just for now while drafting, remove late{}r!{}
 \section{Numerical Verifications}
 
 We computed the responses for two different models to verify that all different
@@ -995,7 +1119,16 @@ configurations to increase the reliability of the obtained results.
   It is my opinion}
 }
 
+\imycom[LH]{From the discussion in slack - also a TODO on adding points on if there were any changes (or new motivation for development) based on this exercise --> goal: highlight benefits of open source collaborations.
 
+Within SimPEG: This work has motivated feature development including: (a)
+interpolation and averaging strategies from mapping physical properties on a
+fine mesh to a coarser mesh for computation and (b) new examples to include in
+the documentation for designing OcTree meshes. Furthermore, as a part of
+a broader development objective of interoperating with other
+forward-simulation engines, connecting \emg3d and \simpeg provided a
+motivating use-case for the latest refactor and release of \simpeg 0.14.0
+\citep{simpeg0.14.0}. }
 
 
 \clearpage  % TODO: Just for now while drafting, remove later!
