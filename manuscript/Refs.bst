@@ -1,7 +1,9 @@
 %
-% This file is a modified version of seg.bst. The only change is that the field
-% <NOTE> is not in parenthesis, starts with a semicolon, and finishes with a
-% dot.
+% This file is a modified version of seg.bst. There are two changes:
+% - Replace \bf and \it by \bfseries and \itshape,
+%   see https://github.com/SEGTeX/texmf/pull/6
+% - Remove the parenthesis around the field <NOTE>, start it with a
+%   semicolon, and finish it with a dot.
 %
 % BibTeX `seglike' bibliography style (29-Apr-08 version)
 % Adapted from the `apalike' style, 24-jan-88 version; for BibTeX version 0.99a.
@@ -729,10 +731,11 @@ FUNCTION {format.booktitle}
 
 %%						%% Put note in parentheses
 %     { "(" note * ")" * }
+%     { "; " * note * "" * }  %% Caused "You can't pop an empty literal stack for entry"-errors
 FUNCTION {format.note}
 { note empty$
     { "" }
-    { "; " * note * "" * }
+    { "; " * note * "" }
   if$
 }
 %%                                                  new in seglike.bst
