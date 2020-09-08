@@ -5,7 +5,7 @@ channels:
   - gimli
 dependencies:
   - custem
-  - discretize
+  - discretize>=0.5.1
   - emg3d
   - empymod
   - h5netcdf
