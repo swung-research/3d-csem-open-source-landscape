@@ -42,43 +42,34 @@
 \newcommand{\imycom}[2][]{\todo[inline]{\textbf{\uppercase{[#1]}}:~#2}}
 \newcommand{\itodo}[1]{\todo[inline]{\sffamily #1}}
 
-\begin{document}
-
-\title{Open-source landscape for 3D CSEM modelling}
-
 \renewcommand{\thefootnote}{\fnsymbol{footnote}}
 
-\ms{}  % ARTICLE-ID
+\begin{document}
 
+% META INFO
+\title{Open-source landscape for 3D CSEM modelling}
+
+% ARTICLE-ID
+\ms{}
+
+% ADDRESSES
 \address{
-\footnotemark[1]%
-TU Delft,
-Building 23,
-Stevinweg 1 / PO-box 5048,
-2628 CN Delft (NL);\\
-\footnotemark[2]%
-Leibniz Institut for Applied Geophysics,
-Stilleweg 2,
-30655 Hannover (DE);\\
-\footnotemark[3]%
-Barcelona Supercomputing Center (BSC),
-Nexus II Building c/Jordi Girona, 29,
-08034 Barcelona (ES);\\
-\footnotemark[4]%
-University of California Berkeley,
-Department of Statistics (USA).\\
-E-mail: \href{mailto:Dieter@Werthmuller.org}{Dieter@Werthmuller.org};\\
-\textbf{Keywords}: CSEM, Open-Source, 3D modelling, FV, FE.
+  \footnotemark[1]TU Delft, Building 23, Stevinweg 1 / PO-box 5048, 2628 CN Delft (NL);\\
+  \footnotemark[2]Leibniz Institut for Applied Geophysics, Stilleweg 2, 30655 Hannover (DE);\\
+  \footnotemark[3]Barcelona Supercomputing Center (BSC), Nexus II Building c/Jordi Girona, 29, 08034 Barcelona (ES);\\
+  \footnotemark[4]University of California Berkeley, Department of Statistics (USA).\\
+  E-mail: \href{mailto:Dieter@Werthmuller.org}{Dieter@Werthmuller.org};\\
+  \textbf{Keywords}: CSEM, Open-Source, 3D modelling, FV, FE.
 }
-
-
+% AUTHORS
 \author{%
-Dieter Werthmüller\footnotemark[1], %            orcid: 0000-0002-8575-2484
-Raphael Rochlitz\footnotemark[2], %              orcid: 0000-0002-5132-916X
-Octavio Castillo-Reyes\footnotemark[3], and %    orcid: 0000-0003-4271-5015
-Lindsey Heagy\footnotemark[4] %                  orcid: 0000-0002-1551-5926
+  Dieter Werthmüller\footnotemark[1],          % orcid: 0000-0002-8575-2484
+  Raphael Rochlitz\footnotemark[2],            % orcid: 0000-0002-5132-916X
+  Octavio Castillo-Reyes\footnotemark[3], and  % orcid: 0000-0003-4271-5015
+  Lindsey Heagy\footnotemark[4]                % orcid: 0000-0002-1551-5926
 }
 
+% HEADER / FOOTER
 \footer{}
 \lefthead{Werthmüller et al.}
 \righthead{Open-source 3D CSEM modelling}
@@ -86,65 +77,59 @@ Lindsey Heagy\footnotemark[4] %                  orcid: 0000-0002-1551-5926
 \maketitle
 
 \begin{abstract}
-%
-Large-scale modelling of three-dimensional (3D) controlled-source electromagnetic (CSEM) responses used to be feasible only for large companies and research consortia. However, this changed over the last few years, and today there exists a selection of different open-source codes which are up to the task.
-%
-We have a closer look at four different open-source 3D CSEM codes, where in all cases at least the user-facing functionality is written in Python. Two of the codes use finite volumes and the other two use finite elements. For the modelling we consider three different mesh-types, simple tensor meshes, unstructured tetrahedral meshes, and octree meshes. Two models are used to compare the codes, a layered background containing three resistive blocks, and Marlim R3D, a complex, real-world, open-source resistivity data.
-%
-The comparison shows that all four codes are able to compute the different models to sufficient precision. The biggest difference between the codes are actually the used discretization. The required runtime and memory varies greatly between the codes. However, these requirements depend mainly on the underlying solver, and not on the actual CSEM codes.
-%
-The collaboration of four code maintainer trying to achieve the same task brought in the end all four codes a significant step further. We hope that these results may be useful for the entire CSEM community, and we invite and encourage the community to make more code, modelling scripts, and results publicly available. For a start, all the scripts to reproduce our shown results are available.
-%
+% The (points) are from Mahrer (1993), Geophysics, Some Considerations When Abstracting; DOI: 10.1190/1.58010001.1
+% (1) principal objectives and scope of the work
+Large-scale modelling of three-dimensional (3D) controlled-source electromagnetic (CSEM) responses used to be feasible only for large companies and research consortia. However, this has changed over the last few years, and today there exists a selection of different open-source codes which are up to the task. We have a closer look at four different ones, where in all cases at least the user-facing functionality is written in Python.
+% (2) methodology
+For the numerical comparison we choose three models, a layered background, ones on its own and ones containing three resistive blocks, and Marlim R3D, a complex, anisotropic, real-world and open-source resistivity model. The analysis includes three different mesh-types, simple tensor meshes, octree meshes, and unstructured tetrahedral meshes. Two of the codes use finite volumes and the other two use finite elements.
+% (3) results
+The comparison shows that all four codes are able to compute the different models to sufficient precision. The biggest difference between codes is actually the discretization and the ease of creating a suitable mesh, particularly as that part often takes much more time than the actual computation. The required runtime and memory varies greatly between the codes. However, these depend mainly on the underlying solver, and not on the actual CSEM codes.
+% (4) conclusions
+The collaboration of four code maintainer trying to achieve the same task brought in the end all four codes a significant step further. We hope that these results may be useful for the entire CSEM community at large, and we invite and encourage the community to make more code, modelling scripts, and results publicly available. All our scripts to reproduce the shown results are open-source.
 \end{abstract}
 
-\itodo{We probably should be careful to not mention the actual code names too often. I also removed them from the abstract.}
-
-\itodo{Notes on orthography: I settled on discretize with a "z". My dictionary says that discretize ("z") is AE and discretise ("s") is BE, but that "z" is also used in BE in mathematical contexts. Is that fine or any other opinions?}
+\newpage
+\itodo{\hfill$\Downarrow$\hfill$\Downarrow$\hfill List of things ToDo, Notes, etc\hfill$\Downarrow$\hfill$\Downarrow$\hfill~}
+\begin{itemize}
+    \item Notes on orthography: I settled on discretize with a «z». My dictionary says that discreti{\color{red}\bfseries z}e is AE and discreti{\color{red}\bfseries s}e is BE, but that «z» is also used in BE in mathematical contexts. Is that fine or any other opinions?
+    \item We probably should be careful to not mention the actual code names too often. E.g., I removed them from the abstract.
+    \item I tried to avoid double reference. E.g., SciPy, MUMPS, pyGIMLi: I referenced them the first time they are mentioned, and not afterwards. Current exceptions: Miensopust et al., 2013, is cited twice.
+\end{itemize}
+\itodo{\hfill$\Uparrow$\hfill$\Uparrow$\hfill List of things ToDo, Notes, etc\hfill$\Uparrow$\hfill$\Uparrow$\hfill~}
+\newpage
 
 \section{Introduction}
 
-Controlled-source electromagnetic (CSEM) measurements are a frequently applied method in various geophysical exploration fields, such as geothermal, groundwater, oil and gas, mining, civil engineering, or geo-hazards. Modelling these electromagnetic fields is therefore of great interest to design survey layouts, to understand the measured data, and for inversion purposes. Publications regarding 3D modelling in electromagnetic methods started to appear as early as the 1970's and 1980's. These early publications were integral equation (IE) methods, having an anomaly embedded within a layered medium, mostly for loop-loop type transient EM measurements \citep{GJI.74.Raiche, GEO.75.Hohmann, GJI.82.Das, GEO.86.Newman} and magnetotelluric (MT) measurements \citep{GEO.84.Wannamaker}. \cite{B.SEG.88.Ward} assemble many of these solutions in \emph{Electromagnetic Theory for Geophysical Applications}, which is widely viewed as an authoritative publication on electromagnetic geophysics.
+Controlled-source electromagnetic (CSEM) measurements are a frequently applied method in various geophysical exploration fields, such as geothermal, groundwater, oil and gas, mining, civil engineering, or geo-hazards. Modelling these electromagnetic fields is therefore of great interest to design survey layouts, to understand the measured data, and for inversion purposes. Publications regarding three-dimensional (3D) modelling in electromagnetic methods started to appear as early as the 1970's and 1980's. These early publications were integral equation (IE) methods, having an anomaly embedded within a layered medium, mostly for loop-loop type transient EM measurements \citep{GJI.74.Raiche, GEO.75.Hohmann, GJI.82.Das, GEO.86.Newman} and magnetotelluric (MT) measurements \citep{GEO.84.Wannamaker}. \cite{B.SEG.88.Ward} assemble many of these solutions in \emph{Electromagnetic Theory for Geophysical Applications}, which is widely viewed as an authoritative publication on electromagnetic geophysics.
 
-In the 1990's, computer became sufficiently powerful that 3D modelling gained traction, which resulted amongst other publications in the book \emph{Three-Dimensional Electromagnetics} by the SEG \citep{B.SEG.99.Oristaglio}. Often cited publications from that time are \cite{RSC.94.Mackie} for 3D MT computation; \cite{RS.94.Druskin} for frequency- and time-domain modelling using a Yee grid and a global Krylov subspace approximation; and \cite{RS.96.Alumbaugh, GJI.97.Newman} for low-to-high frequency computation on massively parallel computers.
+In the 1990's, computer became sufficiently powerful that 3D modelling gained traction, and in 1995 the first International Symposium on Three-Dimensional Electromagnetics took place. This symposium resulted eventually in the book \emph{Three-Dimensional Electromagnetics} by the SEG \citep{B.SEG.99.Oristaglio}, and another book by \cite{B.02.Wannamaker} with the exactly same title came out only three years later. Often cited publications from that time are \cite{RSC.94.Mackie} for 3D MT computation; \cite{RS.94.Druskin} for frequency- and time-domain modelling using a Yee grid and a global Krylov subspace approximation; and \cite{RS.96.Alumbaugh, GJI.97.Newman} for low-to-high frequency computation on massively parallel computers.
 
-The continuous improvement of computing power and the CSEM boom in the early 2000's in the hydrocarbon industry led to a wealth of developed numerical solutions and according publications. The most common applied methods to solve Maxwell's equation are the IE method \citep{GJI.74.Raiche, RS.02.Hursan, GEO.06.Zhdanov, GP.10.Tehrani, CAG.16.Kruglyakov, MGS.17.Kruglyakov} and different variations of the differential equation (DE) method, such as finite differences (FD) \citep{IEEE.66.Yee, GEO.93.Wang, RSC.94.Mackie, RS.94.Druskin, GEO.09.Streich, CAG.13.Sommer}, finite elements (FE) \citep{GEO.04.Commer, GJI.11.Schwarzbach,GEO.12.daSilva, GJI.13.Grayver, GJI.13.Puzyrev, SEG.16.Zhang}, and finite volumes (FV) \citep{EM.90.Madsen, SIAM.01.Haber, PIER.01.Clemens, GEO.14.Jahandari}. There are also many different types of discretization, where the most common ones are regular grids (Cartesian, rectilinear), mostly using a Yee grid \citep{IEEE.66.Yee} or a Lebedev grid \citep{CMMP.64.Lebedev}, but also unstructured tetrahedral grids \citep{SEG.16.Zhang, CAG.17.Cai}, hexagonal meshes \citep{CAG.14.Cai}, or OcTree meshes \citep{ECP.07.Haber}. Very well written overviews about the different approaches to 3D EM modelling are given by \cite{SG.05.Avdeev} and \cite{SG.10.Borner}.
+The continuous improvement of computing power and the CSEM boom in the early 2000's in the hydrocarbon industry led to a wealth of developed numerical solutions and according publications. The most common applied methods to solve Maxwell's equation are the IE method \citep{GJI.74.Raiche, RS.02.Hursan, GEO.06.Zhdanov, GP.10.Tehrani, CAG.16.Kruglyakov, MGS.17.Kruglyakov} and different variations of the differential equation (DE) method, such as finite differences (FD) \citep{GEO.93.Wang, RSC.94.Mackie, RS.94.Druskin, GEO.09.Streich, CAG.13.Sommer}, finite elements (FE) \citep{GEO.04.Commer, GJI.11.Schwarzbach,GEO.12.daSilva, GJI.13.Grayver, GJI.13.Puzyrev, SEG.16.Zhang}, and finite volumes (FV) \citep{EM.90.Madsen, SIAM.01.Haber, PIER.01.Clemens, GEO.14.Jahandari}. There are also many different types of discretization, where the most common ones are regular grids (Cartesian, rectilinear), mostly using a Yee grid \citep{IEEE.66.Yee} or a Lebedev grid \citep{CMMP.64.Lebedev}, but also unstructured tetrahedral grids \citep{SEG.16.Zhang, CAG.17.Cai}, hexagonal meshes \citep{CAG.14.Cai}, or OcTree meshes \citep{ECP.07.Haber}.
 
-In the last 15 years, the publications with regards to 3D EM modelling grew tremendously, driven by the ever increasing computing power. One reason why there are so many publications about this topic results from the variety of solution techniques for the systems of linear equations (SLE). They can be distinguished between direct solvers \citep{GEO.09.Streich, GP.14.Chung, GEO.14.Jaysaval, GEO.15.Grayver, SEG.15.Oh, GJI.18.Wang}, indirect solvers \citep{GP.06.Mulder, GJI.15.Jaysaval}, or a combination of both, so-called hybrid solvers \citep{GEO.18.Liu}. The solvers often use preconditioners such as the multigrid method \citep{SIAM.02.Aruliah, GP.06.Mulder, GJI.16.Jaysaval}.
+Very well written overviews about the different approaches to 3D EM modelling are given by \cite{SG.05.Avdeev} and \cite{SG.10.Borner}. But there was also a tremendous publications output with regards to 3D EM modelling in the last 10-15 years, at least partly driven by the ever increasing computing power. One reason why there are so many publications about this topic results from the variety of techniques to solve the systems of linear equations (SLE). They can be distinguished between direct solvers \citep{GEO.09.Streich, GP.14.Chung, GEO.14.Jaysaval, GEO.15.Grayver, SEG.15.Oh, GJI.18.Wang}, indirect solvers \citep{GJI.15.Jaysaval}, or a combination of both, so-called hybrid solvers \citep{GEO.18.Liu}. The solvers often use preconditioners such as the multigrid method \citep{SIAM.02.Aruliah, GJI.16.Jaysaval}.
 
-Many of the advancements made in the EM modelling community over the past decades have required that authors develop new implementations from scratch. These codes often provided the research group or company with a competitive advantage for a time, and thus the source codes were often kept internal. In some cases, executables have been made available for academic purposes upon request or to sponsoring consortium members. As the field continues to mature, advancements become more incremental, and particularly in an applied field, many advancements are driven by new use-cases and applications that were not considered by the original authors. In his review on EM modelling and inversion \cite{SG.05.Avdeev} concludes with the following statement: «\emph{The most important challenge that faces the EM community today is to convince software developers to put their 3-D EM forward and inverse solutions into the public domain, at least after some time. This would have a strong impact on the whole subject and the developers would benefit from feedback regarding the real needs of the end-users.}» Further, \cite{EXG.19.Oldenburg} argue that an open-source paradigm has the potential to accelerate multidisciplinary research by encouraging the development of modular, interoperable tools that are supported by a community of researchers.
+Many of the advancements made in the EM modelling community over the past decades have required that authors develop new implementations from scratch. These codes often provided the research group or company with a competitive advantage for a time, and thus the source codes were often kept internal. In some cases, executables have been made available for academic purposes upon request or to sponsoring consortium members. As the field continues to mature, advancements become more incremental, and particularly in an applied field, many advancements are driven by new use-cases and applications that were not considered by the original authors. In the aforementioned review on EM modelling and inversion Dmitry Avdeev concludes with the following statement: «\emph{The most important challenge that faces the EM community today is to convince software developers to put their 3-D EM forward and inverse solutions into the public domain, at least after some time. This would have a strong impact on the whole subject and the developers would benefit from feedback regarding the real needs of the end-users.}» Further, \cite{EXG.19.Oldenburg} argue that an open-source paradigm has the potential to accelerate multidisciplinary research by encouraging the development of modular, interoperable tools that are supported by a community of researchers.
 
-In many domains of science, it is becoming more common for researchers to release source-code with an open license that allows use and modification (e.g., see the Open Source Initiative approved licenses: \href{https://opensource.org/licenses}{opensource.org/licenses}). This is an important step for improving reproducibility of research, «\emph{to provide the means by which the reader can verify the validity of the results and make use of them in further research}» \citep{GEO.17.Broggini}. Going a step beyond releasing open-source software, many groups adopt an \emph{open model} of development where code is hosted and versioned in an online repository, all changes are public, and users can engage by submitting and track issues. Community oriented projects further engage by encouraging pull-requests, which are suggested changes to the code. Successful, well-maintained projects often have unit-testing and continuous integration that runs those tests with any changes to the code. Additionally, documentation that includes examples and tutorials is an important component for on-boarding new users and contributors. As a result, in many areas of the geosciences, we are seeing a shift away from a one-way distribution of code towards building global communities around open projects. Notable other open-source Python projects within the same realm are \texttt{pyGIMLi} \citep{CAG.17.Rucker}, \texttt{Fatiando} \citep{JOSS.18.Uieda}, \texttt{GemPy} \citep{GMD.19.DeLaVarga}, and \texttt{PyVista} \citep{JOSS.19.Sullivan}.
+It is becoming more common for researchers in many domains of science to release source-code with an open license that allows use and modification (e.g., see the Open Source Initiative approved licenses: \href{https://opensource.org/licenses}{opensource.org/licenses}). This is an important step for improving reproducibility of research, «\emph{to provide the means by which the reader can verify the validity of the results and make use of them in further research}» \citep{GEO.17.Broggini}. Going a step beyond releasing open-source software, many groups adopt an \emph{open model of development} where code is hosted and versioned in an online repository, all changes are public, and users can engage by submitting and track issues. Community oriented projects further engage by encouraging pull-requests, which are suggested changes to the code. Successful, well-maintained projects often have unit-testing and continuous integration that runs those tests with any changes to the code. Additionally, documentation that includes examples and tutorials is an important component for on-boarding new users and contributors. As a result, in many areas of the geosciences, we are seeing a shift away from a one-way distribution of (open-source) code towards building global communities around open projects. Other notable Python projects with an open model of development within the same realm as the codes under considerations are \texttt{pyGIMLi} \citep{CAG.17.Rucker}, \texttt{Fatiando} \citep{JOSS.18.Uieda}, \texttt{GemPy} \citep{GMD.19.DeLaVarga}, and \texttt{PyVista} \citep{JOSS.19.Sullivan}.
 
-In this paper, we discuss the topic of open-source developments with respect to 3D CSEM modelling. Even though it comprises still the minority of developments, the landscape in this field of research changed in the last five years. Previously, there were only closed-source codes owned by companies or consortia and individual projects, that were only available directly from the authors upon request. These codes often came without proper documentation, and also often without a proper License, which essentially means that they are not open source. We introduce and compare four recent open-source projects with a focus on 3D CSEM modelling. All presented codes are in the Python ecosystem and use either the FV method on structured grids or the FE method on unstructured tetrahedral meshes.
+We discuss the topic of open-source developments with respect to 3D CSEM modelling. Even though it comprises still the minority of developments, the open-source landscape in this field of research changed in the last five years quite dramatically. Previously, there existed only closed-source codes owned by companies and consortia, or individual projects that were only available directly from the authors upon request. These codes often came without proper documentation. But more importantly, they also often came without a proper license, which essentially means that they are not open source (no license means legally speaking that, in most countries of the world, all rights are reserved by the author; see, for instance, the \emph{Berne Convention}). We introduce and compare four recent open-source projects with a focus on 3D CSEM modelling. All presented codes are in the Python ecosystem and use either the FV method on structured grids or the FE method on unstructured tetrahedral meshes.
 
-Furthermore, we deal with the topic of verification. Analytical and semi-analytical solutions only exist for simple halfspace or layered-Earth models, which served mostly to verify new codes. Beyond these simple models, the only objective possibility to ensure the accuracy of solutions is by comparing results from different modellers. If different discretizations and implementations of Maxwell's equations yield the same result, it gives confidence in their accuracy. \cite{GJI.13.Miensopust} presents a review of two workshops dealing with the verification of magnetotelluric forward and inversion codes, but we are not aware of any comparable study or benchmark suite for CSEM data. Hence, we first conduct a similar exercise for CSEM codes. We want our efforts to help to ensure the reliability of simulations, not only carried out with the available open-source codes, but also for individual closed-source projects.
+Furthermore, we deal with the topic of verification. Analytical and semi-analytical solutions only exist for simple halfspace or layered-Earth models, which served mostly to verify new codes. Beyond these simple models, the only objective possibility to ensure the accuracy of solutions is by comparing results from different modellers. If different discretizations and implementations of Maxwell's equations yield the same result, it gives confidence in their accuracy. \cite{GJI.13.Miensopust} presents a review of two workshops dealing with the verification of magnetotelluric forward and inversion codes, but we are not aware of any comparable study or benchmark suite for CSEM data. This is, to the best of our knowledge, the first comparison exercise for CSEM codes. We hope our efforts help to ensure the reliability of simulations for any new or existing, open-source or closed-source 3D CSEM project.
 
-We simulate EM fields for a layered background model with vertical transverse isotropy, containing three blocks, as well as for the complex marine Marlim R3D model. These two model designs as well as the corresponding results from four different codes provide a benchmark for new codes to be compared to and validated with. In the following section, we introduce the codes under consideration. Afterwards, we present the considered benchmark cases in detail and present the modelling results of our four codes in terms of accuracy and computational performance. Beyond that, we extensively discuss important points that control the performance and suitability of our FV and FE codes, including considerations about the mesh design and the choice of solvers. We conclude with a summary of our results and a motivation for the EM community to not only continue to extend the landscape of open-source codes but to also create a landscape of open-source benchmark models.
+We simulate EM fields for a layered background model with vertical transverse isotropy, with and without three resistive blocks, as well as for the complex marine Marlim R3D model. These three models as well as the corresponding results from four different codes provide a benchmark for new (and existing) codes to be compared to and validated with. First we introduce the codes under consideration, and present afterwards the considered benchmark cases in detail together with the modelling results of our four codes in terms of accuracy and computational performance. Beyond that, we extensively discuss important points that control the performance and suitability of our FV and FE codes, including considerations about the mesh design and the choice of solvers. We conclude with a discussion and conclusions, and a motivation for the EM community at large to not only continue to extend the landscape of open-source codes but to also create a landscape of open-source benchmark models.
 
-\itodo{Introduce Maxwell's Equations or not? Miensopust et al., 2013, do not touch on any equation. We agreed that we wait and see how large the paper becomes, and see at the end if it should be added or not.}
-% Following the conventions of Ward and Hohmann \cite{Ward1988}, the quasi-static Maxwell's equations are
-
-% \begin{equation}
-% \begin{split}
-%     \nabla \times \vec{E} &= -i \omega\vec{B}  \\
-%     \nabla \times \vec{H} &= \vec{J}
-% \end{split}
-% \label{eq:maxwell_freq_quasi}
-% \end{equation}
-%
-% If we include Maxwell's equations, we might cite here Haber, 2014, for its
-% discretization.
+\itodo{Ones were ready check if we should introduce Maxwell's equations or not. Miensopust et al., 2013, for instance, do not touch on any equation.}
 
 \section{Codes}
 
-The four codes under consideration are, in alphabetical order, \custem \citep{GEO.19.Rochlitz}, \emg3d \citep{JOSS.19.Werthmuller}, \petgem \citep{CAG.18.CastilloReyes, GJI.19.CastilloReyes}, and \simpeg \citep{CAG.15.Cockett, CAG.17.Heagy}. All four codes have their user-facing routines written in Python, and all of them make heavy use of \texttt{NumPy} \citep{CSE.11.VanDerWalt} and \texttt{SciPy} \citep{NM.20.Virtanen}. The four of them are \mycom[DW]{change to open dev} “modern” open-source projects, meaning that they come with both, an open-source license and an online-hosted version-control system with tracking possibilities (raising issues, filing pull requests). All developments comprise an extensive online documentation with many examples and have continuous integration to some degree. Newer package-management systems such as Conda, Docker, or pip significantly supported us to make our codes easily available and installable on any of the major operating system without any user-side compilations. Each one can be downloaded and installed with a single command.
+The four codes under consideration are, in alphabetical order, \custem \citep{GEO.19.Rochlitz}, \emg3d \citep{JOSS.19.Werthmuller}, \petgem \citep{CAG.18.CastilloReyes, GJI.19.CastilloReyes}, and \simpeg \citep{CAG.15.Cockett, CAG.17.Heagy}. All four codes have their user-facing routines written in Python, and all of them make heavy use of \texttt{NumPy} \citep{CSE.11.VanDerWalt} and \texttt{SciPy} \citep{NM.20.Virtanen}. The four of them are not just open-source but follow the open model of development, meaning that they come with both, an open-source license and an online-hosted version-control system with tracking possibilities (raising issues, filing pull requests). All developments comprise an extensive online documentation with many examples and have continuous integration to some degree. Newer package-management systems such as \texttt{conda}, \texttt{docker}, or \texttt{pip} significantly supported us to make our codes easily available and installable on any of the major operating system without any user-side compilations. Each one can be downloaded and installed with a \mycom[DW]{I guess this statement is currently a bit of a stretch for \petgem, correct Octavio?}single command.
 
-In the following, we provide a quick overview of the codes. It is, however, beyond the scope of this article to go into every detail of the different modellers, and we refer to their documentations for more details. An overview comparison of the different codes is given in Table~\ref{tbl:codecomparison}. All codes have in common that they solve the weak formulation of Maxwell's equation in its differential form (DE) under the quasi-static or diffusive approximation, hence neglecting displacement currents, which is a common approximation for the low frequency range commonly applied in CSEM. The machines on which the different codes were run are listed in Table~\ref{tbl:machines} together with the responsible operator.
-% LH: SimPEG also interfaces to the scipy solvers; but in practice those are
-%     use much less than Pardiso / mumps
-% => I leave them out for now, as you did not use them for this paper either,
-%    right? Maybe to mention in the SimPEG-section.
+In the following, we provide a quick overview of the codes. It is, however, beyond the scope of this article to go into every detail of the different modellers, and we refer to their documentations for more details. An overview comparison of the different codes is given in Table~\ref{tbl:codecomparison}. All codes have in common that they solve Maxwell's equation in its differential form (DE) under the quasi-static or diffusive approximation, hence neglecting displacement currents, which is a common approximation for the low frequency range commonly applied in CSEM. The machines on which the different codes were run are listed in Table~\ref{tbl:machines} together with the responsible operator.
+\imycom[DW]{I took out «the weak formulation of», as it actually doesn't apply to \emg3d. Please make sure that everything stated above («have in common that...») actually applies to your code.}
 
+A few clarifying words on abbreviations: For the boundary conditions (BC) in the comparison table we use the abbreviations PEC and PMC, which stand for perfect electric conductor and perfect magnetic conductor, respectively. Another abbreviation used in the tables is dof for degree of freedom, which is equivalent to the size of the SLE we are solving. Finally, we abbreviate runtime with CPU and memory with RAM. CPU refers throughout to the wall- or real-world time used from start to end of a computation, whether or not there are several processes running in parallel or not (hence it is not actual computation time, which would be significantly higher for parallel computations). RAM, on the other hand, refers to the maximum used memory at any point of the computation.
+
+% Lindsey, I leave the SciPy solvers out. You mention that in practice they are not often used. emg3d can also use those solvers, and then multigrid is used as preconditioner. However, we cite SciPy, and as you say, SimPEG mostly uses PARDISO or MUMPS. To keep it simply I think we can leave SciPy out on the solver side. I mention it in the emg3d-section, if you want you can mention it in the SimPEG section too.
 \tabl[btp]{codecomparison}{Comparison of the four codes under consideration. Note that \emg3d is a solver on its own, while the other codes implement third-package solvers such as \texttt{PETSc} \citep{Preprint.Abhyankar}, \texttt{MUMPS} \citep{SIAM.01.Amestoy}, or \texttt{PARDISO} \citep{FGCS.04.Schenk}.}{
   \centering
   \footnotesize
@@ -175,8 +160,7 @@ In the following, we provide a quick overview of the codes. It is, however, beyo
 %
 
 %
-\tabl[btp]{machines}{List of computer and operating system (hardware and
-software) on which the different codes were run, together with the operator.}{
+\tabl[btp]{machines}{List of hardware, software, and operator with which the different codes were run.\itodo{Could everyone check if their RAM is GB or GiB?}}{
   \centering
   \footnotesize
   \begin{tabularx}{\linewidth}{lXl}
@@ -185,51 +169,44 @@ software) on which the different codes were run, together with the operator.}{
   Code & Computer and Operating System & Operator \\
   \midrule
   %
-  \custem & \textbf{PowerEdge R940 (server)}; 144 Xeon Gold 6154 CPU @2.666 GHz;
-            ~3 TB DDR4 RAM; Ubuntu 18.04
-          & Raphael Rochlitz \\
-  \emg3d  & \textbf{Dell Latitude (laptop)}; i7-6600U CPU@2.6 GHz x4; 15.5 GiB of memory,
-            Ubuntu 18.04 & Dieter Werthmüller \\
-  \petgem & \textbf{Marenostrum4 (supercomputer)}. Intel Xeon Platinum from
-            Skylake generation; 2 sockets Intel Xeon Platinum 8160 CPU with 24
-            cores each @2.10GHz for a total of 48 cores per node; 386 GB DDR4
-            RAM per node; SuSE Linux Enterprise
-          & Octavio Castillo-Reyes \\
-  \simpeg & \textbf{GKE n2-custom (Google cloud)}. Intel Cascade Lake; 8 vCPUs, 355 GB memory; Ubuntu 16.04
-          & Lindsey Heagy \\
+  \custem & \textbf{PowerEdge R940 (server)}                  & Raphael Rochlitz \\
+          & - 144 Xeon Gold 6154 CPU @2.666 GHz               & \\
+          & - $\approx3$ TB DDR4 RAM                          & \\
+          & - Ubuntu 18.04                                    & \\[.5em]
+  \emg3d  & \textbf{Dell Latitude (laptop)}                   & Dieter Werthmüller \\
+          & - i7-6600U CPU@2.6 GHz x4                         & \\
+          & - 15.5 GiB RAM                                    & \\
+          & - Ubuntu 18.04                                    & \\[.5em]
+  \petgem & \textbf{Marenostrum4 (supercomputer)}             & Octavio Castillo-Reyes \\
+          & - Intel Xeon Platinum from Skylake generation; 2 sockets Intel Xeon Platinum 8160 CPU with 24 cores each @2.10GHz for a total of 48 cores per node & \\
+          & - 386 GB DDR4 RAM per node                        & \\
+          & - SuSE Linux Enterprise                           & \\[.5em]
+  \simpeg & \textbf{GKE n2-custom (Google cloud)}             & Lindsey Heagy \\
+          & - Intel Cascade Lake, 8 vCPUs                     & \\
+          & - 355 GB RAM                                      & \\
+          & - Ubuntu 16.04                                    & \\
   %
   \bottomrule
 \end{tabularx}}%
 %
-\mycom[DW]{Introduce dof, PEC, PMC}
 
-\imycom[DW]{Raphael: I think here would be the right place? I guess for
-  tensor meshes as mine it is simply number of cells (times the anisotropy
-  type; for VTI x2). But you know better what it means for \custem/\petgem.
-  \imycom[RR]{I think we should introduce the term degrees of freedom (dof),
-    equivalent to the size of the SLE, as general measure of our problem sizes.
-    If it is somewhat x*Nedges, or related to Ncells or Nnodes, who cares? We
-    just need this one number for this paper in my opinion, more details in the
-    jupyter notebooks - fine.
-  }
-}
 
 \subsection{custEM}
 
-The customisable electromagnetic modelling Python toolbox custEM was developed for simulating arbitrary complex 3D CSEM geometries with a focus on semi-airborne setups, but it supports also land-based, airborne, coastal, or marine environments. Multiple electric or magnetic field or potential finite-element approaches were implemented as total or secondary field formulations. The finite-element kernel, including higher order basis functions and parallelisation, relies on the FEniCS project \citep{B.SPR.12.Logg, B.SPR.16.Langtangen}. The resulting systems of linear equations are solved with MUMPS \citep{SIAM.01.Amestoy}, which is a very robust but memory consuming choice. Primary field solutions are supplied by the \texttt{COMET} package \citep{GEO.20.Skibbe}.
+The customisable electromagnetic modelling Python toolbox \custem was developed for simulating arbitrary complex 3D CSEM geometries with a focus on semi-airborne setups, but it supports also land-based, airborne, coastal, and marine environments. Multiple electric or magnetic field or potential finite-element approaches were implemented as total or secondary field formulations. The finite-element kernel, including higher order basis functions and parallelisation, relies on the \texttt{FEniCS} project \citep{B.SPR.12.Logg, B.SPR.16.Langtangen}. The resulting SLEs are solved with \texttt{MUMPS}, which is a very robust but memory consuming choice. Primary field solutions are supplied by the \texttt{COMET} package \citep{GEO.20.Skibbe}.
 
-The toolbox considers generally anisotropic petrophysical properties. Even though changes of the conductivity is mainly of interest for CSEM modelling, the electric permittivity and magnetic permeability can be taken into account using the preferred electric field approach on Nédélec elements. Recently, induced polarisation parameters in frequency-domain and three methods for simulating time-domain responses were added to custEM. The provided meshing tools are based on TetGen \citep{TOM.15.Si} and functionalities of pyGIMLi \citep{CAG.17.Rucker} facilitate the generation of tetrahedral meshes including layered-earth geometries with topography or bathymetry and anomalous bodies which are allowed to be connected or to reach the surface.
+The toolbox considers generally anisotropic petrophysical properties. Even though changes of the conductivity is mainly of interest for CSEM modelling, the electric permittivity and magnetic permeability can be taken into account using the preferred electric field approach on Nédélec elements. Recently, induced polarisation parameters in frequency-domain and three methods for simulating time-domain responses were added to \custem. The provided meshing tools are based on \texttt{TetGen} \citep{TOM.15.Si} and functionalities of \texttt{pyGIMLi} facilitate the generation of tetrahedral meshes including layered-earth geometries with topography or bathymetry and anomalous bodies which are allowed to be connected or to reach the surface.
 
-The custEM toolbox is under steady development and maintenance. Future enhancements comprise adding iterative solution techniques, provided by FEniCS, as well as further functionalities for automatically incorporating intersecting bodies such as folds or faults in meshes. Furthermore, current work is on using custEM for inverse modelling applications.
+The \custem toolbox is under steady development and maintenance. Future enhancements comprise adding iterative solution techniques, provided by \texttt{FEniCS}, as well as further functionalities for automatically incorporating intersecting bodies such as folds or faults in meshes. Furthermore, current work is on using \custem for inverse modelling applications.
 
 
 \subsection{emg3d}
 
-The 3D CSEM code \emg3d is a multigrid solver \citep{CMMP.64.Fedorenko} for electromagnetic diffusion following \cite{GP.06.Mulder}, with tri-axial electrical anisotropy, isotropic electric permittivity, and isotropic magnetic permeability. The matrix-free solver can be used as main solver or as preconditioner for one of the Krylov subspace methods implemented in SciPy, and the governing equations are discretized on a staggered grid by the finite-integration technique \citep{AEU.77.Weiland}, which is a finite-volume generalisation of a Yee grid. The code is written completely in Python using the NumPy and SciPy stacks, where the most time- and memory-consuming parts are sped up through jitted (just-in-time compiled) functions using Numba \citep{LLVM.15.Lam}. The strength of \emg3d is the matrix-free multigrid implementation, which is characterised by almost linear scaling both in terms of runtime (CPU) and memory (RAM) usage, and it is therefore a comparably low-memory consumption solver.
+The 3D CSEM code \emg3d is a multigrid solver \citep{CMMP.64.Fedorenko} for electromagnetic diffusion following \cite{GP.06.Mulder}, with tri-axial electrical anisotropy, isotropic electric permittivity, and isotropic magnetic permeability. The matrix-free solver can be used as main solver, or alternatively as preconditioner for one of the Krylov subspace methods implemented in SciPy. The governing equations are discretized on a staggered grid by the finite-integration technique \citep{AEU.77.Weiland}, which is a finite-volume generalisation of a Yee grid. The code is written completely in Python using the NumPy and SciPy stacks, where the most time- and memory-consuming parts are sped up through jitted (just-in-time compiled) functions using Numba \citep{LLVM.15.Lam}. The strength of \emg3d is the matrix-free multigrid implementation, which is characterised by almost linear scaling both in terms of runtime and memory usage, and it is therefore a solver that uses comparably very little memory.
 
-The code comes with functionalities to be used directly as a CSEM modeller too, in addition to serve as a solver. As such, it computes the electric field due to an electric source in the frequency-domain, which is its main application (frequency-domain CSEM). However, there are also routines to obtain the magnetic field due to an electric source, to obtain the electric and magnetic fields due to a magnetic source, and to obtain time-domain responses.
+As such the code is, contrary to the other three, primarily a solver, which solves the Maxwell's equation for a single frequency and a single, electric source. However, recent developments added functionalities such that \emg3d can be used directly as a more general EM modeller too. It features now routines to obtain the magnetic field due to an electric source, to obtain the electric and magnetic fields due to a magnetic source, and also to obtain time-domain responses. The most recent development added the possibility to compute the responses for entire surveys, and also to compute the misfit and the gradient of the misfit function, and \emg3d is as such ready to be used in inversion schemes.
 
-Current development is focused on adding basic inversion capabilities, and a further plan is to implement a wrapper in order to use \emg3d as a frequency-domain CSEM solver within the grander \simpeg framework.
+For the underlying discretization the Python package \discretize is used, which is part of the larger \simpeg ecosystem. Interoperability between \simpeg and \emg3d is therefore straightforward.
 
 \subsection{PETGEM}
 
@@ -237,22 +214,21 @@ Current development is focused on adding basic inversion capabilities, and a fur
 
 \petgem permits to locate the source and receivers anywhere in the computational domain (e.g., sediments, seafloor, sea, ground), allowing to analyse the physical environment of the electric responses and how parameters impact them (e.g., frequency, conductivity, dependence on mesh setup, basis order, solver type, among others). Furthermore, \petgem implements a semi-adaptive mesh strategy ($hp$ mesh refinement) based on physical parameters and on polynomial order to satisfy quality criteria chosen by the user. Nonetheless, only Horizontal Electric Dipole (HED) has been implemented.
 
-For the parallel forward modelling computations, a highly scalable MPI domain decomposition allows reducing runtimes and the solution of large-scale modelling cases. This strategy is capable of exploiting the parallelism offered by both modest multi-core computers and cutting-edge clusters (e.g., High-Performance Computing architectures).
+For the parallel forward modelling computations, a highly scalable MPI (message passing interface) domain decomposition allows reducing runtimes and the solution of large-scale modelling cases. This strategy is capable of exploiting the parallelism offered by both modest multi-core computers and cutting-edge clusters (e.g., High-Performance Computing architectures).
 
 Based on the current state of the \petgem project, there are many possibilities to improve or to add additional features. For instance, in the short-term, more modelling routines and support for multi-source set-ups will be implemented. For the long-term, the obvious next step is to move to 3D CSEM data inversion.
 
 \subsection{SimPEG}
 
-\simpeg is a modular toolbox for simulations and gradient based inversions in geophysics. Current functionality includes modelling and inversion capabilities for gravity, magnetics, direct current resistivity, induced polarisation, electromagnetics (time and frequency, controlled and natural sources such as magnetotellurics), and fluid flow (Richards equation). It is a community driven project that aims to support researchers by providing a flexible, extensible framework and to facilitate integration of data sets from a variety of geophysical methods, including joint inversions \citep{GJI.20.Astic}, by providing a common interface to each method. \mycom[DW]{Lindsey: «support researchers» downplays the fact that \simpeg is used by various companies as well\dots}
+\simpeg is a modular toolbox for simulations and gradient based inversions in geophysics. Current functionality includes modelling and inversion capabilities for gravity, magnetics, direct current resistivity, induced polarisation, electromagnetics (time and frequency, controlled and natural sources such as magnetotellurics), and fluid flow (Richards equation). It is a community driven project that aims to support researchers and \mycom[DW]{I added «and practitioners», as I think «support researchers» downplays the fact that \simpeg is used by various companies as well\dots}practitioners by providing a flexible, extensible framework and to facilitate integration of data sets from a variety of geophysical methods, including joint inversions \citep{GJI.20.Astic}, by providing a common interface to each method. 
 
 Meshes and finite volume differential operators are implemented in the \discretize package, which currently includes tensor, OcTree, cylindrical, and logically rectangular meshes. Each mesh type inherits from a common structure and uses the same naming conventions for methods and properties. This allows us to decouple the implementation of a discretized partial differential equation from the details of the mesh geometry and therefore we can write a single implementation of discretized partial differential equation (or set of partial differential equations) in \simpeg that will support all mesh types implemented in \discretize.
 
-The electromagnetic implementations use a staggered grid finite volume approach where physical properties are discretized at cell centres, fields on cell edges and fluxes on cell faces \citep{IEEE.66.Yee}.
+The electromagnetic implementations use a staggered grid finite volume approach where physical properties are discretized at cell centres, fields on cell edges and fluxes on cell faces.
 %(for an overview of discretizing Maxwell's equations, we recommend \cite{B.SIAM.14.Haber}).
 There are two different discretization strategies implemented for Maxwell's equations: (I) the EB-formulation, which discretizes the electric field ($\vec{e}$) on cell edges and the magnetic flux density ($\vec{b}$) on cell faces, and (II) the HJ-formulation, which discretizes the magnetic field ($\vec{h}$) on cell edges and the current density ($\vec{j}$) on cell faces. The physical properties electrical conductivity / resistivity and magnetic permeability are discretized in both cases at cell centres. Having multiple implementations allows for testing that compares results from each approach, as well as the representation of both electrical and magnetic sources on cylindrically symmetric meshes. \simpeg supports variable magnetic permeability and full-tensor anisotropy for the physical properties.
 
-\simpeg interfaces to various solvers including \texttt{PARDISO} \citep{FGCS.04.Schenk}, \texttt{MUMPS} \citep{SIAM.01.Amestoy}, as well as those implemented in the \texttt{scipy.sparse.linalg} module \citep{NM.20.Virtanen}. For problems with many sources (e.g. airborne EM), \simpeg contains machinery for domain-decomposition approaches; see for example \cite{GEO.20.Fournier}. \mycom[DW]{only cite ones MUMPS etc, check and adjust}
-
+\simpeg interfaces to various solvers including \texttt{PARDISO} and \texttt{MUMPS}, and also to some implemented in SciPy. For problems with many sources (e.g. airborne EM), \simpeg contains machinery for domain-decomposition approaches; see for example \cite{GEO.20.Fournier}.
 
 \section{Numerical Verification}
 
@@ -412,13 +388,13 @@ The Marlim oil field is a giant reservoir in a turbidite sandstone horizon in th
 
 The detailed reservoir model consists of $1022 \times 371 \times 1229$ cells, totalling to almost 466 million cells, where each cell has dimensions of 25 by 75 by 5\,m. For the computation the model is upscaled to 515 by 563 by 310 cells, totalling to almost 90 million cells, where each cell has dimensions of 100 by 100 by 20\,m.
 
-The published data set consists of a regular grid of receivers of 20 in eastern direction by 25 in northern direction, 500 receivers in total, with 1\,km spacing located on the irregular seafloor. 45 source-towlines were located on the same grid, 50\,m above the seafloor, with shots every 100\,m. In \cite{GEO.19.Correa} the actual responses for one receiver with the corresponding East-West inline and one East-West broadside acquisition line are shown, which is the data we chose for our comparison. The cross-section of the resistivity model along the chosen inline acquisition line is shown in Figure~\ref{fig:model-marlim}, together with the acquisition information.
+The published data set consists of a regular grid of receivers of 20 in eastern direction by 25 in northern direction, 500 receivers in total, with 1\,km spacing located on the irregular seafloor. 45 source-towlines were located on the same grid, 50\,m above the seafloor, with shots every 100\,m. In the original paper the actual responses for one receiver with the corresponding East-West inline and one East-West broadside acquisition line are shown, which is the data we chose for our comparison. The cross-section of the resistivity model along the chosen inline acquisition line is shown in Figure~\ref{fig:model-marlim}, together with the acquisition information.
 
 %
 \plot*{model-marlim}{width=\textwidth}{
   This figure obviously needs to be improved massively (at least a colorbar).
   What would you like to show from the actual data here?
-  A nice figure would  be Figure 2 in \cite{GEO.19.Correa}; however, note that
+  A nice figure would  be Figure 2 in the original paper; however, note that
   the drawn survey line in that figure are plainly wrong.
 }
 %
@@ -526,7 +502,6 @@ Within SimPEG: This work has motivated feature development including: (a) interp
 
 \begin{itemize}
     \item Add cross-section
-    \item Cite 3D EM Schlumberger-Doll book Ward \& Hohmann; probably also Zhdanov
     \item Focus on the different open source tools that can deliver industry-standard results. That there is choice. That these people work together (!). That the collaboration improved all codes. That you can do things with tetrahedrals or tensor meshes or octree meshes, some are better for one task, the other is better for another task. Because, as you mentioned Lindsey, in the end for SimPEG, custEM, and PETGEM speed and memory in the end falls a lot on the solver used (Fenics, petsc, pardiso), and not actually on the code. Swapping the solver might yield very different metrics.
     \item Focus on Result Comparison, as this is the only way to verify 3D modellers.
 \end{itemize}
