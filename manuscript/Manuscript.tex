@@ -91,9 +91,26 @@ The collaboration of four code maintainer trying to achieve the same task brough
 \newpage
 \itodo{\hfill$\Downarrow$\hfill$\Downarrow$\hfill List of things ToDo, Notes, etc\hfill$\Downarrow$\hfill$\Downarrow$\hfill~}
 \begin{itemize}
+    \item {\color{red}\bfseries This version is quite different from the previous you revised. However, from now on we do not expect too many changes. To make it easier for everyone to see the new changes please make sure that from now on "Track Changes" is always in Overleaf.}
     \item Notes on orthography: I settled on discretize with a «z». My dictionary says that discreti{\color{red}\bfseries z}e is AE and discreti{\color{red}\bfseries s}e is BE, but that «z» is also used in BE in mathematical contexts. Is that fine or any other opinions?
     \item We probably should be careful to not mention the actual code names too often. E.g., I removed them from the abstract.
     \item I tried to avoid double reference. E.g., SciPy, MUMPS, pyGIMLi: I referenced them the first time they are mentioned, and not afterwards. Current exceptions: Miensopust et al., 2013, is cited twice.
+    \item  {\color{red}\bfseries Everyone: Please ensure the info in the tables is correct:}
+      \begin{enumerate}
+          \item machine info;
+          \item runtime;
+          \item memory;
+          \item nproc;
+          \item dof.
+      \end{enumerate}
+    I got all the info out of the ".nc" files, so make sure you wrote the correct info into the nc-files. Further notes:
+      \begin{description}
+        \item[runtime] Should only include the wall time (or elapsed real time, \url{https://en.wikipedia.org/wiki/Elapsed_real_time}) of solving the SLE, for ALL frequencies (in \emg3d some frequencies are slower than others, but in any case, we report the sum of all of them); any pre-/postprocessing such as mesh generation or model interpolation can be ignored.
+        \item[memory] It should be the maximum memory increase when solving the SLE (again, ignoring any pre-/postprocessing). Again, of all frequencies. In \emg3d some frequencies require more RAM than others (more iterations), but we only report the "worst", the heaviest consumer.
+        \item[nproc] Not sure we reached agreement on Slack, but I took no everything in here (threads and (virtual) processes); please note here if you think it should be different.
+        \item[dof] Similarly, not sure we reached agreement on Slack. I put it here now for complex value, hence halving the dof of custEM. Again, please write here if we should change it.
+    \end{description}
+    We could discuss if we should report CPU time instead (hence summing all parallel processes); but I think for the user of interest is the real-world time, how long do I have to wait. (Either way, the reader can make a quick estimation in one or the other direction; important is that we are consistent throughout the paper.)
 \end{itemize}
 \itodo{\hfill$\Uparrow$\hfill$\Uparrow$\hfill List of things ToDo, Notes, etc\hfill$\Uparrow$\hfill$\Uparrow$\hfill~}
 \newpage
@@ -127,7 +144,7 @@ The four codes under consideration are, in alphabetical order, \custem \citep{GE
 In the following, we provide a quick overview of the codes. It is, however, beyond the scope of this article to go into every detail of the different modellers, and we refer to their documentations for more details. An overview comparison of the different codes is given in Table~\ref{tbl:codecomparison}. All codes have in common that they solve Maxwell's equation in its differential form (DE) under the quasi-static or diffusive approximation, hence neglecting displacement currents, which is a common approximation for the low frequency range commonly applied in CSEM. The machines on which the different codes were run are listed in Table~\ref{tbl:machines} together with the responsible operator.
 \imycom[DW]{I took out «the weak formulation of», as it actually doesn't apply to \emg3d. Please make sure that everything stated above («have in common that...») actually applies to your code.}
 
-A few clarifying words on abbreviations: For the boundary conditions (BC) in the comparison table we use the abbreviations PEC and PMC, which stand for perfect electric conductor and perfect magnetic conductor, respectively. Another abbreviation used in the tables is dof for degree of freedom, which is equivalent to the size of the SLE we are solving. Finally, we abbreviate runtime with CPU and memory with RAM. CPU refers throughout to the wall- or real-world time used from start to end of a computation, whether or not there are several processes running in parallel or not (hence it is not actual computation time, which would be significantly higher for parallel computations). RAM, on the other hand, refers to the maximum used memory at any point of the computation.
+A few clarifying words on abbreviations and definitions: For the boundary conditions (BC) in the comparison table we use the abbreviations PEC and PMC, which stand for perfect electric conductor and perfect magnetic conductor, respectively. Another abbreviation used in the tables is dof for degree of freedom, which is equivalent to the size of the SLE we are solving. Finally, we use \emph{runtime} as the wall time or elapsed real time from start to end of solving the SLE; pre- and post-processing (e.g., mesh generation) is not measured. Note that the actual computation or CPU time is therefore much higher than the reported runtime for the codes that run in parallel. Memory refers to the maximum memory increase at any point of solving the SLE.
 
 % Lindsey, I leave the SciPy solvers out. You mention that in practice they are not often used. emg3d can also use those solvers, and then multigrid is used as preconditioner. However, we cite SciPy, and as you say, SimPEG mostly uses PARDISO or MUMPS. To keep it simply I think we can leave SciPy out on the solver side. I mention it in the emg3d-section, if you want you can mention it in the SimPEG section too.
 \tabl[btp]{codecomparison}{Comparison of the four codes under consideration. Note that \emg3d is a solver on its own, while the other codes implement third-package solvers such as \texttt{PETSc} \citep{Preprint.Abhyankar}, \texttt{MUMPS} \citep{SIAM.01.Amestoy}, or \texttt{PARDISO} \citep{FGCS.04.Schenk}.}{
@@ -151,7 +168,7 @@ A few clarifying words on abbreviations: For the boundary conditions (BC) in the
   Comp. Dom. & frequency \& time & frequency & frequency & frequency \& time \\
   Method & FE & FV & FE & FV \\
   Mesh & tetrahedral & rectilinear & tetrahedral & recti- \& curvilinear \\
-  BC & PMC; PEC & PEC & PEC & PEC; PMC \\
+  BC & PEC; PMC & PEC & PEC & PEC; PMC \\
   Solver & \texttt{MUMPS} & \emg3d & \texttt{PETSc}; \texttt{MUMPS} &
            \texttt{PARDISO}; \texttt{MUMPS} \\
   %
@@ -232,6 +249,7 @@ There are two different discretization strategies implemented for Maxwell's equa
 
 \section{Numerical Verification}
 
+\itodo{HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE}
 We computed the responses for two different models to verify that all different 3D codes yield the same electromagnetic responses. The first simple \emph{Block model} consists of a layered, anisotropic background with three embedded blocks. The second model, \emph{Marlim R3D}, is based on a very complex, realistic marine CSEM setup.
 
 \subsection{Block Model}
@@ -263,7 +281,7 @@ Figure~\ref{fig:results-layered-0} illustrates the inline responses in the top-r
   weak component (if not too bad), otherwise only broadside is required to save
   a plot, because inline should be better for Ex in general.} The corresponding
   broadside responses for $y=\pm3\,$km are shown in
-  Figure~\ref{fig:results-layered--3}. The CPU and RAM requirements are listed
+  Figure~\ref{fig:results-layered--3}. The runtime and memory requirements are listed
   in Table~\ref{tbl:comp-layered}.
 %
 \plot*{results-layered--3}{width=.8\textwidth}{
@@ -273,25 +291,19 @@ Figure~\ref{fig:results-layered-0} illustrates the inline responses in the top-r
 }
 %
 
-\imycom[DW]{\simpeg/\emg3d I put now ncells in ndof, which is wrong. Think about this}
-
-\itodo{EVERYONE: Please check all three tables. The numbers should only include time/ram for the actual solving of Maxwell's equations (not mesh generation or similar things); they should be the total (CPU) and the max (RAM), respectively, for/of all frequencies (if applicable).: (1) Is the CPU correct, and does it include the total runtime for all frequencies? (2) Is the number of processors correct? (3) Is RAM correct, and corresponds to maximum used RAM? (4) dof correct?}
-
 %
-\tabl[btp]{comp-layered}{Comparison of used CPU and RAM and of number of cells
-  used to discretize the layered model.}{
+\tabl[btp]{comp-layered}{Comparison of runtime, memory, and number of cells used to discretize the layered model.}{
   \centering
 \begin{tabular}{lS[table-format=6.0]rS[table-format=4.1]S[table-format=8.0]}
   \toprule
   %
-  Code & {CPU} & \#Procs & {RAM}   & {\#dof} \\
-       & {(s)} &         & {(GiB)} &         \\
+       & {Runtime (s)} & \#Procs & {Memory (GiB)}   & {\#dof} \\
   \midrule
   %
-  \custem &   118 & 24 &  97.8 & 3061616 \\
+  \custem &   118 & 24 &  97.8 & 1530808 \\ % dof: 3061616 / 2 (Real+Imag -> Complex)
   \emg3d  &   116 &  1 &   0.4 & 4813216 \\
   \petgem &    90 & 24 &  34.2 & 2455868 \\
-  \simpeg & 10089 &  1 & 280.3 & 4813216 \\
+  \simpeg & 10089 &  4 & 280.3 & 4813216 \\ % nprocs: 1*4 threads
   %
   \bottomrule
 \end{tabular}}%
@@ -324,7 +336,7 @@ In a second step, three resistive blocks were added in the 3.3\,km-thick, anisot
 
 }
 
-The results for the three receiver lines $y=-3,0,3\,$km are shown in Figures~\ref{fig:results-block--3}, \ref{fig:results-block-0}, and \ref{fig:results-block-3}, respectively, and the corresponding required CPU and RAM are listed in Table~\ref{tbl:comp-block}. We can conclude from the NRMSD that similar codes have a smaller NRMSD than cross-comparison, hence \emg3d and \simpeg are very similar, as well as are \custem and \petgem. \imycom[DW]{Write in detail when all results are available}
+The results for the three receiver lines $y=-3,0,3\,$km are shown in Figures~\ref{fig:results-block--3}, \ref{fig:results-block-0}, and \ref{fig:results-block-3}, respectively, and the corresponding required runtime and memory are listed in Table~\ref{tbl:comp-block}. We can conclude from the NRMSD that similar codes have a smaller NRMSD than cross-comparison, hence \emg3d and \simpeg are very similar, as well as are \custem and \petgem. \imycom[DW]{Write in detail when all results are available}
 %
 \plot*{results-block--3}{width=.8\textwidth}{
    Comparison of the block model for the broadside receivers at $y=-3\,$km.
@@ -350,20 +362,19 @@ The results for the three receiver lines $y=-3,0,3\,$km are shown in Figures~\re
 %
 
 %
-\tabl[btp]{comp-block}{Comparison of used CPU and RAM and of number of cells
+\tabl[btp]{comp-block}{Comparison of used runtime, memory, and number of cells
   used to discretize the block model.}{
   \centering
 \begin{tabular}{lS[table-format=6.0]rS[table-format=4.1]S[table-format=8.0]}
 \toprule
   %
-  Code & {CPU} & \#Procs & {RAM}   & {\#dof} \\
-       & {(s)} &         & {(GiB)} &         \\
+       & {Runtime (s)} & \#Procs & {Memory (GiB)}   & {\#dof} \\
   \midrule
   %
-  \custem &   158 & 24 & 115.9 & 3308484 \\
+  \custem &   158 & 24 & 115.9 & 1654242 \\ % dof: 3308484 / 2  (Real+Imag -> Complex)
   \emg3d  &   115 &  1 &   0.4 & 4813216 \\
   \petgem &    72 & 24 &  35.8 & 2455868 \\
-  \simpeg &  9993 &  1 & 280.6 & 4813216 \\
+  \simpeg &  9993 &  4 & 280.6 & 4813216 \\ % nprocs: 1*4 threads
   %
   \bottomrule
 \end{tabular}}%
@@ -425,20 +436,19 @@ we first need all results. E.g.}
 
 
 %
-\tabl[btp]{comp-marlim}{Comparison of used CPU and RAM and of number of cells
+\tabl[btp]{comp-marlim}{Comparison of used runtime, memory, and number of cells
   used to discretize the Marlim R3D model.}{
   \centering
-\begin{tabular}{ls[table-format=4.2]rs[table-format=4.2]rl}
+\begin{tabular}{lS[table-format=6.0]rS[table-format=4.1]S[table-format=8.0]}
   \toprule
   %
-  Code & {CPU} & \#Procs & RAM     & \#dof \\
-       & {(s)} &         & {(GiB)} &         \\
+       & {Runtime (s)} & \#Procs & {Memory (GiB)}   & {\#dof} \\
   \midrule
   %
-  \custem & 0.0 &  0 & 0.0 & 0 \\
-  \emg3d  & 0.0 &  0 & 0.0 & 0 \\
-  \petgem & 0.0 &  0 & 0.0 & 0 \\
-  \simpeg & 0.0 &  0 & 0.0 & 0 \\
+  \custem & 4984 & 64 & 558.5 & 4539474 \\ % dof: 9078948 / 2 (Real+Imag -> Complex)
+  \emg3d  & 1478 &  1 &   0.5 & 5998992 \\
+  \petgem & 3527 & 96 & 437.8 & 4539474 \\
+  \simpeg &  422 &  4 &  12.8 &  720146 \\ % nprocs: 1*4 threads
   %
   \bottomrule
 \end{tabular}}%
@@ -535,6 +545,7 @@ Many things to discuss and take into account
     \item In the end the codes (\custem, \emg3d, \petgem, \simpeg) define mainly, how easy the interaction is. How easy is it to set-up the mesh, to create sources and receivers, etc etc. The \emph{actual} computation time, however,
     is mostly NOT defined by these codes, but by the underlying solver. (The exception to that is \emg3d, which is its own solver.)
     \item In the end it comes down to the most important, crucial, difficult, AND TIME CONSUMING point: mesh generation. It took all of us MUCH more time to generate appropriate meshes, then to actually compute the responses.
+    \item very different application area. E.g. \emg3d is for f-domain, CSEM; not too low frequencies, as it becomes slow (null-space). \simpeg, on the other hand, has from 1D, 2D, 3D, DC, IP, Magnetic, TEM, inversion, you-name-it things; so from very specialist to very broad.
 \end{itemize}
 
 \section{Conclusions \& Outlook}
