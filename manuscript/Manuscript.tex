@@ -35,6 +35,8 @@
 \newcommand{\petgem}{\texttt{PETGEM}\xspace}
 \newcommand{\ohmm}{\ensuremath{\Omega\,}\text{m}\xspace}
 
+\newcommand{\rmk}[1]{{\color{red}\bfseries #1}}
+
 % TODO's
 % For comments in the margin, use:   \mycom[YOURINITIALS]{comment}
 % and for inline comments, use:      \imycom[YOURINITIALS]{comment}
@@ -249,29 +251,30 @@ There are two different discretization strategies implemented for Maxwell's equa
 
 \section{Numerical Verification}
 
-We computed the responses for three different models to verify that the four 3D CSEM codes yield the same electromagnetic responses and to compare different solver types (FE, FD) and different mesh types (unstructured tetrahedra, tensor, octree) in different scenarios. The first model is an anisotropic layered model, which can be compared to semi-analytical solutions. The layered model serves also as background model for the second verification, where we add three resistive blocks into the subsurface. The third test is based on a realistic, anisotropic marine model.
+We computed the responses for three different models to verify that the four 3D CSEM codes yield the same electromagnetic responses and to compare different solver types (FE, FD) and different mesh types (unstructured tetrahedra, tensor, octree) in different scenarios. The first model is an anisotropic layered model, which can be compared to semi-analytical solutions. The layered model serves also as background model for the second verification, where we add three resistive blocks into the subsurface. The final comparison is based on a realistic, anisotropic marine model. This is an open-source model, for which also published data from a commercial code exist.
 
 \subsection{Layered Model}
 
+The layered (1D) model consists of an upper halfspace of air ($\rho_\text{air}=\num{e8}\,\ohmm$), a 600\,m deep water layer ($\rho_\text{sea}=\num{0.3}\,\ohmm$), followed by a 250\,m thick, isotropic layer of 1\,\ohmm, a 2.3\,km thick, anisotropic layer of $\rho_\text{h}=2\,\ohmm$ and $\rho_\text{v}=4\,\ohmm$, and finally a resistive, isotropic basement consisting of a lower halfspace of $1000\,\ohmm$. The survey consists of a 200\,m long and 800\,A strong source at a single position with frequency $f=1\,$Hz, and three receiver lines of 101 receivers each. The centre the $x$-directed source is at $x=y=0\,$m, 50\,m above the seafloor. The $x$-directed receivers are placed on the seafloor every 200\,m from $x=-10\,$km to $x=+10\,$km in three lines for $y=-3; 0; +3\,$km. (Note that for the layered model we only show results for the receiver lines $y=-3; 0\,$km, as the results for $y=\pm3\,$km are the same in the 1D case.)
+
+
+A layered model fails to show the strength of 3D modellers, and in reality one would not choose a 3D code to compute responses for a layered model. However, it is one of the few examples that can be compared to semi-analytical results, and is therefore still a valuable test. All semi-analytical responses are computed using the code \empymod\citep{GEO.17.Werthmuller}.
+
 \itodo{HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE}
+\rmk{$\Downarrow$ Re-arrange and re-write all this $\Downarrow$}
 
-
-
-The layered model consists of an upper halfspace of air, a 600\,m deep water layer, followed by a 150\,m thick, isotropic layer of 1\,\ohmm, a 3.3\,km thick, anisotropic layer of $\rho_\text{h}=2\,\ohmm$ and $\rho_\text{v}=4\,\ohmm$, and finally a resistive basement consisting of a lower halfspace of $1000\,\ohmm$. The 200\,m long, $x$-directed source is located 50\,m above the seafloor from $x=-50$ to $x=50\,$m in $x$-direction, at $y=0\,$m. The $x$-directed receivers are placed on the seafloor every 200\,m from $x=-10\,$km to $x=+10\,$km in three lines for $y=-3, 0, 3\,$km.
-
-The thin isotropic layer beneath the water requires many tetrahedra for a good-quality discretization. Therefore, the FE codes \custem and \petgem used the same tetrahedral mesh with a horizontal layered-earth extent of 30\,km from the origin, surrounded by a ten times larger halfspace-like boundary mesh with water conductivities assigned to the subsurface. This approximation significantly reduced the problem size compared to considering the layered-earth geometry for the whole computational domain. \imycom[RR]{Add short information about mesh design with \simpeg and \emg3d, including something like "comparatively coarse discretization in centre to minimise computation times" }
-
-\imycom[DW]{rewrite next paragraph}
-In a first step, we compare the layered background to the semi-analytical solutions of a 1D code, for which we use \empymod\citep{GEO.17.Werthmuller}. Figures~\ref{fig:results-layered-0} and \ref{fig:results-layered--3} show the actual responses in the top rows, and the relative error in the bottom rows for the receiver lines $y=0\,$km and $y=\pm3\,$km, which are identical.
+Figures~\ref{fig:results-layered-0} and \ref{fig:results-layered--3} show the actual responses in the top rows, and the relative error in the bottom rows for the receiver lines $y=0\,$km and $y=\pm3\,$km, which are identical.
 
 Figure~\ref{fig:results-layered-0} illustrates the inline responses in the top-row for offsets $r>0.5\,$km. We only show the semi-analytical result for the real and imaginary amplitudes. The bottom row displays the relative error of the 3D codes. The results show that all codes are yielding accurate result with errors of around 1\,\% in most parts and overall below a few percent, disregarding locations affected by sign reversals. The differences can be mainly attributed to the chosen discretizations. The FE codes show the strongest misfits at large offsets, most likely caused by the utilised boundary mesh. Very low errors at large offsets are achieved by \emg3d, whereas it suffers at short offsets from a coarse grid.
 %
-\plot*{results-layered-0}{width=.8\textwidth}{
+\plot*{results-layered}{width=\textwidth}{
    Comparison of the layered model for the inline receivers ($y=0\,$km).
    Top row shows the semi-analytical responses from \empymod, and bottom row
    shows the relative error (\%) of \custem, \emg3d, \petgem, and \simpeg.
 }
 %
+
+The thin isotropic layer beneath the water requires many tetrahedra for a good-quality discretization. Therefore, the FE codes \custem and \petgem used the same tetrahedral mesh with a horizontal layered-earth extent of 30\,km from the origin, surrounded by a ten times larger halfspace-like boundary mesh with water conductivities assigned to the subsurface. This approximation significantly reduced the problem size compared to considering the layered-earth geometry for the whole computational domain. \imycom[RR]{Add short information about mesh design with \simpeg and \emg3d, including something like "comparatively coarse discretization in centre to minimise computation times" }
 
 \imycom[RR]{I suggest to show y-component for broadside and the errors of the
   weak component (if not too bad), otherwise only broadside is required to save
@@ -279,13 +282,8 @@ Figure~\ref{fig:results-layered-0} illustrates the inline responses in the top-r
   broadside responses for $y=\pm3\,$km are shown in
   Figure~\ref{fig:results-layered--3}. The runtime and memory requirements are listed
   in Table~\ref{tbl:comp-layered}.
-%
-\plot*{results-layered--3}{width=.8\textwidth}{
-   Comparison of the layered model for the broadside receivers ($y=-3\,$km).
-   Top row shows the semi-analytical responses from \empymod, and bottom row
-   show the relative error (\%) of \custem, \emg3d, \petgem, and \simpeg.
-}
-%
+
+\rmk{$\Uparrow$ Re-arrange and re-write all this $\Uparrow$}
 
 %
 \tabl[btp]{comp-layered}{Comparison of runtime, memory, and number of cells used to discretize the layered model.}{
@@ -305,6 +303,7 @@ Figure~\ref{fig:results-layered-0} illustrates the inline responses in the top-r
 \end{tabular}}%
 %
 
+
 \subsection{Block Model}
 
 The block model is a derivation of the \emph{Dublin Test Model 1} from the first EM modelling workshop described by \cite{GJI.13.Miensopust}. We took the same layout of the blocks but adjusted the dimensions and resistivities to a typical marine CSEM problem, as shown in Figure~\ref{fig:block-model}. We additionally added a layered background with vertical transverse isotropy (VTI).
@@ -314,7 +313,7 @@ The block model is a derivation of the \emph{Dublin Test Model 1} from the first
 }
 %
 
-In a second step, three resistive blocks were added in the 3.3\,km-thick, anisotropic background layer as shown in Figure~\ref{fig:block-model}. They have resistivities of $\rho=10\,\ohmm$ (shallow beam perpendicular to survey lines), $\rho=100\,\ohmm$ (thin plate, South-East), and $\rho=500\,\ohmm$ (cube, North-West). As there are no (semi-)analytical solutions for this model we use the normalised root-mean square difference (NRMSD) between different codes, where the NRMSD of two responses $p$ and $q$ is given by
+In a second step, three resistive blocks were added in the 2.3\,km-thick, anisotropic background layer as shown in Figure~\ref{fig:block-model}. They have resistivities of $\rho=10\,\ohmm$ (shallow beam perpendicular to survey lines), $\rho=100\,\ohmm$ (thin plate, South-East), and $\rho=500\,\ohmm$ (cube, North-West). As there are no (semi-)analytical solutions for this model we use the normalised root-mean square difference (NRMSD) between different codes, where the NRMSD of two responses $p$ and $q$ is given by
 %
 \begin{equation}
   \mr{NRMSD~(\%)} = 200 \frac{|p - q|}{|p| + |q|}\ .
@@ -343,26 +342,10 @@ In a second step, three resistive blocks were added in the 3.3\,km-thick, anisot
 
 The results for the three receiver lines $y=-3,0,3\,$km are shown in Figures~\ref{fig:results-block--3}, \ref{fig:results-block-0}, and \ref{fig:results-block-3}, respectively, and the corresponding required runtime and memory are listed in Table~\ref{tbl:comp-block}. We can conclude from the NRMSD that similar codes have a smaller NRMSD than cross-comparison, hence \emg3d and \simpeg are very similar, as well as are \custem and \petgem. \imycom[DW]{Write in detail when all results are available}
 %
-\plot*{results-block--3}{width=.8\textwidth}{
+\plot*{results-block}{width=\textwidth}{
    Comparison of the block model for the broadside receivers at $y=-3\,$km.
    Top row shows the responses and bottom row the NRMSDs (\%)
    between \emg3d--\custem, \custem--\petgem, and \emg3d--\simpeg.
-}
-%
-
-%
-\plot*{results-block-0}{width=.8\textwidth}{
-   Comparison of the block model for the inline receivers at $y=0\,$km.
-   Top row shows the responses and bottom row the NRMSDs (\%)
-   between \emg3d--\custem, \custem--\petgem, and \emg3d--\simpeg.
-}
-%
-
-%
-\plot*{results-block-3}{width=.8\textwidth}{
-   Comparison of the block model for the broadside receivers at $y=+3\,$km.
-   Top row shows the responses and bottom row the NRMSDs (\%) between
-   \emg3d--\custem, \custem--\petgem, and \emg3d--\simpeg.
 }
 %
 
