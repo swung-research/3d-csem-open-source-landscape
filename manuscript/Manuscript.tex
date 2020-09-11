@@ -121,7 +121,7 @@ Controlled-source electromagnetic (CSEM) measurements are a frequently applied m
 
 In the 1990's, computer became sufficiently powerful that 3D modelling gained traction, and in 1995 the first International Symposium on Three-Dimensional Electromagnetics took place. This symposium resulted eventually in the book \emph{Three-Dimensional Electromagnetics} by the SEG \citep{B.SEG.99.Oristaglio}, and another book by \cite{B.02.Wannamaker} with the exactly same title came out only three years later. Often cited publications from that time are \cite{RSC.94.Mackie} for 3D MT computation; \cite{RS.94.Druskin} for frequency- and time-domain modelling using a Yee grid and a global Krylov subspace approximation; and \cite{RS.96.Alumbaugh, GJI.97.Newman} for low-to-high frequency computation on massively parallel computers.
 
-The continuous improvement of computing power and the CSEM boom in the early 2000's in the hydrocarbon industry led to a wealth of developed numerical solutions and according publications. The most common applied methods to solve Maxwell's equation are the IE method \citep{GJI.74.Raiche, RS.02.Hursan, GEO.06.Zhdanov, GP.10.Tehrani, CAG.16.Kruglyakov, MGS.17.Kruglyakov} and different variations of the differential equation (DE) method, such as finite differences (FD) \citep{GEO.93.Wang, RSC.94.Mackie, RS.94.Druskin, GEO.09.Streich, CAG.13.Sommer}, finite elements (FE) \citep{GEO.04.Commer, GJI.11.Schwarzbach,GEO.12.daSilva, GJI.13.Grayver, GJI.13.Puzyrev, SEG.16.Zhang}, and finite volumes (FV) \citep{EM.90.Madsen, SIAM.01.Haber, PIER.01.Clemens, GEO.14.Jahandari}. There are also many different types of discretization, where the most common ones are regular grids (Cartesian, rectilinear), mostly using a Yee grid \citep{IEEE.66.Yee} or a Lebedev grid \citep{CMMP.64.Lebedev}, but also unstructured tetrahedral grids \citep{SEG.16.Zhang, CAG.17.Cai}, hexagonal meshes \citep{CAG.14.Cai}, or OcTree meshes \citep{ECP.07.Haber}.
+The continuous improvement of computing power and the CSEM boom in the early 2000's in the hydrocarbon industry led to a wealth of developed numerical solutions and according publications. The most common applied methods to solve Maxwell's equation are the IE method \citep{GJI.74.Raiche, RS.02.Hursan, GEO.06.Zhdanov, GP.10.Tehrani, CAG.16.Kruglyakov, MGS.17.Kruglyakov} and different variations of the differential equation (DE) method, such as finite differences (FD) \citep{GEO.93.Wang, RSC.94.Mackie, RS.94.Druskin, GEO.09.Streich, CAG.13.Sommer}, finite elements (FE) \citep{GEO.04.Commer, GJI.11.Schwarzbach,GEO.12.daSilva, GJI.13.Grayver, GJI.13.Puzyrev, SEG.16.Zhang}, and finite volumes (FV) \citep{EM.90.Madsen, SIAM.01.Haber, PIER.01.Clemens, GEO.14.Jahandari}. There are also many different types of discretization, where the most common ones are regular grids (Cartesian, rectilinear), mostly using a Yee grid \citep{IEEE.66.Yee} or a Lebedev grid \citep{CMMP.64.Lebedev}, but also unstructured tetrahedral grids \citep{SEG.16.Zhang, CAG.17.Cai}, hexagonal meshes \citep{CAG.14.Cai}, or octree meshes \citep{ECP.07.Haber}.
 
 Very well written overviews about the different approaches to 3D EM modelling are given by \cite{SG.05.Avdeev} and \cite{SG.10.Borner}. But there was also a tremendous publications output with regards to 3D EM modelling in the last 10-15 years, at least partly driven by the ever increasing computing power. One reason why there are so many publications about this topic results from the variety of techniques to solve the systems of linear equations (SLE). They can be distinguished between direct solvers \citep{GEO.09.Streich, GP.14.Chung, GEO.14.Jaysaval, GEO.15.Grayver, SEG.15.Oh, GJI.18.Wang}, indirect solvers \citep{GJI.15.Jaysaval}, or a combination of both, so-called hybrid solvers \citep{GEO.18.Liu}. The solvers often use preconditioners such as the multigrid method \citep{SIAM.02.Aruliah, GJI.16.Jaysaval}.
 
@@ -239,7 +239,7 @@ Based on the current state of the \petgem project, there are many possibilities 
 
 \simpeg is a modular toolbox for simulations and gradient based inversions in geophysics. Current functionality includes modelling and inversion capabilities for gravity, magnetics, direct current resistivity, induced polarisation, electromagnetics (time and frequency, controlled and natural sources such as magnetotellurics), and fluid flow (Richards equation). It is a community driven project that aims to support researchers and \mycom[DW]{I added «and practitioners», as I think «support researchers» downplays the fact that \simpeg is used by various companies as well\dots}practitioners by providing a flexible, extensible framework and to facilitate integration of data sets from a variety of geophysical methods, including joint inversions \citep{GJI.20.Astic}, by providing a common interface to each method. 
 
-Meshes and finite volume differential operators are implemented in the \discretize package, which currently includes tensor, OcTree, cylindrical, and logically rectangular meshes. Each mesh type inherits from a common structure and uses the same naming conventions for methods and properties. This allows us to decouple the implementation of a discretized partial differential equation from the details of the mesh geometry and therefore we can write a single implementation of discretized partial differential equation (or set of partial differential equations) in \simpeg that will support all mesh types implemented in \discretize.
+Meshes and finite volume differential operators are implemented in the \discretize package, which currently includes tensor, octree, cylindrical, and logically rectangular meshes. Each mesh type inherits from a common structure and uses the same naming conventions for methods and properties. This allows us to decouple the implementation of a discretized partial differential equation from the details of the mesh geometry and therefore we can write a single implementation of discretized partial differential equation (or set of partial differential equations) in \simpeg that will support all mesh types implemented in \discretize.
 
 The electromagnetic implementations use a staggered grid finite volume approach where physical properties are discretized at cell centres, fields on cell edges and fluxes on cell faces.
 %(for an overview of discretizing Maxwell's equations, we recommend \cite{B.SIAM.14.Haber}).
@@ -249,17 +249,13 @@ There are two different discretization strategies implemented for Maxwell's equa
 
 \section{Numerical Verification}
 
+We computed the responses for three different models to verify that the four 3D CSEM codes yield the same electromagnetic responses and to compare different solver types (FE, FD) and different mesh types (unstructured tetrahedra, tensor, octree) in different scenarios. The first model is an anisotropic layered model, which can be compared to semi-analytical solutions. The layered model serves also as background model for the second verification, where we add three resistive blocks into the subsurface. The third test is based on a realistic, anisotropic marine model.
+
+\subsection{Layered Model}
+
 \itodo{HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE}
-We computed the responses for two different models to verify that all different 3D codes yield the same electromagnetic responses. The first simple \emph{Block model} consists of a layered, anisotropic background with three embedded blocks. The second model, \emph{Marlim R3D}, is based on a very complex, realistic marine CSEM setup.
 
-\subsection{Block Model}
 
-The block model is a derivation of the \emph{Dublin Test Model 1} from the first EM modelling workshop described by \cite{GJI.13.Miensopust}. We took the same layout of the blocks but adjusted the dimensions and resistivities to a typical marine CSEM problem, as shown in Figure~\ref{fig:block-model}. We additionally added a layered background with vertical transverse isotropy (VTI).
-%
-\plot*{block-model}{width=.6\textwidth}{
-  Sketch of the block model. The layered model consists of an air layer, a water layer, a thin top-layer followed by a thick, anisotropic background layer, and at the bottom a resistive basement layer. All three blocks are embedded in the thick background layer, which has VTI with $\lambda=\sqrt{2}$.
-}
-%
 
 The layered model consists of an upper halfspace of air, a 600\,m deep water layer, followed by a 150\,m thick, isotropic layer of 1\,\ohmm, a 3.3\,km thick, anisotropic layer of $\rho_\text{h}=2\,\ohmm$ and $\rho_\text{v}=4\,\ohmm$, and finally a resistive basement consisting of a lower halfspace of $1000\,\ohmm$. The 200\,m long, $x$-directed source is located 50\,m above the seafloor from $x=-50$ to $x=50\,$m in $x$-direction, at $y=0\,$m. The $x$-directed receivers are placed on the seafloor every 200\,m from $x=-10\,$km to $x=+10\,$km in three lines for $y=-3, 0, 3\,$km.
 
@@ -307,6 +303,15 @@ Figure~\ref{fig:results-layered-0} illustrates the inline responses in the top-r
   %
   \bottomrule
 \end{tabular}}%
+%
+
+\subsection{Block Model}
+
+The block model is a derivation of the \emph{Dublin Test Model 1} from the first EM modelling workshop described by \cite{GJI.13.Miensopust}. We took the same layout of the blocks but adjusted the dimensions and resistivities to a typical marine CSEM problem, as shown in Figure~\ref{fig:block-model}. We additionally added a layered background with vertical transverse isotropy (VTI).
+%
+\plot*{block-model}{width=.6\textwidth}{
+  Sketch of the block model. The layered model consists of an air layer, a water layer, a thin top-layer followed by a thick, anisotropic background layer, and at the bottom a resistive basement layer. All three blocks are embedded in the thick background layer, which has VTI with $\lambda=\sqrt{2}$.
+}
 %
 
 In a second step, three resistive blocks were added in the 3.3\,km-thick, anisotropic background layer as shown in Figure~\ref{fig:block-model}. They have resistivities of $\rho=10\,\ohmm$ (shallow beam perpendicular to survey lines), $\rho=100\,\ohmm$ (thin plate, South-East), and $\rho=500\,\ohmm$ (cube, North-West). As there are no (semi-)analytical solutions for this model we use the normalised root-mean square difference (NRMSD) between different codes, where the NRMSD of two responses $p$ and $q$ is given by
@@ -425,7 +430,7 @@ we first need all results. E.g.}
 \begin{itemize}
   \item 0.125\,Hz: on the left side, \custem and \emg3d are almost identical,
     but very different from MR3D. So there I actually trust more our
-    calculation, or there is a difference in the model that we did not take
+    computation, or there is a difference in the model that we did not take
     into account.
   \item 0.125\,Hz: on the right side, \custem is very similar to MR3D, whereas
     \emg3d is off.
@@ -487,7 +492,7 @@ The real Marlim R3D model was, ironically, the ideal case for FE codes because i
 
 The codes under consideration use direct and indirect solvers. In general, the biggest advantage of iterative solvers with appropriate preconditioners are the comparatively small memory requirements. Direct solvers can be considered as most robust to solve any ill-conditioned SLE, which is most important for systems of the FE method on unstructured meshes. As the consumed computational resources indicate, a more powerful machine than a laptop is required for most 3D CSEM problems, but no high-performance-computing architecture.
 
-The computation times can differ significantly for specific simulations, but there is no clear general advantage for one of the solver types. In our models, the runtime comparison favoured the iterative solver and therefore, \emg3d. Even though not shown here, direct solvers exhibit their strongest advantage in terms of computation times if responses of multiple CSEM transmitters need to be calculated in the same computational domain. As the system matrix factorisation requires 98-99\,\% of the solution time, computations for additional sources come at almost no cost for direct solvers, i.e., MUMPS, whereas it would come at the same cost as the first source for \emg3d. For the sake of completeness, note that there are also advanced techniques for iterative solvers to make use of preconditioners, factorisations, or intermediate solutions of the previous SLE to speed up the calculation for multiple sources, but this argumentation is beyond the scope of this work.
+The computation times can differ significantly for specific simulations, but there is no clear general advantage for one of the solver types. In our models, the runtime comparison favoured the iterative solver and therefore, \emg3d. Even though not shown here, direct solvers exhibit their strongest advantage in terms of computation times if responses of multiple CSEM transmitters need to be computed in the same computational domain. As the system matrix factorisation requires 98-99\,\% of the solution time, computations for additional sources come at almost no cost for direct solvers, i.e., MUMPS, whereas it would come at the same cost as the first source for \emg3d. For the sake of completeness, note that there are also advanced techniques for iterative solvers to make use of preconditioners, factorisations, or intermediate solutions of the previous SLE to speed up the computation for multiple sources, but this argumentation is beyond the scope of this work.
 
 We see this work as the start for future elaboration on the validation of modelling codes, not necessarily restricted to CSEM problems. Much more comparisons and examples are required which not only result in the finding that a sufficient accuracy was observed. 3D CSEM modelling is a difficult task, which requires many considerations. It starts with the selection of the right code for the problem. We found that the meshing task, which is most performance determining, is particularly difficult and relevant, choosing cells small enough to appropriately represent the model yet to be as coarse as possible still achieving the desired precision. The required model extent has to be considered as well, thinking also about effects of the so-called airwave in marine setups or boundary meshes in general. This is not a new finding but rather well known fact. We are surprised that only the minority of publications in the field of 3D EM modelling considers a sufficiently detailed elaboration of the meshing process.
 
@@ -505,7 +510,7 @@ A completely objective evaluation of codes is only possible by cross-validation.
 
 \imycom[LH]{From the discussion in slack - also a TODO on adding points on if there were any changes (or new motivation for development) based on this exercise --> goal: highlight benefits of open source collaborations.
 
-Within SimPEG: This work has motivated feature development including: (a) interpolation and averaging strategies from mapping physical properties on a fine mesh to a coarser mesh for computation and (b) new examples to include in the documentation for designing OcTree meshes. Furthermore, as a part of a broader development objective of inter-operating with other forward-simulation engines, connecting \emg3d and \simpeg provided a motivating use-case for the latest refactor and release of \simpeg 0.14.0.
+Within SimPEG: This work has motivated feature development including: (a) interpolation and averaging strategies from mapping physical properties on a fine mesh to a coarser mesh for computation and (b) new examples to include in the documentation for designing octree meshes. Furthermore, as a part of a broader development objective of inter-operating with other forward-simulation engines, connecting \emg3d and \simpeg provided a motivating use-case for the latest refactor and release of \simpeg 0.14.0.
 % \citep{simpeg0.14.0}.
 }
 
