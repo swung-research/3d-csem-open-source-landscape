@@ -306,14 +306,14 @@ The thin isotropic layer beneath the water requires many tetrahedra for a good-q
 
 \subsection{Block Model}
 
-The block model is a derivation of the \emph{Dublin Test Model 1} from the first EM modelling workshop described by \cite{GJI.13.Miensopust}. We took the same layout of the blocks but adjusted the dimensions and resistivities to a typical marine CSEM problem, as shown in Figure~\ref{fig:block-model}. We additionally added a layered background with vertical transverse isotropy (VTI).
+The block model is a derivation of the \emph{Dublin Test Model 1} from the first EM modelling workshop described by \cite{GJI.13.Miensopust}. We took the same layout of the blocks but adjusted the dimensions and resistivities to a typical marine CSEM problem, as shown in Figure~\ref{fig:model-block}. We additionally added a layered background with vertical transverse isotropy (VTI).
 %
-\plot*{block-model}{width=.6\textwidth}{
+\plot*{model-block}{width=.6\textwidth}{
   Sketch of the block model. The layered model consists of an air layer, a water layer, a thin top-layer followed by a thick, anisotropic background layer, and at the bottom a resistive basement layer. All three blocks are embedded in the thick background layer, which has VTI with $\lambda=\sqrt{2}$.
 }
 %
 
-In a second step, three resistive blocks were added in the 2.3\,km-thick, anisotropic background layer as shown in Figure~\ref{fig:block-model}. They have resistivities of $\rho=10\,\ohmm$ (shallow beam perpendicular to survey lines), $\rho=100\,\ohmm$ (thin plate, South-East), and $\rho=500\,\ohmm$ (cube, North-West). As there are no (semi-)analytical solutions for this model we use the normalised root-mean square difference (NRMSD) between different codes, where the NRMSD of two responses $p$ and $q$ is given by
+In a second step, three resistive blocks were added in the 2.3\,km-thick, anisotropic background layer as shown in Figure~\ref{fig:model-block}. They have resistivities of $\rho=10\,\ohmm$ (shallow beam perpendicular to survey lines), $\rho=100\,\ohmm$ (thin plate, South-East), and $\rho=500\,\ohmm$ (cube, North-West). As there are no (semi-)analytical solutions for this model we use the normalised root-mean square difference (NRMSD) between different codes, where the NRMSD of two responses $p$ and $q$ is given by
 %
 \begin{equation}
   \mr{NRMSD~(\%)} = 200 \frac{|p - q|}{|p| + |q|}\ .
@@ -370,17 +370,6 @@ The results for the three receiver lines $y=-3,0,3\,$km are shown in Figures~\re
 
 The difference becomes only significant at offsets larger than 8\,km. This is due to a practical difference in the meshing: This simple block model is advantageous for FV codes, as it consists of rectangular blocks and horizontal layers, simple geometric objects. While having a very thin, shallow layer is straight-forward for FV codes, it requires many cells for a FE code, and a similar approach as for the Block Model was used. This is the reason for the increased NRMSD at large offsets, and it has nothing to do with the accuracy of the computation itself.
 
-%
-\plot*{median-stats-block}{width=\textwidth}{
-  {\imycom[DW]{Suggestion from Raphael for a statistics plot.}}
-    Overall misfit relations between all codes for the three receiver lines
-    y=-3, y=0, and y=3 (f.l.t.r.). Colors indicate the median values of the 101
-    calculated NRMSD arguments for each line between all codes. Errors for real
-    parts are shown in the lower triangle, for imaginary parts in the upper
-  triangle.
-}
-%
-
 \subsection{Marlim R3D}
 
 The Marlim oil field is a giant reservoir in a turbidite sandstone horizon in the north-eastern part of the Campos Basin, offshore Brazil, which was discovered in 1985. \cite{BJG.17.Carvalho} created from seismic data and well log data a realistic resistivity model with vertical transverse isotropy (VTI), Marlim R3D (MR3D), which they released under an open-source license. \cite{GEO.19.Correa} computed CSEM data for six frequencies from 0.125\,Hz to 1.25\,Hz, released under an open-source license. To compute the data they used a state-of-the-art code from the industry \citep{GEO.07.Maao}. It is therefore an ideal case to verify our open-source codes against, as it is a complex, realistic model and the data were computed by an industry-proofed code. Additionally, that code is a time-domain code, whereas the four codes under consideration here compute the results all in the frequency-domain.
@@ -399,11 +388,31 @@ The published data set consists of a regular grid of receivers of 20 in eastern 
 %
 
 We computed all all six frequencies for all components ($E_x$, $E_y$, $E_z$) for both inline and broadside acquisition lines. However, we show here only the three frequencies and the responses with the strongest amplitudes (which are generally used in processing), which are $E_x$ inline and broadside, and $E_y$ broadside. The comparison is shown in Figure~\ref{fig:results-marlim}.
+
 %
-\plot*{results-marlim}{width=\textwidth}{
+\plot*{results-marlim-responses}{width=\textwidth}{
+}
+%
+
+%
+\plot*{results-marlim_2published}{width=\textwidth}{
   This is one heck of a figure. Just an idea, please make suggestions how to
   improve it (currently, \petgem data is a copy of \custem data, and \simpeg
   data is a copy of \emg3d data).
+}
+%
+
+%
+\plot*{results-marlim_2ours}{width=\textwidth}{
+}
+%
+
+%
+\plot*{results-marlim_entire}{width=\textwidth}{
+}
+%
+%
+\plot*{results-marlim_survey}{width=\textwidth}{
 }
 %
 
