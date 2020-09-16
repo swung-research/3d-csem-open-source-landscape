@@ -97,16 +97,10 @@ def extract_model(model='orig'):
 
 
 def extract_section():
-    """Extract original or computational model of Marlim R3D and store as npz.
+    """Extract x-z-slice at receiver location of the original mesh.
 
-    Extracts the original fine model or the computational model from the
-    sgy-fiels and stores them as numpy-compressed npz files.
-
-    Parameters
-    ----------
-    model : str; {<'orig'>; 'comp'}
-        If model=='comp', the computational model is returned. Else the
-        original model.
+    Extracts a x-z-slice of the original fine resistivity model and stores it
+    as numpy-compressed npz file.
     """
 
     # Get original mesh and resistivities.
