@@ -93,7 +93,7 @@ The collaboration of four code maintainer trying to achieve the same task brough
 \newpage
 \itodo{\hfill$\Downarrow$\hfill$\Downarrow$\hfill List of things ToDo, Notes, etc\hfill$\Downarrow$\hfill$\Downarrow$\hfill~}
 \begin{itemize}
-    \item {\color{red}\bfseries This version is quite different from the previous you revised. However, from now on we do not expect too many changes. To make it easier for everyone to see the new changes please make sure that from now on "Track Changes" is always in Overleaf.}
+    \item {\color{red}\bfseries This version is quite different from the previous you revised. However, from now on we do not expect too many changes. To make it easier for everyone to see the new changes please make sure that from now on "Track Changes" is always on in Overleaf.}
     \item Notes on orthography: I settled on discretize with a «z». My dictionary says that discreti{\color{red}\bfseries z}e is AE and discreti{\color{red}\bfseries s}e is BE, but that «z» is also used in BE in mathematical contexts. Is that fine or any other opinions?
     \item We probably should be careful to not mention the actual code names too often. E.g., I removed them from the abstract.
     \item I tried to avoid double reference. E.g., SciPy, MUMPS, pyGIMLi: I referenced them the first time they are mentioned, and not afterwards. Current exceptions: Miensopust et al., 2013, is cited twice.
@@ -108,12 +108,12 @@ The collaboration of four code maintainer trying to achieve the same task brough
       \end{enumerate}
     I got all the info out of the ".nc" files, so make sure you wrote the correct info into the nc-files. Further notes:
       \begin{description}
-        \item[runtime] Should only include the wall time (or elapsed real time, \url{https://en.wikipedia.org/wiki/Elapsed_real_time}) of solving the SLE, for ALL frequencies (in \emg3d some frequencies are slower than others, but in any case, we report the sum of all of them); any pre-/postprocessing such as mesh generation or model interpolation can be ignored.
+        \item[runtime] Should only include the wall time (or elapsed real time, \href{https://en.wikipedia.org/wiki/Elapsed_real_time}{wikipedia.org/\-wiki/\-Elapsed\-\_real\-\_time}) of solving the SLE, for ALL frequencies (in \emg3d some frequencies are slower than others, but in any case, we report the sum of all of them); any pre-/postprocessing such as mesh generation or model interpolation can be ignored.
         \item[memory] It should be the maximum memory increase when solving the SLE (again, ignoring any pre-/postprocessing). Again, of all frequencies. In \emg3d some frequencies require more RAM than others (more iterations), but we only report the "worst", the heaviest consumer.
         \item[nproc] Not sure we reached agreement on Slack, but I took no everything in here (threads and (virtual) processes); please note here if you think it should be different.
         \item[dof] Similarly, not sure we reached agreement on Slack. I put it here now for complex value, hence halving the dof of custEM. Again, please write here if we should change it.
     \end{description}
-    We could discuss if we should report CPU time instead (hence summing all parallel processes); but I think for the user of interest is the real-world time, how long do I have to wait. (Either way, the reader can make a quick estimation in one or the other direction; important is that we are consistent throughout the paper.)
+    We could discuss if we should report CPU time instead (hence summing all parallel processes); but I think for the user of interest is the real-world time, how long do I have to wait, so I think it is good as we do it now. (Either way, the reader can make a quick estimation in one or the other direction; important is that we are consistent throughout the paper.)
 \end{itemize}
 \itodo{\hfill$\Uparrow$\hfill$\Uparrow$\hfill List of things ToDo, Notes, etc\hfill$\Uparrow$\hfill$\Uparrow$\hfill~}
 \newpage
@@ -252,124 +252,96 @@ There are two different discretization strategies implemented for Maxwell's equa
 
 \section{Numerical Verification}
 
-We computed the responses for three different models to verify that the four 3D CSEM codes yield the same electromagnetic responses and to compare different solver types (FE, FD) and different mesh types (unstructured tetrahedra, tensor, octree) in different scenarios. The first model is an anisotropic layered model, which can be compared to semi-analytical solutions. The layered model serves also as background model for the second verification, where we add three resistive blocks into the subsurface. The final comparison is based on a realistic, anisotropic marine model. This is an open-source model, for which also published data from a commercial code exist.
+We computed the responses for three different models to verify that the four 3D CSEM codes yield the same electromagnetic responses and to compare different solver types (FE, FD) and different mesh types (unstructured tetrahedra, tensor, octree) in different scenarios. The first model is an anisotropic layered model, which can be compared to semi-analytical solutions. The layered model serves also as background model for the second verification, where we add three resistive blocks into the subsurface. The final comparison is based on a realistic, anisotropic marine model. This is an open-source resistivity model which comes with computed CSEM responses.
 
 \subsection{Layered Model}
 
-The layered (1D) model consists of an upper halfspace of air ($\rho_\text{air}=\num{e8}\,\ohmm$), a 600\,m deep water layer ($\rho_\text{sea}=\num{0.3}\,\ohmm$), followed by a 250\,m thick, isotropic layer of 1\,\ohmm, a 2.3\,km thick, anisotropic layer of $\rho_\text{h}=2\,\ohmm$ and $\rho_\text{v}=4\,\ohmm$, and finally a resistive, isotropic basement consisting of a lower halfspace of $1000\,\ohmm$. The survey consists of a 200\,m long and 800\,A strong source at a single position with frequency $f=1\,$Hz, and three receiver lines of 101 receivers each. The centre the $x$-directed source is at $x=y=0\,$m, 50\,m above the seafloor. The $x$-directed receivers are placed on the seafloor every 200\,m from $x=-10\,$km to $x=+10\,$km in three lines for $y=-3; 0; +3\,$km. (Note that for the layered model we only show results for the receiver lines $y=-3; 0\,$km, as the results for $y=\pm3\,$km are the same in the 1D case.)
+The layered (1D) model consists of an upper halfspace of air ($\rho_\text{air}=\num{e8}\,\ohmm$), a 600\,m deep water layer ($\rho_\text{sea}=\num{0.3}\,\ohmm$), followed by a 250\,m thick, isotropic layer of 1\,\ohmm, a 2.3\,km thick, anisotropic (vertical transverse isotropy, VTI) layer of $\rho_\text{h}=2\,\ohmm$ and $\rho_\text{v}=4\,\ohmm$, and finally a resistive, isotropic basement consisting of a lower halfspace of $1000\,\ohmm$. The survey consists of a 200\,m long and 800\,A strong source at a single position with frequency $f=1\,$Hz, and three receiver lines of 101 receivers each. The centre of the $x$-directed source is at $x=y=0\,$m, 50\,m above the seafloor. The $x$-directed receivers are placed on the seafloor every 200\,m from $x=-10\,$km to $x=+10\,$km in three lines with $y=-3; 0; +3\,$km.
 
 
-A layered model fails to show the strength of 3D modellers, and in reality one would not choose a 3D code to compute responses for a layered model. However, it is one of the few examples that can be compared to semi-analytical results, and is therefore still a valuable test. All semi-analytical responses are computed using the code \empymod\citep{GEO.17.Werthmuller}.
+A layered model fails to show the strength of 3D modellers, and in reality one would not choose a 3D code to compute responses for a layered model. However, it is one of the few examples that can be compared to semi-analytical results, and is therefore still a valuable test. All layered-model responses are compared to results computed with the semi-analytical code \empymod\citep{GEO.17.Werthmuller}.
 
-\itodo{HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE}
-\rmk{$\Downarrow$ Re-arrange and re-write all this $\Downarrow$}
-
-Figures~\ref{fig:results-layered-0} and \ref{fig:results-layered--3} show the actual responses in the top rows, and the relative error in the bottom rows for the receiver lines $y=0\,$km and $y=\pm3\,$km, which are identical.
-
-Figure~\ref{fig:results-layered-0} illustrates the inline responses in the top-row for offsets $r>0.5\,$km. We only show the semi-analytical result for the real and imaginary amplitudes. The bottom row displays the relative error of the 3D codes. The results show that all codes are yielding accurate result with errors of around 1\,\% in most parts and overall below a few percent, disregarding locations affected by sign reversals. The differences can be mainly attributed to the chosen discretizations. The FE codes show the strongest misfits at large offsets, most likely caused by the utilised boundary mesh. Very low errors at large offsets are achieved by \emg3d, whereas it suffers at short offsets from a coarse grid.
-%
-\plot*{results-layered}{width=\textwidth}{
-   Comparison of the layered model for the inline receivers ($y=0\,$km).
-   Top row shows the semi-analytical responses from \empymod, and bottom row
-   shows the relative error (\%) of \custem, \emg3d, \petgem, and \simpeg.
-}
-%
-
-The thin isotropic layer beneath the water requires many tetrahedra for a good-quality discretization. Therefore, the FE codes \custem and \petgem used the same tetrahedral mesh with a horizontal layered-earth extent of 30\,km from the origin, surrounded by a ten times larger halfspace-like boundary mesh with water conductivities assigned to the subsurface. This approximation significantly reduced the problem size compared to considering the layered-earth geometry for the whole computational domain. \imycom[RR]{Add short information about mesh design with \simpeg and \emg3d, including something like "comparatively coarse discretization in centre to minimise computation times" }
-
-\imycom[RR]{I suggest to show y-component for broadside and the errors of the
-  weak component (if not too bad), otherwise only broadside is required to save
-  a plot, because inline should be better for Ex in general.} The corresponding
-  broadside responses for $y=\pm3\,$km are shown in
-  Figure~\ref{fig:results-layered--3}. The runtime and memory requirements are listed
-  in Table~\ref{tbl:comp-layered}.
-
-\rmk{$\Uparrow$ Re-arrange and re-write all this $\Uparrow$}
+Figure~\ref{fig:results-layered} shows the result of the layered model verification, where the left, middle, and right columns are for the real part, imaginary part, and absolute value, respectively (dashed lines indicate negative values). The top row shows the actual, semi-analytically computed responses, and the second and the third rows show the relative error (in percent) of the inline and the broadside receivers, respectively (note that for the 1D case the two broadside lines for $y=\pm3\,$km are identical).
 
 %
-\tabl[btp]{comp-layered}{Comparison of runtime, memory, and number of cells used to discretize the layered model.}{
+\plot*{results-layered}{width=\textwidth}{Inline and broadside responses (top row) for the layered model. The relative error of the four 3D modellers are shown in the second and the third row for the inline and broadside responses, respectively.}
+%
+
+There are a few noteworthy points:
+\begin{enumerate}
+  \item The error plots of the real and imaginary responses are  dominated by the zero-crossings, which blows the error up as is the nature of the relative error formula, it has no real-world implications.
+  \item However, it can be seen from the absolute-values errors that the error is generally in the order of 1\,\% or less.
+  \item The relative errors close to the source are getting huge, particularly for the inline receivers and particularly for the results of \emg3d and \simpeg. These comparably huge errors are caused by a too coarse discretization around the source. They could be significantly reduced by choosing a finer discretization, at the cost of increased computation time.
+  \item The relative error of the responses from \custem and \petgem, on the hand, are relatively big at large offsets, particularly for the inline real responses. This has, again, its origin in the chosen discretization. The thin isotropic layer beneath the water requires many tetrahedra for a good-quality discretization. Therefore, the FE codes only extend this thin layer up to 30\,km for the origin, surrounded by a ten times larger halfspace-like boundary mesh with water conductivities assigned to the subsurface. This approximation significantly reduced the problem size compared to considering the layered-earth geometry for the whole computational domain.
+\end{enumerate}
+
+Please not that \emg3d and \simpeg used the same tensor mesh in this example.
+\imycom[DW]{Lindsey: A sentence why Tensor over OcTree.}
+\imycom[DW]{Raphael/Octavio: A sentence about the differences in the meshes of
+\custem and \petgem.}
+
+The runtime and memory requirements for the layered model are listed in Table~\ref{tbl:comp-layered}.
+\imycom[DW]{Lindsey: A note about high RAM usage of \simpeg? About PARDISO or Mumps or similar. Could be used as a general note that it boils down to the underlying solver.}
+
+%
+\tabl[btp]{comp-layered}{Comparison of number of processes, runtime, and memory, as well as the degree of freedom of the discretization used by the different codes for the layered model.}{
   \centering
-\begin{tabular}{lS[table-format=6.0]rS[table-format=4.1]S[table-format=8.0]}
+\begin{tabular}{lrS[table-format=6.0]S[table-format=4.1]S[table-format=8.0]}
   \toprule
   %
-       & {Runtime (s)} & \#Procs & {Memory (GiB)}   & {\#dof} \\
+       & \#Procs & {Runtime (s)} & {Memory (GiB)}   & {\#dof} \\
   \midrule
   %
-  \custem &   118 & 24 &  97.8 & 1530808 \\ % dof: 3061616 / 2 (Real+Imag -> Complex)
-  \emg3d  &   116 &  1 &   0.4 & 4813216 \\
-  \petgem &    90 & 24 &  34.2 & 2455868 \\
-  \simpeg & 10089 &  4 & 280.3 & 4813216 \\ % nprocs: 1*4 threads
+  \custem & 24 &   118 &  97.8 & 1530808 \\ % dof: 3061616 / 2 (Real+Imag -> Complex)
+  \emg3d  &  1 &   116 &   0.4 & 4813216 \\
+  \petgem & 24 &    90 &  34.2 & 2455868 \\
+  \simpeg &  4 & 10089 & 280.3 & 4813216 \\ % nprocs: 1*4 threads
   %
   \bottomrule
 \end{tabular}}%
 %
-
 
 \subsection{Block Model}
 
-The block model is a derivation of the \emph{Dublin Test Model 1} from the first EM modelling workshop described by \cite{GJI.13.Miensopust}. We took the same layout of the blocks but adjusted the dimensions and resistivities to a typical marine CSEM problem, as shown in Figure~\ref{fig:model-block}. We additionally added a layered background with vertical transverse isotropy (VTI).
+The block model is a derivation of the \emph{Dublin Test Model 1} from the first EM modelling workshop described by \cite{GJI.13.Miensopust}. We use the same layout of the blocks but adjust the dimensions and resistivities to a typical marine CSEM problem, as shown in Figure~\ref{fig:model-block}. Additionally, we add our \emph{Layered Model} as a VTI background. The three resistive blocks have resistivities of $\rho=10\,\ohmm$ (shallow beam perpendicular to survey lines), $\rho=100\,\ohmm$ (thin plate, South-East), and $\rho=500\,\ohmm$ (cube, North-West).
 %
 \plot*{model-block}{width=.6\textwidth}{
-  Sketch of the block model. The layered model consists of an air layer, a water layer, a thin top-layer followed by a thick, anisotropic background layer, and at the bottom a resistive basement layer. All three blocks are embedded in the thick background layer, which has VTI with $\lambda=\sqrt{2}$.
+  Sketch of the block model, consisting of the layered background model with three resistive blocks, embedded in the thick background layer which has VTI with $\lambda=\sqrt{2}$.
 }
 %
 
-In a second step, three resistive blocks were added in the 2.3\,km-thick, anisotropic background layer as shown in Figure~\ref{fig:model-block}. They have resistivities of $\rho=10\,\ohmm$ (shallow beam perpendicular to survey lines), $\rho=100\,\ohmm$ (thin plate, South-East), and $\rho=500\,\ohmm$ (cube, North-West). As there are no (semi-)analytical solutions for this model we use the normalised root-mean square difference (NRMSD) between different codes, where the NRMSD of two responses $p$ and $q$ is given by
+There are no (semi-)analytical solutions for such a model. We therefore use the normalised root-mean square difference (NRMSD) between the results of different codes, where the NRMSD of two responses $R_1$ and $R_2$ is given by
 %
 \begin{equation}
-  \mr{NRMSD~(\%)} = 200 \frac{|p - q|}{|p| + |q|}\ .
+  \mr{NRMSD~(\%)} = 200 \frac{|R_1 - R_2|}{|R_1| + |R_2|}\ .
   \label{eq:nrmsd}
 \end{equation}
 %
-\imycom[DW]{NRMSD: Comparing all codes to all would make the figures too cluttered, and I don't think it would add a lot insights. My idea is therefore to compare \emg3d/\simpeg (the two FV ones), \custem/\petgem (the two FE ones), and \emg3d/\custem (a cross-comparison). What do you think?
 
-\imycom[RR]{Agreed. Another suggestion, I solved this visualisation problem
-  with a color coded matrix plot, showing 90th percentiles or median values of
-  all errors along the line as meaningful comprehensive number. Look in my
-  thesis - example 4. Comparison for real and imag could be in the lower and
-  upper triangles, or we show absolute magnitudes for layered earth in lower
-  triangle and for block model in upper triangle. With help of this plot, one
-  could easily say if differences are higher for block model and which codes
-  fit to each other well.}
-\imycom[RR]{If using the mentioned matrix plots, we would need only one of the
-  figures 4-6, and could show the other data comprehensively. I added a python
-  script to generate an example of my plotting suggestion in the model-block
-  directory and a new Figure 7 in the manuscript that illustrates what I mean.
-  Of course, any upgrade suggestion for this initial idea is welcome, aside
-  from making it looking nice with labels  and annotations.}
-\imycom[OCR]{I really liked this way of presenting the comparison, in addition to saving space, we gained in understanding. Looks really nice!}
-
-}
-
-The results for the three receiver lines $y=-3,0,3\,$km are shown in Figures~\ref{fig:results-block--3}, \ref{fig:results-block-0}, and \ref{fig:results-block-3}, respectively, and the corresponding required runtime and memory are listed in Table~\ref{tbl:comp-block}. We can conclude from the NRMSD that similar codes have a smaller NRMSD than cross-comparison, hence \emg3d and \simpeg are very similar, as well as are \custem and \petgem. \imycom[DW]{Write in detail when all results are available}
+The results for the three receiver lines $y=-3,0,+3\,$km are shown in the left, middle, and right columns of Figure~\ref{fig:results-block}, respectively. The top row shows the result of \emg3d, as an example, and the bottom row shows the NRMSDs between the absolute responses of the codes.
 %
-\plot*{results-block}{width=\textwidth}{
-   Comparison of the block model for the broadside receivers at $y=-3\,$km.
-   Top row shows the responses and bottom row the NRMSDs (\%)
-   between \emg3d--\custem, \custem--\petgem, and \emg3d--\simpeg.
-}
+\plot*{results-block}{width=\textwidth}{Results of the block model comparison: The responses of \emg3d, as an example, are shown in the top row, and the NRMSDs (\%) between the absolute responses ($|E_x|$) of the different codes are shown in the bottom row.}
 %
+\itodo{We might wait for the final \simpeg results before jumping to conclusions; but generally, the NRMSD differences is below 1-2\,\%, except for large offsets.}
 
+The corresponding required runtime and memory are listed in Table~\ref{tbl:comp-block}.
 %
-\tabl[btp]{comp-block}{Comparison of used runtime, memory, and number of cells
-  used to discretize the block model.}{
+\tabl[btp]{comp-block}{Comparison of number of processes, runtime, and memory, as well as the degree of freedom of the discretization used by the different codes for the block model.}{
   \centering
-\begin{tabular}{lS[table-format=6.0]rS[table-format=4.1]S[table-format=8.0]}
+\begin{tabular}{lrS[table-format=6.0]S[table-format=4.1]S[table-format=8.0]}
 \toprule
   %
-       & {Runtime (s)} & \#Procs & {Memory (GiB)}   & {\#dof} \\
+       & \#Procs & {Runtime (s)} & {Memory (GiB)}   & {\#dof} \\
   \midrule
   %
-  \custem &   158 & 24 & 115.9 & 1654242 \\ % dof: 3308484 / 2  (Real+Imag -> Complex)
-  \emg3d  &   115 &  1 &   0.4 & 4813216 \\
-  \petgem &    72 & 24 &  35.8 & 2455868 \\
-  \simpeg &  9993 &  4 & 280.6 & 4813216 \\ % nprocs: 1*4 threads
+  \custem & 24 &   158 & 115.9 & 1654242 \\ % dof: 3308484 / 2  (Real+Imag -> Complex)
+  \emg3d  &  1 &   115 &   0.4 & 4813216 \\
+  \petgem & 24 &    72 &  35.8 & 2455868 \\
+  \simpeg &  4 &  9993 & 280.6 & 4813216 \\ % nprocs: 1*4 threads
   %
   \bottomrule
 \end{tabular}}%
 %
-
-The difference becomes only significant at offsets larger than 8\,km. This is due to a practical difference in the meshing: This simple block model is advantageous for FV codes, as it consists of rectangular blocks and horizontal layers, simple geometric objects. While having a very thin, shallow layer is straight-forward for FV codes, it requires many cells for a FE code, and a similar approach as for the Block Model was used. This is the reason for the increased NRMSD at large offsets, and it has nothing to do with the accuracy of the computation itself.
 
 \subsection{Marlim R3D}
 
@@ -419,8 +391,6 @@ We computed all all six frequencies for all components ($E_x$, $E_y$, $E_z$) for
 %
 
 
-\imycom[DW]{There are some interesting features we should highlight. But again,
-we first need all results. E.g.}
 \begin{itemize}
   \item 0.125\,Hz: on the left side, \custem and \emg3d are almost identical,
     but very different from MR3D. So there I actually trust more our
@@ -436,25 +406,23 @@ we first need all results. E.g.}
 
 
 %
-\tabl[btp]{comp-marlim}{Comparison of used runtime, memory, and number of cells
-  used to discretize the Marlim R3D model.}{
+\tabl[btp]{comp-marlim}{Comparison of number of processes, runtime, and memory, as well as the degree of freedom of the discretization used by the different codes for the Marlim R3D model.}{
   \centering
-\begin{tabular}{lS[table-format=6.0]rS[table-format=4.1]S[table-format=8.0]}
+\begin{tabular}{lrS[table-format=6.0]S[table-format=4.1]S[table-format=8.0]}
   \toprule
   %
-       & {Runtime (s)} & \#Procs & {Memory (GiB)}   & {\#dof} \\
+       & \#Procs & {Runtime (s)} & {Memory (GiB)}   & {\#dof} \\
   \midrule
   %
-  \custem & 4984 & 64 & 558.5 & 4539474 \\ % dof: 9078948 / 2 (Real+Imag -> Complex)
-  \emg3d  & 1200 &  1 &   0.5 & 5998992 \\
-  \petgem & 3527 & 96 & 437.8 & 4539474 \\
-  \simpeg &  422 &  4 &  12.8 &  720146 \\ % nprocs: 1*4 threads
+  \custem & 64 & 4984 & 558.5 & 4539474 \\ % dof: 9078948 / 2 (Real+Imag -> Complex)
+  \emg3d  &  1 & 1200 &   0.5 & 5998992 \\
+  \petgem & 96 & 3527 & 437.8 & 4539474 \\
+  \simpeg &  4 &  422 &  12.8 &  720146 \\ % nprocs: 1*4 threads
   %
   \bottomrule
 \end{tabular}}%
 %
 
-\itodo{ADD cross section plots!}
 
 \section{Discussion}
 %
@@ -492,26 +460,18 @@ We see this work as the start for future elaboration on the validation of modell
 
 A completely objective evaluation of codes is only possible by cross-validation. Nevertheless, we point out that using different discretizations or formulations of the numerical approach, e.g. by choosing field or potential approaches, second or total field formulations, different polynomial order basis functions, and others, is a suitable alternative to the cross-comparison of multiple codes for self-validating complex 3D results. This is a very powerful method to confirm the general functionality of codes for any modelling problem, which might not be covered by existing cross-validation benchmark examples. Considering for instance  this study, it would be very optimistic to estimate the accuracy of the utilised codes for a land-based mineral exploration setup with a highly-conductive, steeply-dipping conductor. However, each modeller could run multiple simulations with different configurations to increase the reliability of the obtained results.
 
-\imycom[DW]{I would like to capture as many as possible of the (I) differences,
-  (II) difficulties, (III) advantages, and (IV) disadvantages, that we
-  encountered in this exercise. This includes differences from direct to
-  iterative solver and differences from FE to FD codes etc. Please just jot
-  down things that come to your mind.
-\imycom[OCR]{I think an important point is the user experience (modeller). I
-  know this is an intangible element but perhaps we could add a line about it.
-  It is my opinion}
-}
 
-\imycom[LH]{From the discussion in slack - also a TODO on adding points on if there were any changes (or new motivation for development) based on this exercise --> goal: highlight benefits of open source collaborations.
-
-Within SimPEG: This work has motivated feature development including: (a) interpolation and averaging strategies from mapping physical properties on a fine mesh to a coarser mesh for computation and (b) new examples to include in the documentation for designing octree meshes. Furthermore, as a part of a broader development objective of inter-operating with other forward-simulation engines, connecting \emg3d and \simpeg provided a motivating use-case for the latest refactor and release of \simpeg 0.14.0.
-% \citep{simpeg0.14.0}.
-}
-
+\clearpage~\newpage
+\itodo{HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE}
 \section{TODOs}
 
+Touch on:
 \begin{itemize}
-    \item Add cross-section
+  \item (I) differences, (II) difficulties, (III) dis\\advantages
+  \item direct vs iterative solver
+  \item FE vs FD
+  \item Speed of computation vs user experience (modeller) vs time spent to
+    create a good mesh.
     \item Focus on the different open source tools that can deliver industry-standard results. That there is choice. That these people work together (!). That the collaboration improved all codes. That you can do things with tetrahedrals or tensor meshes or octree meshes, some are better for one task, the other is better for another task. Because, as you mentioned Lindsey, in the end for SimPEG, custEM, and PETGEM speed and memory in the end falls a lot on the solver used (Fenics, petsc, pardiso), and not actually on the code. Swapping the solver might yield very different metrics.
     \item Focus on Result Comparison, as this is the only way to verify 3D modellers.
 \end{itemize}
@@ -527,6 +487,14 @@ Add what improvements were initiated by article (“But also, a plus-point of su
         \item reciprocity modeling (even though that has not too much to do with implementation)
         \item mesh design (resolution, refinement, etc.)
     \end{itemize}
+  \item Lindsey:
+    Within SimPEG: This work has motivated feature development including: (a)
+    interpolation and averaging strategies from mapping physical properties on
+    a fine mesh to a coarser mesh for computation and (b) new examples to
+    include in the documentation for designing octree meshes. Furthermore, as a
+    part of a broader development objective of inter-operating with other
+    forward-simulation engines, connecting \emg3d and \simpeg provided a
+    motivating use-case for the latest refactor and release of \simpeg 0.14.0.
 \end{itemize}
 
 Add somewhere Trivia: All codes could be used for a multitude of applications (oil, mining, geothermal, groundwater, environmental, even non-geophysical). The main work, however:
@@ -577,7 +545,6 @@ We encourage the community to not only work on new open-source code developments
 
 
 \section{Acknowledgement}
-
 
 We would like to thank Paulo Menezes for the help and explanations with regards to the Marlim R3D model and corresponding CSEM data, and for making their actual computation model available under an open-source license.
 
