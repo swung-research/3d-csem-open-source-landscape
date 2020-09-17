@@ -462,58 +462,8 @@ It is worth noting that the reported runtime is just one of the aspects. But to 
 The shown examples consider the geophysical problem of marine CSEM. However, the codes could, and many frequently are, applied to very different applications, including any other geophysical exploration in the sea or on land (oil, mining, geothermal, groundwater, environmental) and also non-geophysical tasks. The current main applications of the different codes are mining (\custem), mining and environmental (\simpeg), oil and more recent medical and geothermal (\petgem), and
 oil, methane, and deep sea mining (\emg3d).
 
-A plus-point of a collaboration between different projects such as this is that it brings the realm as a whole further, which should be motivation enough for further collaborations.
+A plus-point of a collaboration between different projects such as this is that it brings the realm as a whole further, which should be motivation enough for further collaborations. Within \simpeg, this work has motivated feature development including interpolation and averaging strategies from mapping physical properties on a fine mesh to a coarser mesh for computation and new examples to include in the documentation for designing octree meshes. Furthermore, as a part of a broader development objective of inter-operating with other forward-simulation engines, connecting \emg3d and \simpeg provided a motivating use-case for the latest refactor and release of \simpeg 0.14.0. Within \emg3d, this work pushed a lot of the meshing functionality, and implementing of I/O utilities for different file formats. Within \custem, cell-wise resistivity interpolation was added for this work, multi-layer subsurface topography was the first time applied as well as first time reciprocity modelling, and also improved mesh design (resolution, refinement, etc.).
 
-\begin{itemize}
-    \item Lindsey: For SimPEG - this will result in new utilities for volume
-      averaging, and likely more documentation on tips for designing tree
-      meshes. This could be a pretty compelling piece to bring in to the
-      discussion
-    \item Raphael:
-    \begin{itemize}
-        \item cell-wise resistivity interpolation added
-        \item multi-layer subsurface topography first time applied
-        \item reciprocity modeling (even though that has not too much to do
-          with implementation)
-        \item mesh design (resolution, refinement, etc.)
-    \end{itemize}
-  \item Lindsey:
-    Within SimPEG: This work has motivated feature development including: (a)
-    interpolation and averaging strategies from mapping physical properties on
-    a fine mesh to a coarser mesh for computation and (b) new examples to
-    include in the documentation for designing octree meshes. Furthermore, as a
-    part of a broader development objective of inter-operating with other
-    forward-simulation engines, connecting \emg3d and \simpeg provided a
-    motivating use-case for the latest refactor and release of \simpeg 0.14.0.
-\end{itemize}
-
-
-Many things to discuss and take into account
-\begin{itemize}
-    \item Examples are in favour of FD codes, (rectangle blocks, complex model
-      provided as FD model)
-    \item Examples are in favour of iterative solver, as only one source was
-      computed. Iterative solvers (\emg3d) will require the same amount of time
-      for each new source, whereas direct solvers have additional source
-      locations almost for free
-    \item Not possible to exactly reproduce published results unless the codes
-      is also open-source, as one cannot know what internally is actually done
-      (show example!)
-    \item In the end the codes (\custem, \emg3d, \petgem, \simpeg) define
-      mainly, how easy the interaction is. How easy is it to set-up the mesh,
-      to create sources and receivers, etc etc. The \emph{actual} computation
-      time, however, is mostly NOT defined by these codes, but by the
-      underlying solver. (The exception to that is \emg3d, which is its own
-      solver.)
-    \item In the end it comes down to the most important, crucial, difficult,
-      AND TIME CONSUMING point: mesh generation. It took all of us MUCH more
-      time to generate appropriate meshes, then to actually compute the
-      responses.
-    \item very different application area. E.g. \emg3d is for f-domain, CSEM;
-      not too low frequencies, as it becomes slow (null-space). \simpeg, on the
-      other hand, has from 1D, 2D, 3D, DC, IP, Magnetic, TEM, inversion,
-      you-name-it things; so from very specialist to very broad.
-\end{itemize}
 
 \section{Conclusions \& Outlook}
 %
