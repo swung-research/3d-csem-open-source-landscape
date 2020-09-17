@@ -81,9 +81,9 @@
 \begin{abstract}
 % The (points) are from Mahrer (1993), Geophysics, Some Considerations When Abstracting; DOI: 10.1190/1.58010001.1
 % (1) principal objectives and scope of the work
-Large-scale modelling of three-dimensional (3D) controlled-source electromagnetic (CSEM) responses used to be feasible only for large companies and research consortia. However, this has changed over the last few years, and today there exists a selection of different open-source codes which are up to the task. We have a closer look at four different ones, where in all cases at least the user-facing functionality is written in Python.
+Large-scale modelling of three-dimensional controlled-source electromagnetic (CSEM) responses used to be feasible only for large companies and research consortia. However, this has changed over the last few years, and today there exists a selection of different open-source codes which are up to the task. We have a closer look at four different ones, where in all cases at least the user-facing functionality is written in Python.
 % (2) methodology
-For the numerical comparison we choose three models, a layered background, ones on its own and ones containing three resistive blocks, and Marlim R3D, a complex, anisotropic, real-world and open-source resistivity model. The analysis includes three different mesh-types, simple tensor meshes, octree meshes, and unstructured tetrahedral meshes. Two of the codes use finite volumes and the other two use finite elements.
+For the numerical comparison we use three models: a simple layered model; a model containing three resistive blocks in a layered background; and a complex, real-world resistivity model. All three models are vertically transverse isotropic. The analysis includes three different mesh-types, simple tensor meshes, octree meshes, and unstructured tetrahedral meshes. Two of the codes use finite volumes and the other two use finite elements.
 % (3) results
 The comparison shows that all four codes are able to compute the different models to sufficient precision. The biggest difference between codes is actually the discretization and the ease of creating a suitable mesh, particularly as that part often takes much more time than the actual computation. The required runtime and memory varies greatly between the codes. However, these depend mainly on the underlying solver, and not on the actual CSEM codes.
 % (4) conclusions
@@ -97,8 +97,19 @@ The collaboration of four code maintainer trying to achieve the same task brough
     \item Notes on orthography: I settled on discretize with a «z». My dictionary says that discreti{\color{red}\bfseries z}e is AE and discreti{\color{red}\bfseries s}e is BE, but that «z» is also used in BE in mathematical contexts. Is that fine or any other opinions?
     \item We probably should be careful to not mention the actual code names too often. E.g., I removed them from the abstract.
     \item I tried to avoid double reference. E.g., SciPy, MUMPS, pyGIMLi: I referenced them the first time they are mentioned, and not afterwards. Current exceptions: Miensopust et al., 2013, is cited twice.
-    \item {\color{red}\bfseries Please let me know} if you think the order of authors should be different. The last thing we want in this collaboration is that someone feels unhappy about that.
-    \item  {\color{red}\bfseries Everyone: Please ensure the info in the tables is correct:}
+    \item Regarding submission, {\color{red}\bfseries please let me know}:
+      \begin{itemize}
+        \item If you think the \textbf{order of authors} should be different. The last thing we want in this collaboration is that someone feels unhappy about that.
+        \item If you have \textbf{another manuscript under revision with GJI}. When submitting to GJI one has to indicate when you have other manuscripts currently under review with GJI.
+        \item For the submission I will create a \textbf{new repository on swung-research}. The idea is to make a single, new commit with everything (without the git history, for various reasons). Please let me know if you would prefer to commit your files yourself as a PR instead.
+        \item \textbf{Wanted and not wanted reviewers:} Let me know if you have any names for these. I do not have any \emph{not wanted}, but I do have a few I will put on the \emph{wanted} list, mainly people I would be interested to have their feedback and that have knowledge about 3D modelling:
+          \begin{itemize}
+            \item Kerry Key (domain knowledge with \texttt{MARE3DEM}, also experience with open-sourcing with \texttt{MARE2DEM});
+            \item Rune Mittet (domain knowledge; he will know what SBLwiz actually does, so it would be very interesting to have his feedback);
+            \item Dimitry Avdeev and Ralph-Uwe Börner (they both did extensive 3D code overview/review papers in 2005 and 2010, respectively, and it would be interesting to get their feedback).
+          \end{itemize}
+      \end{itemize}
+    \item  {\color{red}\bfseries Everyone: Please ensure that the tables have the correct info:}
       \begin{enumerate}
           \item machine info;
           \item runtime;
@@ -136,7 +147,7 @@ We discuss the topic of open-source developments with respect to 3D CSEM modelli
 
 Furthermore, we deal with the topic of verification. Analytical and semi-analytical solutions only exist for simple halfspace or layered-Earth models, which served mostly to verify new codes. Beyond these simple models, the only objective possibility to ensure the accuracy of solutions is by comparing results from different modellers. If different discretizations and implementations of Maxwell's equations yield the same result, it gives confidence in their accuracy. \cite{GJI.13.Miensopust} presents a review of two workshops dealing with the verification of magnetotelluric forward and inversion codes, but we are not aware of any comparable study or benchmark suite for CSEM data. This is, to the best of our knowledge, the first comparison exercise for CSEM codes. We hope our efforts help to ensure the reliability of simulations for any new or existing, open-source or closed-source 3D CSEM project.
 
-We simulate EM fields for a layered background model with vertical transverse isotropy, with and without three resistive blocks, as well as for the complex marine Marlim R3D model. These three models as well as the corresponding results from four different codes provide a benchmark for new (and existing) codes to be compared to and validated with. First we introduce the codes under consideration, and present afterwards the considered benchmark cases in detail together with the modelling results of our four codes in terms of accuracy and computational performance. Beyond that, we extensively discuss important points that control the performance and suitability of our FV and FE codes, including considerations about the mesh design and the choice of solvers. We conclude with a discussion and conclusions, and a motivation for the EM community at large to not only continue to extend the landscape of open-source codes but to also create a landscape of open-source benchmark models.
+We simulate EM fields for a layered background model with vertical transverse isotropy, with and without three resistive blocks, as well as for the complex marine, open-source MR3D model. These three models as well as the corresponding results from four different codes provide a benchmark for new (and existing) codes to be compared to and validated with. First we introduce the codes under consideration, and present afterwards the considered benchmark cases in detail together with the modelling results of our four codes in terms of accuracy and computational performance. Beyond that, we extensively discuss important points that control the performance and suitability of our FV and FE codes, including considerations about the mesh design and the choice of solvers. We conclude with a discussion and conclusions, and a motivation for the EM community at large to not only continue to extend the landscape of open-source codes but to also create a landscape of open-source benchmark models.
 
 \itodo{Ones were ready check if we should introduce Maxwell's equations or not. Miensopust et al., 2013, for instance, do not touch on any equation.}
 
@@ -252,7 +263,7 @@ There are two different discretization strategies implemented for Maxwell's equa
 
 \section{Numerical Verification}
 
-We computed the responses for three different models to verify that the four 3D CSEM codes yield the same electromagnetic responses and to compare different solver types (FE, FD) and different mesh types (unstructured tetrahedra, tensor, octree) in different scenarios. The first model is an anisotropic layered model, which can be compared to semi-analytical solutions. The layered model serves also as background model for the second verification, where we add three resistive blocks into the subsurface. The final comparison is based on a realistic, anisotropic marine model. This is an open-source resistivity model which comes with computed CSEM responses.
+We computed the responses for three different models to verify that the four 3D CSEM codes yield the same electromagnetic responses and to compare different solver types (FE, FD) and different mesh types (unstructured tetrahedra, tensor, octree) in different scenarios. The first model is an anisotropic layered model, which can be compared to semi-analytical solutions. The layered model serves also as background model for the second verification, where we add three resistive blocks into the subsurface. The final comparison is based on the realistic, anisotropic marine model MR3D, which is an open resistivity model which comes with computed CSEM responses.
 
 \subsection{Layered Model}
 
@@ -341,59 +352,58 @@ The corresponding required runtime and memory are listed in Table~\ref{tbl:comp-
 \end{tabular}}%
 %
 
-\clearpage
-\itodo{HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE HERE}
 \subsection{Marlim R3D}
 
-The Marlim oil field is a giant reservoir in a turbidite sandstone horizon in the north-eastern part of the Campos Basin, offshore Brazil, which was discovered in 1985. \cite{BJG.17.Carvalho} created from seismic data and well log data a realistic resistivity model with vertical transverse isotropy (VTI), Marlim R3D (MR3D), which they released under an open-source license. \cite{GEO.19.Correa} computed CSEM data for six frequencies from 0.125\,Hz to 1.25\,Hz, released under an open-source license. To compute the data they used a state-of-the-art code from the industry \citep{GEO.07.Maao}. It is therefore an ideal case to verify our open-source codes against, as it is a complex, realistic model and the data were computed by an industry-proofed code. Additionally, that code is a time-domain code, whereas the four codes under consideration here compute the results all in the frequency-domain.
+The Marlim oil field is a giant reservoir in a turbidite sandstone horizon in the north-eastern part of the Campos Basin, offshore Brazil, which was discovered in 1985. \cite{BJG.17.Carvalho} created from seismic data and well log data a realistic, three-dimensional resistivity model with vertical transverse isotropy (VTI), called MR3D, which they released under the open creative common license \emph{CC BY 4.0}. \cite{GEO.19.Correa} computed CSEM data for MR3D for six frequencies from 0.125\,Hz to 1.25\,Hz, and released them under the same CC license. To compute the data they used a state-of-the-art code from the industry \citep[][ \emph{SBLwiz} software from \emph{EMGS}]{GEO.07.Maao}. It is therefore an ideal case to verify our open-source codes against, as it is a complex, realistic model and the data were computed by an industry-proofed code. Additionally, that code is a time-domain code, whereas the four codes under consideration here compute the results all in the frequency-domain.
 
-The detailed reservoir model consists of $1022 \times 371 \times 1229$ cells, totalling to almost 466 million cells, where each cell has dimensions of 25 by 75 by 5\,m. For the computation the model is upscaled to 515 by 563 by 310 cells, totalling to almost 90 million cells, where each cell has dimensions of 100 by 100 by 20\,m.
-
-The published data set consists of a regular grid of receivers of 20 in eastern direction by 25 in northern direction, 500 receivers in total, with 1\,km spacing located on the irregular seafloor. 45 source-towlines were located on the same grid, 50\,m above the seafloor, with shots every 100\,m. In the original paper the actual responses for one receiver with the corresponding East-West inline and one East-West broadside acquisition line are shown, which is the data we chose for our comparison. The cross-section of the resistivity model along the chosen inline acquisition line is shown in Figure~\ref{fig:model-marlim}, together with the acquisition information.
+The full MR3D model consists of $1022 \times 371 \times 1229$ cells, totalling to almost 466 million cells, where each cell has dimensions of 25 by 75 by 5\,m. For the computation the model is upscaled to 515 by 563 by 310 cells, totalling to almost 90 million cells, where each cell has dimensions of 100 by 100 by 20\,m. Both the full model and the upscaled computational model are released openly. The published data set consists of a regular grid of receivers of 20 in eastern direction by 25 in northern direction, 500 receivers in total, with 1\,km spacing located on the irregular seafloor. 45 source-towlines were located on the same grid above each receiver line, 50\,m above the seafloor, with shots every 100\,m. The computed responses for one of the receivers, \texttt{04Rx251a}, are shown in the original paper for the East-West inline-source \texttt{04Tx013a} and the East-West broadside-source \texttt{04Tx014a} (broadside offset of 1\,km). We reproduce the responses for this receiver and corresponding source-lines in our comparison. The $x$-$z$ cross-section of the horizontal resistivity model at the receiver position is shown in Figure~\ref{fig:model-marlim}, together with the receiver and sources positions. All layer have a VTI with $\lambda=\sqrt{2}$, except for the air layer, the seawater, and the salt layer, which are all isotropic.
 
 %
-\plot*{model-marlim}{width=\textwidth}{Marlim horizontal resistivity model, $x$-$z$-slice through the receiver $y$-position. Air (not shown in the model), seawater, and the salt body are electrically isotropic, everything else has a VTI with $\lambda=\sqrt{2}$.}
+\plot*{model-marlim}{width=\textwidth}{MR3D horizontal resistivity model, $x$-$z$-slice through the receiver $y$-position and with major formations annotated. Air (not shown in the model), seawater, and the salt layer are electrically isotropic, everything else has VTI with $\lambda=\sqrt{2}$. The receiver is located on the seafloor, and the sources fly 50\,m above the seafloor.}
 %
 
-We computed all all six frequencies for all components ($E_x$, $E_y$, $E_z$) for both inline and broadside acquisition lines. However, we show here only the three frequencies and the responses with the strongest amplitudes (which are generally used in processing), which are $E_x$ inline and broadside, and $E_y$ broadside. The comparison is shown in Figure~\ref{fig:results-marlim}.
-
+The responses for all six frequencies, both inline and broadside, for all three electric components are shown in Figure~\ref{fig:results-marlim-responses}. The published responses are shown in color (and with markers), and the responses from our codes are shown beneath in grey colours in this overview plot.
 %
-\plot*{results-marlim-responses}{width=\textwidth}{Marlim R3D comparison between our codes (grey lines) and the published data (coloured lines). The grey lines under the coloured lines are not visible in most areas, meaning they are very similar. However, there are three notable zones, (1) to (3), which are explained further in the text.}
+\plot*{results-marlim-responses}{width=\textwidth}{MR3D comparison between our codes (grey lines) and the published data (coloured lines). The grey lines under the coloured lines are not visible in most areas, meaning they are very similar. However, there are three notable zones, (1) to (3), which are explained further in the text.}
 %
+Two datasets were published, one containing clean responses, and one where realistic noise was added. For the comparison we use the clean data, but we indicate the chosen noise level by the horizontal line at \num{2e-15}\,V/m. It can be seen that the grey lines are not visible for most parts, which means that the data agree very well. However, there are a few notable points where this is not the case, and they are marked with numbers in the figure.
+\begin{enumerate}
+  \item The responses for the $E_y$ component of the inline acquisition line do not agree at all. In the 1D case, the inline $E_y$ component would be zero, and the only response we can measure here come from 3D effects, but they are very low, roughly two orders of magnitude lower than the $E_x$ component. The published responses are not stable either, and therefore any of the responses is as bad as the other. Also, tiniest differences in meshing will have a huge effect here.
+  \item The highest three frequencies became noisy at large offsets for all of our codes (well below any real-world noise level). The reason why the published responses are not noisy is probably because they were computed in the time domain, and transformed to the frequency domain.
+  \item There are some noticeable differences in the positive offsets of the broadside $E_y$ and $E_z$ components. The differences are related to the bathymetry. And the reason why we cannot reproduce the published results exactly is that the code is not open-source, and we do not exactly know what it does internally. See the discussion around Figure~\ref{fig:results-marlim_survey}.
+\end{enumerate}
 
+Figure~\ref{fig:results-marlim_2published} shows the NRMSDs between the published results and our codes for the inline $E_x$ and the broadside $E_x$ and $E_y$ components, for three frequencies.
 %
 \plot*{results-marlim_2published}{width=\textwidth}{NRMSDs for all four codes in comparison with the published data, for the inline $E_x$ field and the broadside $E_x$ and $E_y$ fields in the left, middle, and right column, respectively. Shown are the three frequencies 0.125\,Hz, 0.5\,Hz, and 1.0\,Hz in the top, middle, and bottom row, respectively.}
 %
+A few general conclusions can be drawn from this figure: In general the NRMSD is roughly 10\,\% or less, particularly for the inline $E_x$ component it is only a few \% or less. In some cases the regular meshes with \emg3d and \simpeg have a smaller NRMSD, such as, e.g., negative offsets in the inline and broadside $E_x$ responses, in some cases the unstructured tetrahedral meshes with \custem and \petgem have a smaller NRMSD, such as, e.g., positive offsets for all broadside $E_y$ responses, and often they have a comparable NRMSD. Some NRMSD have an interesting step-pattern, which is more pronounced for \emg3d and \simpeg than for \custem and \petgem; this is related to the annotated point (3) in Figure~\ref{fig:model-marlim}, and will be discussed in more detail with Figure~\ref{fig:results-marlim_survey}.
 
+One might argue that 5-10\,\% NRMSD is a lot. We argue that this is probably as good as it gets, given that the code with which we compare is not open-source. This has been shown within the process of these results. Our first attempt were based on the originally published, fine MR3D model. This model is very detailed, but too small in x- and y-direction for CSEM computation, and each of our codes did its own extrapolation. However, none of the codes were able to reproduce the published results. The reason is that there are many ways how you can extrapolate a model. We reached out to the authors of MR3D, and they kindly agreed to also published the upscaled and extended computational model. It is only with this model that we were able to get comparable results, visually mostly the same as shown in Figure~\ref{fig:model-marlim}.
+
+However, even though the computational input model is know, we still do not know what the code SBLwiz exactly does inside. From the information we have we know that it computes the data in the time domain transforming them afterwards to the frequency domain, and it includes the air layer via a non-local boundary condition at the water-air interface \citep{GEO.10.Mittet}. All our codes, on the other hand, compute in the frequency domain and include the air layer in the model (putting the boundaries sufficiently far away).
+
+The importance of the meshing to the result can be seen in Figure~\ref{fig:results-marlim_2ours}, where we compute the NRMSDs between our codes.
 %
 \plot*{results-marlim_2ours}{width=\textwidth}{NRMSDs, just as in Figure~\ref{fig:results-marlim_2published}, but comparing some of the four codes with each other. Good visible is that \custem and \petgem produce very similar results, which is due to the fact that they use the same mesh.}
 %
+The most obvious result in that figure is that \custem and \petgem produce results that are almost identical, their NRMSD is generally below 0.03\,\%. The reason is simple: \custem and \petgem use the exactly same mesh for the computation, the only difference is therefore the solver. As they are so similar we compare \emg3d and \simpeg only to \custem in Figure~\ref{fig:results-marlim_2ours}, as the comparisons to \petgem would look the same. But in general the NRMSDs between our codes look similar as in the comparison with the published results, which is due to the different meshes in use.
 
+The differences in meshing is shown in the next two figures, in Figure~\ref{fig:results-marlim_entire} for the entire computational domain, and in Figure~\ref{fig:results-marlim_survey} a zoom-in to the survey domain, the domain of interest.
 %
 \plot*{results-marlim_entire}{width=\textwidth}{Meshes (left column), $E_x$ field (middle column), and $E_y$ field (right column) for a tensor mesh (top row), octree mesh (middle row), and tetrahedra mesh (bottom row) for the entire computational domain.}
 %
-
+The top rows show the tensor mesh of \emg3d, the middle rows the octree mesh of \simpeg, and the bottom rows the tetrahedra mesh of \custem and \petgem. The actual mesh, the $|E_x|$ field, and the $|E_y|$ field are shown in the left, middle, and right columns, respectively.
+\itodo{Write more once the other results are in the figures too. Points to compare: See if the different boundary conditions are visible. See and comment on the effects of the different, fast coarsening outside the domain of interest.}
 %
 \plot*{results-marlim_survey}{width=\textwidth}{Meshes (left column), $E_x$ field (middle column), and $E_y$ field (right column) for a tensor mesh (top row), octree mesh (middle row), and tetrahedra mesh (bottom row) for the survey domain.}
 %
+\itodo{Most importantly, once all results are in the figures: Discuss about the effect of bathymetry, particularly on the $E_y$ field. Mark it with a number in the figure. Compare between the meshes. State that the results will not have a smaller NRMSD unless we know exactly how the bathymetry is treated.}
 
-
-\begin{itemize}
-  \item 0.125\,Hz: on the left side, \custem and \emg3d are almost identical,
-    but very different from MR3D. So there I actually trust more our
-    computation, or there is a difference in the model that we did not take
-    into account.
-  \item 0.125\,Hz: on the right side, \custem is very similar to MR3D, whereas
-    \emg3d is off.
-  \item 0.125\,Hz and 0.5\,Hz: on the right side, \custem seems to very similar
-    to MR3D.
-  \item FD needs comparably a lot of cells
-\end{itemize}
-
-
+The required runtime and memory to compute the shown MR3D responses for the four codes are listed in Table~\ref{tbl:comp-marlim}. The memory requirement varies from $0.5-558.5\,$GiB, and the runtime from roughly 7\,min to 1h\,23\,min, where the codes were run on very different machines from servers to supercomuters (see Table \ref{tbl:machines}) and use between 1 and 96 processes in parallel).
 
 %
-\tabl[btp]{comp-marlim}{Comparison of number of processes, runtime, and memory, as well as the degree of freedom of the discretization used by the different codes for the Marlim R3D model.}{
+\tabl[btp]{comp-marlim}{Comparison of number of processes, runtime, and memory, as well as the degree of freedom of the discretization used by the different codes for the MR3D model.}{
   \centering
 \begin{tabular}{lrS[table-format=6.0]S[table-format=4.1]S[table-format=8.0]}
   \toprule
@@ -433,11 +443,11 @@ We computed all all six frequencies for all components ($E_x$, $E_y$, $E_z$) for
 
 Even if modelling results may look completely valid, they could not be correct at all. Verifying the performance of 3D CSEM codes for real 3D problems is only possible by cross-validating multiple solutions. Overall, we observed an excellent match between all solutions. The relative misfits, almost always smaller than 10\,\%, were related to the either weak or strong amplitudes of real or imaginary parts and can be attributed to particularities regarding the discretization, boundary effects, and interpolation. Considering this satisfactory result in terms of accuracy and robustness, it is more interesting to discuss the characteristics of the four considered codes with focus on the demand of computational resources and the capability of handling the investigated CSEM geometries, including the very important underlying mesh design. The following arguments are based on a comparison of only marine CSEM models, which are the focus of industry applications. Nevertheless, we are confident that many observations would hold in a similar manner for land-based, airborne, or mixed setups.
 
-We point out that making a synthetic and a real benchmark model available to cross-validate any 3D CSEM code was the determining reason for their choice, regardless of the suitability of the considered FD and FE codes for these problems. The first model, including the block-anomalies variation, is exactly reproducible by using any numerical method with either regular or irregular computational domains. Aside from the idea of analysing an industrially relevant benchmark example, the Marlim R3D model was also considered since the primary design from \cite{GEO.19.Correa} uses a regular discretization. At least theoretically, the exact geometry might be reconstructed with unstructured meshes, but it is never possible to convert an irregular geometry to a regular grid without approximations. Hence, the chosen examples favoured the FD codes, since they used either regular grids or octree-meshes, whereas the two FE codes were required to tetrahedralise the model geometries.
+We point out that making a synthetic and a real benchmark model available to cross-validate any 3D CSEM code was the determining reason for their choice, regardless of the suitability of the considered FD and FE codes for these problems. The first model, including the block-anomalies variation, is exactly reproducible by using any numerical method with either regular or irregular computational domains. Aside from the idea of analysing an industrially relevant benchmark example, the MR3D model was also considered since the primary design from \cite{GEO.19.Correa} uses a regular discretization. At least theoretically, the exact geometry might be reconstructed with unstructured meshes, but it is never possible to convert an irregular geometry to a regular grid without approximations. Hence, the chosen examples favoured the FD codes, since they used either regular grids or octree-meshes, whereas the two FE codes were required to tetrahedralise the model geometries.
 
 In the first model, the necessity of discretizing regular structures with tetrahedra, especially thin layers, led to comparatively large FE problem sizes and computational resource demands. FE codes with unstructured meshes were probably the poorest choice of all commonly used methods for this setup in terms of computational performance. However, thinking about introducing just one slight irregularity such as bathymetry, a thin dipping plate or an anticline, the performance behaviour could likely switch. All of these changes would barely change the problem size for the FE codes, but significantly increase it for the FD codes if the true geometry should be approximated sufficiently accurate.
 
-The real Marlim R3D model was, ironically, the ideal case for FE codes because it's structure was characterised by irregular lithological horizons obtained from seismic data. Since the corresponding published resistivity model was defined on a regular grid, we were forced to approximate the comparatively fine regular discretization by an unstructured one and interpolate the resistivity data for being able to apply the FE codes to this problem. We are completely aware about the ineptness of this re-approximation procedure, unless it served for the cross-validation purposes. Nevertheless, the chosen tetrahedral discretization, especially in combination with second order basis functions, showed clearly the intrinsic strength of the FE codes, requiring significantly less dof for meshing irregular geometries in general. The p2 FE solution required only $\approx$9\,M dof instead of $\approx$90\,M dof for the FD system by \citet{GEO.19.Correa}, disregarding the structure of the system matrices.
+The real MR3D model was, ironically, the ideal case for FE codes because it's structure was characterised by irregular lithological horizons obtained from seismic data. Since the corresponding published resistivity model was defined on a regular grid, we were forced to approximate the comparatively fine regular discretization by an unstructured one and interpolate the resistivity data for being able to apply the FE codes to this problem. We are completely aware about the ineptness of this re-approximation procedure, unless it served for the cross-validation purposes. Nevertheless, the chosen tetrahedral discretization, especially in combination with second order basis functions, showed clearly the intrinsic strength of the FE codes, requiring significantly less dof for meshing irregular geometries in general. The p2 FE solution required only $\approx$9\,M dof instead of $\approx$90\,M dof for the FD system by \citet{GEO.19.Correa}, disregarding the structure of the system matrices.
 
 The codes under consideration use direct and indirect solvers. In general, the biggest advantage of iterative solvers with appropriate preconditioners are the comparatively small memory requirements. Direct solvers can be considered as most robust to solve any ill-conditioned SLE, which is most important for systems of the FE method on unstructured meshes. As the consumed computational resources indicate, a more powerful machine than a laptop is required for most 3D CSEM problems, but no high-performance-computing architecture.
 
@@ -447,28 +457,24 @@ We see this work as the start for future elaboration on the validation of modell
 
 A completely objective evaluation of codes is only possible by cross-validation. Nevertheless, we point out that using different discretizations or formulations of the numerical approach, e.g. by choosing field or potential approaches, second or total field formulations, different polynomial order basis functions, and others, is a suitable alternative to the cross-comparison of multiple codes for self-validating complex 3D results. This is a very powerful method to confirm the general functionality of codes for any modelling problem, which might not be covered by existing cross-validation benchmark examples. Considering for instance  this study, it would be very optimistic to estimate the accuracy of the utilised codes for a land-based mineral exploration setup with a highly-conductive, steeply-dipping conductor. However, each modeller could run multiple simulations with different configurations to increase the reliability of the obtained results.
 
-\section{TODOs}
+It is worth noting that the reported runtime is just one of the aspects. But to generate an appropriate mesh, with all the testing involved, can easily take days of work. As such the computation times becomes relative, and the ease of usability of a code has to be considered too. For \custem, \petgem, and \simpeg it is therefore also a question of how easy everything is to set-up, because after the set-up phase it depends largely on the used solver, which might change in the future; \simpeg, e.g., is looking at moving to similar solvers as currently are used by \custem and \petgem. It is, however, slightly different for \emg3d, as that is primarily a solver on its own. It is also important to state that while \emg3d, \custem, and \petgem are purely CSEM codes, \simpeg is a much bigger framework which includes other geophysical methods as well.
 
-Touch on:
-\begin{itemize}
-  \item (I) differences, (II) difficulties, (III) dis\\advantages
-  \item direct vs iterative solver
-  \item FE vs FD
-  \item Speed of computation vs user experience (modeller) vs time spent to
-    create a good mesh.
-    \item Focus on the different open source tools that can deliver industry-standard results. That there is choice. That these people work together (!). That the collaboration improved all codes. That you can do things with tetrahedrals or tensor meshes or octree meshes, some are better for one task, the other is better for another task. Because, as you mentioned Lindsey, in the end for SimPEG, custEM, and PETGEM speed and memory in the end falls a lot on the solver used (Fenics, petsc, pardiso), and not actually on the code. Swapping the solver might yield very different metrics.
-    \item Focus on Result Comparison, as this is the only way to verify 3D modellers.
-\end{itemize}
+The shown examples consider the geophysical problem of marine CSEM. However, the codes could, and many frequently are, applied to very different applications, including any other geophysical exploration in the sea or on land (oil, mining, geothermal, groundwater, environmental) and also non-geophysical tasks. The current main applications of the different codes are mining (\custem), mining and environmental (\simpeg), oil and more recent medical and geothermal (\petgem), and
+oil, methane, and deep sea mining (\emg3d).
 
-Add what improvements were initiated by article (“But also, a plus-point of such collaboration is if it brings the realm as such further. So we should note down if this collaboration resulted in new features implemented in some codes, new releases etc. What did it push forward? It would be a motivation for further cross-project/community collaborations. Something for the discussion or conclusion part.”):
+A plus-point of a collaboration between different projects such as this is that it brings the realm as a whole further, which should be motivation enough for further collaborations.
 
 \begin{itemize}
-    \item Lindsey: For SimPEG - this will result in new utilities for volume averaging, and likely more documentation on tips for designing tree meshes. This could be a pretty compelling piece to bring in to the discussion
+    \item Lindsey: For SimPEG - this will result in new utilities for volume
+      averaging, and likely more documentation on tips for designing tree
+      meshes. This could be a pretty compelling piece to bring in to the
+      discussion
     \item Raphael:
     \begin{itemize}
         \item cell-wise resistivity interpolation added
         \item multi-layer subsurface topography first time applied
-        \item reciprocity modeling (even though that has not too much to do with implementation)
+        \item reciprocity modeling (even though that has not too much to do
+          with implementation)
         \item mesh design (resolution, refinement, etc.)
     \end{itemize}
   \item Lindsey:
@@ -481,23 +487,32 @@ Add what improvements were initiated by article (“But also, a plus-point of su
     motivating use-case for the latest refactor and release of \simpeg 0.14.0.
 \end{itemize}
 
-Add somewhere Trivia: All codes could be used for a multitude of applications (oil, mining, geothermal, groundwater, environmental, even non-geophysical). The main work, however:
-\begin{itemize}
-    \item custEM: mining;
-    \item SimPEG: mining, environmental;
-    \item PETGEM: used to be oil, now medical and geothermal;
-    \item emg3d: developed for project dealing with oil, methane, and deep sea mining.
-\end{itemize}
 
 Many things to discuss and take into account
 \begin{itemize}
-    \item Examples are in favour of FD codes, (rectangle blocks, complex model provided as FD model)
-    \item Examples are in favour of iterative solver, as only one source was computed. Iterative solvers (\emg3d) will require the same amount of time for each new source, whereas direct solvers have additional source locations almost for free
-    \item Not possible to exactly reproduce published results unless the codes is also open-source, as one cannot know what internally is actually done (show example!)
-    \item In the end the codes (\custem, \emg3d, \petgem, \simpeg) define mainly, how easy the interaction is. How easy is it to set-up the mesh, to create sources and receivers, etc etc. The \emph{actual} computation time, however,
-    is mostly NOT defined by these codes, but by the underlying solver. (The exception to that is \emg3d, which is its own solver.)
-    \item In the end it comes down to the most important, crucial, difficult, AND TIME CONSUMING point: mesh generation. It took all of us MUCH more time to generate appropriate meshes, then to actually compute the responses.
-    \item very different application area. E.g. \emg3d is for f-domain, CSEM; not too low frequencies, as it becomes slow (null-space). \simpeg, on the other hand, has from 1D, 2D, 3D, DC, IP, Magnetic, TEM, inversion, you-name-it things; so from very specialist to very broad.
+    \item Examples are in favour of FD codes, (rectangle blocks, complex model
+      provided as FD model)
+    \item Examples are in favour of iterative solver, as only one source was
+      computed. Iterative solvers (\emg3d) will require the same amount of time
+      for each new source, whereas direct solvers have additional source
+      locations almost for free
+    \item Not possible to exactly reproduce published results unless the codes
+      is also open-source, as one cannot know what internally is actually done
+      (show example!)
+    \item In the end the codes (\custem, \emg3d, \petgem, \simpeg) define
+      mainly, how easy the interaction is. How easy is it to set-up the mesh,
+      to create sources and receivers, etc etc. The \emph{actual} computation
+      time, however, is mostly NOT defined by these codes, but by the
+      underlying solver. (The exception to that is \emg3d, which is its own
+      solver.)
+    \item In the end it comes down to the most important, crucial, difficult,
+      AND TIME CONSUMING point: mesh generation. It took all of us MUCH more
+      time to generate appropriate meshes, then to actually compute the
+      responses.
+    \item very different application area. E.g. \emg3d is for f-domain, CSEM;
+      not too low frequencies, as it becomes slow (null-space). \simpeg, on the
+      other hand, has from 1D, 2D, 3D, DC, IP, Magnetic, TEM, inversion,
+      you-name-it things; so from very specialist to very broad.
 \end{itemize}
 
 \section{Conclusions \& Outlook}
