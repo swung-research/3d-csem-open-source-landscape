@@ -4,6 +4,7 @@ channels:
   - conda-forge
   - gimli
 dependencies:
+  - "libblas=*=*mkl"
   - custem
   - discretize>=0.5.1
   - emg3d
