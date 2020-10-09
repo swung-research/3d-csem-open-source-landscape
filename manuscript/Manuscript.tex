@@ -393,14 +393,14 @@ The top rows show the tensor mesh of \emg3d, the middle rows the octree mesh of 
 }
 
 %
-\plot*{results-marlim_survey}{width=\textwidth}{Meshes (left column), $E_x$ field (middle column), and $E_y$ field (right column) for a tensor mesh (top row), octree mesh (middle row), and tetrahedra mesh (bottom row) for the survey domain.}
+\plot*{results-marlim_survey}{width=\textwidth}{Meshes (left column), $E_x$ field (middle column), and $E_y$ field (right column) for a tensor mesh (top row), octree mesh (middle row), and tetrahedra mesh (bottom row) for the survey domain. (Vertical exaggeration: 5.45)}
 
-The most striking point of these mesh comparison plots is that, while the overall fields are similar and particularly the responses at receiver locations are the same, the fields can vary quite a lot in different parts of the model. At, e.g., two kilometers below the seafloor there are already significant changes visible, purely due to meshing. This is an important insight that has to be taken into account when interpreting inversion results.
+The most striking point of these mesh comparison plots is that, while the overall fields are similar and particularly the responses at receiver locations are the same, the fields can vary quite a lot in different parts of the model. At, e.g., two kilometres below the seafloor there are already significant changes visible, purely due to meshing. This is an important insight that has to be taken into account when interpreting inversion results.
 
 The required runtime and memory to compute the shown MR3D responses for the four codes are listed in Table~\ref{tbl:comp-marlim}. The memory requirement varies from $0.5-520\,$GiB, and the runtime from roughly 7\,min to 1h\,23\,min, where the codes were run on very different machines from servers to supercomuters (see Table \ref{tbl:machines}) and use between 1 and 96 processes in parallel).
 
-\plot*{results-marlim_medium}{width=\textwidth}{Additional zoom “medium”; which ones should we use?}
-\plot*{results-marlim_small}{width=\textwidth}{Additional zoom “small”; which ones should we use?}
+\plot*{results-marlim_medium}{width=\textwidth}{Additional zoom “medium”; which ones should we use? (Vertical exaggeration: 1.33)}
+\plot*{results-marlim_small}{width=\textwidth}{Additional zoom “small”; which ones should we use? (Vertical exaggeration: 4.0)}
 %
 \tabl[bthp]{comp-marlim}{Comparison of number of processes, runtime, and memory, as well as the degree of freedom of the discretization used by the different codes for the MR3D model.}{
   \centering
@@ -412,7 +412,7 @@ The required runtime and memory to compute the shown MR3D responses for the four
   %
   \custem & 64 & 4034 & 522.7 & 4539474 \\ % dof: 9078948 / 2 (Real+Imag -> Complex)
   \emg3d  &  1 & 1200 &   0.5 & 5998992 \\
-  \petgem & 96 & 3527 & 437.8 & 4539474 \\
+  \petgem & 96 &  524 & 175.4 & 1918106 \\
   \simpeg &  4 &  422 &  12.8 &  720146 \\ % nprocs: 1*4 threads
   %
   \bottomrule
