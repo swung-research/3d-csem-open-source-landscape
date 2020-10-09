@@ -3,7 +3,7 @@
 ###############################################################################
 # Model parameters
 model:
-  mesh_file: marlim_reciprocal.vtk      # Mesh file (vtk format v2)
+  mesh_file: marlim.vtk      # Mesh file (vtk format v2)
   basis_order: 2                        # Vector basis order (1,2,3,4,5,6)
   frequency: [0.125, 0.25, 0.5, 0.75, 1., 1.25]                        # Frequency
   src_position: [0., 0., 0.]            # This information is provided by modify_marlim_input_data.py and used in run_preprocessing.py
