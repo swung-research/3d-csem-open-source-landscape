@@ -34,7 +34,7 @@ Reproduce the results by Correa and Menezes (2018) with PETGEM
    With following input files:
 
     - params.yaml --> model parameters
-    - marlim_reciprocal.vtk --> tetrahedral mesh
+    - marlim.vtk --> tetrahedral mesh
 
    Run the preprocessing (sequential task):
 
