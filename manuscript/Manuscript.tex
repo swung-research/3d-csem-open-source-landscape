@@ -290,7 +290,7 @@ The runtime and memory requirements for the layered model are listed in Table~\r
        & \#Procs & {Runtime (s)} & {Memory (GiB)}   & {\#dof} \\
   \midrule
   %
-  \custem & 24 &   118 &  97.8 & 1530808 \\ % dof: 3061616 / 2 (Real+Imag -> Complex)
+  \custem & 24 &   118 &  97.8 & 1531824 \\ % dof: 3063648 / 2 (Real+Imag -> Complex)
   \emg3d  &  1 &   116 &   0.4 & 4813216 \\
   \petgem & 24 &   252 & 151.7 & 2455868 \\
   \simpeg &  4 & 10089 & 280.3 & 4813216 \\ % nprocs: 1*4 threads
@@ -338,7 +338,7 @@ The corresponding required runtime and memory are listed in Table~\ref{tbl:comp-
        & \#Procs & {Runtime (s)} & {Memory (GiB)}   & {\#dof} \\
   \midrule
   %
-  \custem & 24 &   158 & 115.9 & 1654242 \\ % dof: 3308484 / 2  (Real+Imag -> Complex)
+  \custem & 24 &   158 & 115.9 & 1646736 \\ % dof: 3293472 / 2  (Real+Imag -> Complex)
   \emg3d  &  1 &   115 &   0.4 & 4813216 \\
   \petgem & 24 &    238 &  152.8 & 2455868 \\
   \simpeg &  4 & 10295 & 280.4 & 4813216 \\ % nprocs: 1*4 threads
@@ -410,7 +410,7 @@ The required runtime and memory to compute the shown MR3D responses for the four
        & \#Procs & {Runtime (s)} & {Memory (GiB)}   & {\#dof} \\
   \midrule
   %
-  \custem & 64 & 4034 & 522.7 & 4539474 \\ % dof: 9078948 / 2 (Real+Imag -> Complex)
+  \custem & 64 &  872 & 230.1 & 1918106 \\ % dof: 3836212 / 2 (Real+Imag -> Complex)
   \emg3d  &  1 & 1200 &   0.5 & 5998992 \\
   \petgem & 96 &  524 & 175.4 & 1918106 \\
   \simpeg &  4 &  422 &  12.8 &  720146 \\ % nprocs: 1*4 threads
@@ -420,6 +420,12 @@ The required runtime and memory to compute the shown MR3D responses for the four
 %
 \itodo{Update nc-file of custEM and PETGEM for new CPU/RAM.}
 
+\paragraph{TODOs:}
+Figure \ref{fig:results-marlim_allmodels} is just added; integrate properly. Also, the following info should be integrated:
+\begin{itemize}
+    \item Model interpolation: \simpeg and \emg3d use volume averaging on log10(rho)-space; \custem and \petgem use linear interpolation on log10(rho)-space.
+    \item Fields interpolation: \simpeg uses ???\mycom[DW]{Lindsey, what did you use in the end?}; \emg3d uses spline interpolation; the FE codes custEM and PETGEM use the second-order basis functions for the interpolation within elements. 
+\end{itemize}
 \plot*{results-marlim_allmodels}{width=\textwidth}{TODO}
 
 \section{Discussion}
