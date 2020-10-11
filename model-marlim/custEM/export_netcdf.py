@@ -26,15 +26,12 @@ mesh = 'marlim_fig4_reciprocal'
 frequencies = [0.125, 0.25, 0.5, 0.75, 1., 1.25]
 mod = 'f_' + str(frequencies[0])
 
-solution_time = 0
-
 # plot everything
 for i, freq in enumerate(frequencies):
     mod = 'f_' + str(freq)
     
     # inititalize Plot instance and import data
     P = PlotFD(mod=mod, mesh=mesh, approach='E_t', r_dir='./results')
-    solution_time += P.solution_time 
     
     P.import_line_data(line_il, key='il' + str(i))
     P.import_line_data(line_bs, key='bs' + str(i))
@@ -63,9 +60,9 @@ for i, freq in enumerate(frequencies):
             'bs' + str(i) + '_H_t'].imag / 10. # Inline IM
 
 # Add info
-ds.attrs['runtime'] = str(int(solution_time)) + ' s'
-ds.attrs['n_procs'] = P.mpi_procs * P.omp_threads
-ds.attrs['max_ram'] = f"{P.max_mem :5.1f} GiB"
+ds.attrs['runtime'] = '871.7 s'
+ds.attrs['n_procs'] = 64
+ds.attrs['max_ram'] = '230.06 GiB'
 ds.attrs['n_cells'] = P.cells
 ds.attrs['n_nodes'] = P.nodes
 ds.attrs['n_dof'] = P.dof

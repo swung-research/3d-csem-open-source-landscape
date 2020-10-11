@@ -28,11 +28,14 @@ from custEM.core import MOD
 from custEM.misc import mpi_print as mpp
 from custEM.misc import release_memory
 from custEM.misc import max_mem
+from custEM.misc import write_h5, read_h5
+import os
 import numpy as np
 import dolfin as df
+import time
 
 
-def overwrite_markers(M, interp_func, marker_copy):
+def overwrite_markers(M, interp_h, interp_v, marker_copy):
 
     """
     Manually overwrite markers for conductivity interpolation. A new marker is
@@ -96,19 +99,18 @@ def overwrite_markers(M, interp_func, marker_copy):
 # %% Preliminaries
 
 # import modified Marlim R3D resitivity data, optimized as custEM input
-grid_vectors = np.load('data/res_grid_extended.npy')
-res_h = np.load('data/res_h_extended.npy')
-res_v = np.load('data/res_v_extended.npy')
+grid_vectors = np.load('data/res_grid_extended.npy', allow_pickle=True)
+res_h = np.load('data/res_h_extended.npy', allow_pickle=True)
+res_v = np.load('data/res_v_extended.npy', allow_pickle=True)
 
 # set up interpolation objects with log-transformed resistivities
-interp_h = rgi((grid_vectors[0], grid_vectors[1], grid_vectors[2]),
-               np.log10(res_h), method='linear')
-interp_v = rgi((grid_vectors[0], grid_vectors[1], grid_vectors[2]),
-               np.log10(res_v), method='linear')
+resgrid_h = rgi((grid_vectors[0], grid_vectors[1], grid_vectors[2]),
+                np.log10(res_h), method='linear')
+resgrid_v = rgi((grid_vectors[0], grid_vectors[1], grid_vectors[2]),
+                np.log10(res_v), method='linear')
 
 # delete original resistivity data to save some RAM
-del res_h
-del res_v
+del res_h, res_v, grid_vectors
 
 # import shifted Rx positions (with respect to custEM mesh)
 inline = np.loadtxt('data/tx_inline_shifted.xyz')
@@ -118,12 +120,11 @@ broadside = np.loadtxt('data/tx_broadside_shifted.xyz')
 mesh = 'marlim_fig4_reciprocal'
 frequencies = [0.125, 0.25, 0.5, 0.75, 1., 1.25]
 p = 2
-
+t0 = time.time()
 
 # %% run p2 computations for all frequencies
-for fi, freq in enumerate(frequencies[5:]):       # all approaches
+for fi, freq in enumerate(frequencies):
 
-    fi = 5
     # Initialize MODel
     mod = 'f_' + str(freq)
     M = MOD(mod, mesh, 'E_t', p=p, overwrite=True,
@@ -131,7 +132,7 @@ for fi, freq in enumerate(frequencies[5:]):       # all approaches
 
     # define frequency and conductivities
     M.MP.update_model_parameters(f=freq,     # dummy values for sigma, to be
-                                 sigma_ground=np.ones(7))      # overwritten
+                                  sigma_ground=np.ones(7))      # overwritten
 
     # copy original marker function
     marker_copy = np.zeros(M.FS.DOM.domain_func.size(), dtype=int)
@@ -140,33 +141,43 @@ for fi, freq in enumerate(frequencies[5:]):       # all approaches
     # initialize new domain function with cell-wise marker numbering
     M.FS.DOM.domain_func.set_values(np.arange(M.FS.DOM.domain_func.size()))
 
-    # set up resistivity function, initialize with default value for airspace
+    # set up resistivity function
     DG = df.FunctionSpace(M.FS.mesh, "DG", 0)
     res_h = df.Function(DG)
     res_v = df.Function(DG)
-    res_h.vector()[:] = 1e8
-    res_v.vector()[:] = 1e8
 
     # overwrite markers and interpolate values on subsurface cells
     mpp('...  interpolating resitivites  ...')
-    res_interp_h, res_interp_v, sub_ids, water_ids = \
-        overwrite_markers(M, interp_h, marker_copy)
+    if  fi == 0:
+        res_interp_h, res_interp_v, sub_ids, water_ids = \
+            overwrite_markers(M, resgrid_h, resgrid_v, marker_copy)
+        del resgrid_h, resgrid_v
 
-    # set water resistivity and subsurface values (reverse log transform)
-    res_h.vector()[water_ids] = 0.32
-    res_v.vector()[water_ids] = 0.32
-    res_h.vector()[sub_ids] = 10**res_interp_h
-    res_v.vector()[sub_ids] = 10**res_interp_v
+        # set water resistivity and subsurface values (reverse log transform)
+        res_h.vector()[:] = 1e8  # initialize with default value for airspace
+        res_v.vector()[:] = 1e8
+        res_h.vector()[water_ids] = 0.32
+        res_v.vector()[water_ids] = 0.32
+        res_h.vector()[sub_ids] = 10**res_interp_h
+        res_v.vector()[sub_ids] = 10**res_interp_v
+
+        # export resitivity information as HDF5 file for other frequencies
+        write_h5(M.MP.mpi_cw, res_h, './data/res_h.h5')
+        write_h5(M.MP.mpi_cw, res_v, './data/res_v.h5')
+
+        # export interpolated conductivities for visualization if desired
+        # df.File(M.out_dir + '/res_h.pvd') << res_h
+        # df.File(M.out_dir + '/res_v.pvd') << res_v
+
+    else:
+        read_h5(M.MP.mpi_cw, res_h, './data/res_h.h5')
+        read_h5(M.MP.mpi_cw, res_v, './data/res_v.h5')
 
     # convert resistivities to custEM conformal format,
     # a list of 3 VTI conductivity values for each cell
     sig = np.concatenate((1./res_h.vector()[:].reshape(-1, 1),
                           1./res_h.vector()[:].reshape(-1, 1),
                           1./res_v.vector()[:].reshape(-1, 1)), axis=1)
-
-    # export interpolated conductivities for visualization if desired
-    # df.File(M.out_dir + '/res_h.pvd') << res_h
-    # df.File(M.out_dir + '/res_v.pvd') << res_v
 
     # overwrite domain markers and conductivities manually
     M.MP.sigma = sig
@@ -179,19 +190,24 @@ for fi, freq in enumerate(frequencies[5:]):       # all approaches
 
     # conduct the real FE stuff
     M.FE.build_var_form(check_sigma_conformity=False)
-    M.solve_main_problem()  # convert_to_H=False
+    M.solve_main_problem()
 
+mpp('Overall solution time: -->  ' + str(time.time() - t0))
+
+for fi, freq in enumerate(frequencies):
+
+    mod = 'f_' + str(freq)
     # import existing FE results, if exported before
-    # M = MOD(mod, mesh, 'E_t', p=p, overwrite=False,
-    #         load_existing=True, m_dir='./meshes', r_dir='./results')
+    M = MOD(mod, mesh, 'E_t', p=p, overwrite=False,
+            load_existing=True, m_dir='./meshes', r_dir='./results')
 
     # conduct interpolation of receiver
     M.IB.on_topo = False
     if fi == 0:
         M.IB.create_path_mesh(inline, 'inline', suffix='line_x')
         M.IB.create_path_mesh(broadside, 'broadside', suffix='line_x')
-    M.IB.interpolate('E_t', 'inline_path_line_x')
-    M.IB.interpolate('E_t', 'broadside_path_line_x')
-    M.IB.interpolate('H_t', 'inline_path_line_x')
-    M.IB.interpolate('H_t', 'broadside_path_line_x')
+    M.IB.interpolate('inline_path_line_x', 'E_t', )
+    M.IB.interpolate('broadside_path_line_x', 'E_t', )
+    M.IB.interpolate('inline_path_line_x', 'H_t')
+    M.IB.interpolate('broadside_path_line_x', 'H_t')
     M.IB.synchronize()

@@ -60,8 +60,8 @@ tx_rcp = mu.assign_topography(tx_rcp, 'data',
                               northing_shift=northing_shift)
 
 # refine inline (il) and broadside (bs) reciprocal Rx locations
-il_rcp = mu.refine_rx(inline, 30., 30.)
-bs_rcp = mu.refine_rx(broadside, 30., 30.)
+il_rcp = mu.refine_rx(inline, 5.)
+bs_rcp = mu.refine_rx(broadside, 5.)
 
 
 # %% create poly file
@@ -71,10 +71,10 @@ M = BlankWorld(name='marlim_fig4_reciprocal', m_dir='./meshes',
                x_dim=[-dim, dim],
                y_dim=[-dim, dim],
                z_dim=[-dim, dim],
-               boundary_mesh_cell_size=1e9,
-               outer_area_cell_size=1e6,
-               layer_cell_sizes=[1e8, 1e8, 1e8, 1e7, 1e8, 1e7, 1e9],
-               interface_cell_sizes=[1e5, 1e5, 5e5, 5e5, 1e6, 1e6],
+               boundary_mesh_cell_size=0.,
+               outer_area_cell_size=1e7,
+               layer_cell_sizes=[1e9, 1e9, 1e9, 1e8, 1e9, 1e9, 1e9],
+               interface_cell_sizes=[1e7, 1e7, 1e6, 1e6, 1e7, 1e7],
                centering=False,
                t_dir='data',
                easting_shift=easting_shift,
@@ -105,7 +105,8 @@ M.add_paths(bs_rcp)
 M.add_tx(tx_rcp)
 
 # extend the computational domain with halfspace-like boundary mesh
-M.there_is_always_a_bigger_world(2., 2., 2.)
+M.there_is_always_a_bigger_world(1.1, 1.1, 1.1, cell_sizes=[0., 1e9])
+M.there_is_always_a_bigger_world(2., 2., 2., initial=False)
 
 # call TetGen
-M.call_tetgen(tet_param='-pq1.6aA', export_vtk=True)
+M.call_tetgen(tet_param='-pq2.0aA', export_vtk=True)
