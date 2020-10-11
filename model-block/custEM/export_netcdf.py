@@ -27,7 +27,7 @@ memory = ['97.8 GiB', '115.9 GiB']
 
 # export everything to netcdf
 for p in ['2']:
-    for model in ['layered', 'block']:
+    for mm, model in enumerate(['layered', 'block']):
 
         # load interpolated modeling results on observation line
         mod = 'p' + str(p)
@@ -37,28 +37,28 @@ for p in ['2']:
             mesh = 'block_model_p' + p
 
         P = PlotFD(mod=mod, mesh=mesh, approach='E_t', r_dir='./results')
-        for i, line in enumerate(lines):            
+        for i, line in enumerate(lines):
             P.import_line_data(line, key='t' + str(i+1), EH='E')
 
         # save the three lines
         ds.line_1.data = np.vstack(
-                [P.line_data['t1_E_t'][:, 0].real, 
-                 P.line_data['t1_E_t'][:, 0].imag]).ravel('F') 
+                [P.line_data['t1_E_t'][:, 0].real,
+                 P.line_data['t1_E_t'][:, 0].imag]).ravel('F')
         ds.line_2.data = np.vstack(
-                [P.line_data['t2_E_t'][:, 0].real, 
-                 P.line_data['t2_E_t'][:, 0].imag]).ravel('F') 
+                [P.line_data['t2_E_t'][:, 0].real,
+                 P.line_data['t2_E_t'][:, 0].imag]).ravel('F')
         ds.line_3.data = np.vstack(
-                [P.line_data['t3_E_t'][:, 0].real, 
-                 P.line_data['t3_E_t'][:, 0].imag]).ravel('F') 
-    
+                [P.line_data['t3_E_t'][:, 0].real,
+                 P.line_data['t3_E_t'][:, 0].imag]).ravel('F')
+
         # Add info
-        ds.attrs['runtime'] = runtimes
+        ds.attrs['runtime'] = runtimes[mm]
         ds.attrs['n_procs'] = '24'
-        ds.attrs['max_ram'] = memory
+        ds.attrs['max_ram'] = memory[mm]
         ds.attrs['n_cells'] = P.cells
         ds.attrs['n_nodes'] = P.nodes
         ds.attrs['n_dof'] = P.dof
-        ds.attrs['extent'] = ("x = -100000 - 100000; " 
+        ds.attrs['extent'] = ("x = -100000 - 100000; "
                               "y = -100000 - 100000; "
                               "z = -100000 - 100000")
         ds.attrs['min_volume'] = P.min_volume
@@ -68,10 +68,10 @@ for p in ['2']:
                                "~3 TB DDR4 RAM; Ubuntu 18.04")
         ds.attrs['version'] = "custEM v" + ce.__version__
         ds.attrs['date'] = datetime.today().isoformat()
- 
+
         # These are final results
         ds.attrs['NOTE'] = 'final'
-    
+
         # Save it under <{model}_{code}_{p}.nc>
         code = 'custEM_p' + p
         ds.to_netcdf(f"../results/{model}_{code}.nc", engine='h5netcdf')
