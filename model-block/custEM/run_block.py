@@ -60,5 +60,5 @@ for p in [2, 1]:
                             n_segs=100, line_name='l3m')
 
     for line in ['l1m_line_x', 'l2m_line_x', 'l3m_line_x']:
-        M.IB.interpolate('E_t', line)
+        M.IB.interpolate(line, 'E_t')
     M.IB.synchronize()  # synchronize all processes after interpolation

@@ -22,8 +22,11 @@ import numpy as np
 ds = xr.load_dataset('../block_model_and_survey.nc', engine='h5netcdf')
 lines = ['l1m_line_x', 'l2m_line_x', 'l3m_line_x']
 
+runtimes = ['118 s', '158 s']
+memory = ['97.8 GiB', '115.9 GiB']
+
 # export everything to netcdf
-for p in ['1', '2']:
+for p in ['2']:
     for model in ['layered', 'block']:
 
         # load interpolated modeling results on observation line
@@ -49,9 +52,9 @@ for p in ['1', '2']:
                  P.line_data['t3_E_t'][:, 0].imag]).ravel('F') 
     
         # Add info
-        ds.attrs['runtime'] = str(int(P.solution_time)) + ' s'
-        ds.attrs['n_procs'] = P.mpi_procs * P.omp_threads
-        ds.attrs['max_ram'] = f"{P.max_mem :5.1f} GiB"
+        ds.attrs['runtime'] = runtimes
+        ds.attrs['n_procs'] = '24'
+        ds.attrs['max_ram'] = memory
         ds.attrs['n_cells'] = P.cells
         ds.attrs['n_nodes'] = P.nodes
         ds.attrs['n_dof'] = P.dof
@@ -66,8 +69,8 @@ for p in ['1', '2']:
         ds.attrs['version'] = "custEM v" + ce.__version__
         ds.attrs['date'] = datetime.today().isoformat()
  
-        # These are quasi final results
-        ds.attrs['NOTE'] = 'Quasi final'
+        # These are final results
+        ds.attrs['NOTE'] = 'final'
     
         # Save it under <{model}_{code}_{p}.nc>
         code = 'custEM_p' + p
