@@ -1,8 +1,8 @@
 \documentclass[
     paper,
 %     manuscript,
-     twocolumn,
-     twoside,
+%     twocolumn,
+%     twoside,
 %     revised,
   ]{geophysics}
 
@@ -382,16 +382,16 @@ The importance of the meshing to the result can be seen in Figure~\ref{fig:resul
 %
 The most obvious result in that figure is that \custem and \petgem produce results that are almost identical, their NRMSD is generally below 0.03\,\%. The reason is simple: \custem and \petgem use the exactly same mesh for the computation, the only difference is therefore the solver. As they are so similar we compare \emg3d and \simpeg only to \custem in Figure~\ref{fig:results-marlim_2ours}, as the comparisons to \petgem would look the same. But in general the NRMSDs between our codes look similar as in the comparison with the published results, which is due to the different meshes in use.
 
-The actual differences in meshing is shown in the next two figures, in Figure~\ref{fig:results-marlim_medium} for almost the entire computational domain, and in Figure~\ref{fig:results-marlim_survey} a zoom-in to the survey domain, the domain of interest. The dimension of the computational domain varies for the different meshes:
+The actual differences in meshing is shown in the next two figures, in Figure~\ref{fig:results-marlim_big} for almost the entire computational domain, and in Figure~\ref{fig:results-marlim_survey} a zoom-in to the survey domain, the domain of interest. The dimension of the computational domain varies for the different meshes:
 % emg3d:         x = 327 to 454 km; z =  -57 to 83 km
 % SimPEG:        x = 288 to 492 km; z = -123 to 41 km
 % custEM/PETGEM: as shown in the image (+/- 25 km)
-\plot*{results-marlim_medium}{width=\textwidth}{Meshes (left column), broadside $E_x$ field (middle column), and broadside $E_y$ field (right column) for a rectilinear mesh (top row), octree mesh (middle row), and tetrahedra mesh (bottom row). The shown dimensions shows the entire computational domain for the tetrahedra mesh, whereas the entire rectilinear and octree meshes are bigger. (Vertical exaggeration: 1.1.)}
+\plot*{results-marlim_big}{width=\textwidth}{Meshes (left column), broadside $E_x$ field (middle column), and broadside $E_y$ field (right column) for a rectilinear mesh (top row), octree mesh (middle row), and tetrahedra mesh (bottom row). The shown dimensions shows the entire computational domain for the tetrahedra mesh, whereas the entire rectilinear and octree meshes are bigger.}
 %
 The top rows show the rectilinear mesh of \emg3d, the middle rows the octree mesh of \simpeg, and the bottom rows the tetrahedra mesh of \custem and \petgem. The actual mesh, the $|E_x|$ field, and the $|E_y|$ field are shown in the left, middle, and right columns, respectively.
 
 %
-\plot*{results-marlim_survey}{width=\textwidth}{Meshes (left column), $E_x$ field (middle column), and $E_y$ field (right column) for a rectilinear mesh (top row), octree mesh (middle row), and tetrahedra mesh (bottom row) for the survey domain. (Vertical exaggeration: 4.1.)}
+\plot*{results-marlim_survey}{width=\textwidth}{Meshes (left column), $E_x$ field (middle column), and $E_y$ field (right column) for a rectilinear mesh (top row), octree mesh (middle row), and tetrahedra mesh (bottom row) for the survey domain (3$\times$ vertical exaggeration).}
 
 The most striking point of these mesh comparison plots is that, while the overall fields are similar and particularly the responses at receiver locations are the same, the fields can vary quite a lot in different parts of the model. At, e.g., two kilometres below the seafloor there are already significant changes visible, purely due to meshing. This is an important insight that has to be taken into account when interpreting inversion results.
 
@@ -421,7 +421,7 @@ Figure \ref{fig:results-marlim_allmodels} is just added; integrate properly. Als
     \item Model interpolation: \simpeg and \emg3d use volume averaging on log10(rho)-space; \custem and \petgem use linear interpolation on log10(rho)-space.
     \item Fields interpolation: \simpeg uses ???\mycom[DW]{Lindsey, what did you use in the end?}; \emg3d uses spline interpolation; the FE codes custEM and PETGEM use the second-order basis functions for the interpolation within elements. 
 \end{itemize}
-\plot*{results-marlim_allmodels}{width=\textwidth}{TODO (Vertical exaggeration: 3.6.)}
+\plot*{results-marlim_allmodels}{width=\textwidth}{TODO (3$\times$ vertical exaggeration).}
 
 \section{Discussion}
 \imycom[DW]{Currently still a collection of discussions. Needs better structuring.}
@@ -469,7 +469,7 @@ We encourage the community to not only work on new open-source code developments
 
 \section{Acknowledgement}
 
-We would like to thank Paulo Menezes for the help and explanations with regards to the Marlim R3D model and corresponding CSEM data, and for making their actual computation model available under an open-source license.
+We had help of several colleagues for different tasks, and would therefore like to thank Bane Sullivan (plotting of tetrahedra in matplotlib through PyVista), Seogi Kang (octree meshes), \mycom[DW]{please add if someone helped with something}. We would also like to thank Paulo Menezes for the help and explanations with regards to the Marlim R3D model and corresponding CSEM data, and for making their actual computation model available under an open-source license.
 
 The work of D.W. was conducted within the Gitaro.JIM project funded through MarTERA, a \emph{European Union's Horizon 2020} research and innovation programme, grant agreement N$^\circ$~728053; \href{https://www.martera.eu}{martera.eu}.
 
