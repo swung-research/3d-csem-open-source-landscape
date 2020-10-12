@@ -1,8 +1,8 @@
 \documentclass[
     paper,
 %     manuscript,
-%     twocolumn,
-%     twoside,
+     twocolumn,
+     twoside,
 %     revised,
   ]{geophysics}
 
@@ -79,24 +79,26 @@
 \maketitle
 
 \begin{abstract}
-Large-scale modelling of three-dimensional controlled-source electromagnetic (CSEM) responses used to be feasible only for large companies and research consortia. This has changed over the last few years, and today there exists a selection of different open-source codes. Using four different codes in the Python ecosystem we model responses for three increasingly complex models. We first verify the results with semi-analytical solutions for a simple case. Then we validate the responses of more complex models between the different codes and with results from the industry. These validations show that the open-source codes are able to compute CSEM responses for challenging, large-scale models. Our comparison includes finite-element and finite-volume codes using structured tensor and octree meshes as well as unstructured tetrahedra meshes. Our results show further that accurate responses can be obtained independently of the chosen method and the chosen mesh. The runtime and memory requirements vary greatly based on the choice of iterative or direct solvers. But we have found that much more time was spent on creating the appropriate input files than running the actual computation. The challenging task is to appropriately discretize the model, independently of the chosen mesh and the chosen solver. We provide the three models and the corresponding responses of four codes, which can be used for verification of new and existing codes. The collaboration of four code maintainer trying to achieve the same task brought in the end all four codes a significant step further.
+Large-scale modelling of three-dimensional controlled-source electromagnetic (CSEM) surveys used to be feasible only for large companies and research consortia. This has changed over the last few years, and today there exists a selection of different open-source codes. Using four different codes in the Python ecosystem, we perform simulations for increasingly complex models. We first verify the results with semi-analytical solutions for a simple layered model. Then we validate the responses of a more complex block model between the different codes. Finally we compare the responses of a real world model with results from the industry. These validations show that the open-source codes are able to compute CSEM responses for challenging, large-scale models. Our comparison includes finite-element and finite-volume codes using structured rectilinear and octree meshes as well as unstructured tetrahedral meshes. Accurate responses can be obtained independently of the chosen method and the chosen mesh. The runtime and memory requirements vary greatly based on the choice of iterative or direct solvers. However, we have found that much more time was spent on creating the appropriate input files than running the actual computation. The challenging task is, irrespective of the chosen code, to appropriately discretize the model. We provide three models, each with their corresponding discretization and responses of four codes, which can be used for validation of new and existing codes. The collaboration of four code maintainers trying to achieve the same task brought in the end all four codes a significant step further. This includes improved meshing and interpolation capabilities, resulting in shorter runtimes for the same accuracy. We hope that these results may be useful for the CSEM community at large, and we invite and encourage the community to make more codes, modelling scripts, and results publicly available.
 \end{abstract}
 
 \newpage
 \itodo{\hfill$\Downarrow$\hfill$\Downarrow$\hfill List of things ToDo, Notes, etc\hfill$\Downarrow$\hfill$\Downarrow$\hfill~}
 \begin{itemize}
-    \item Notes on orthography: I settled on discretize with a «z». My dictionary says that discreti{\color{red}\bfseries z}e is AE and discreti{\color{red}\bfseries s}e is BE, but that «z» is also used in BE in mathematical contexts. Is that fine or any other opinions?
+    \item Notes on orthography: As we submit to GJI it should be British English. But I settled on discretize with a «z». My dictionary says that discreti{\color{red}\bfseries z}e is AE and discreti{\color{red}\bfseries s}e is BE, but that «z» is also used in BE in mathematical contexts. Is that fine or any other opinions?
+    \imycom[LJH]{discretize is good with me}
     \item Regarding submission, {\color{red}\bfseries please let me know}:
       \begin{itemize}
-        \item If you think the \textbf{order of authors} should be different. The last thing we want in this collaboration is that someone feels unhappy about that: \itodo{No comment from RR; OCR said OK}
-        \item If you have \textbf{another manuscript under revision with GJI}. When submitting to GJI one has to indicate when you have other manuscripts currently under review with GJI: \itodo{No comments from Raphael; Octavio}
+        \item If you think the \textbf{order of authors} should be different. The last thing we want in this collaboration is that someone feels unhappy about that: \itodo{No comment from RR; OCR said OK, LJH: +1 looks good to me :)}
+        \item If you have \textbf{another manuscript under revision with GJI}. When submitting to GJI one has to indicate when you have other manuscripts currently under review with GJI: \itodo{No comments from Raphael; Octavio, No from Lindsey}
         \item For the submission I will create a \textbf{new repository on swung-research}. The idea is to make a single, new commit with everything (without the git history, for various reasons). Please let me know if you would prefer to commit your files yourself as a PR instead.
         \imycom[OCR]{I have no problem with showing the entire history of the repo (in some way it could justify the way of working collaboratively that is discussed in the abstract), but I would also agree to create a new repo.
         \imycom[DW]{This is actually a good idea, if everyone is up for it. I think we should have a quick call before submitting, and discuss these little points so everyone is happy.}
+        \imycom[LJH]{+1, fine by me to transfer the whole repo over with git history (either way is fine by me) }
         }
         \item \textbf{Wanted and not wanted reviewers:} Let me know if you have any names for these. I do not have any \emph{not wanted}, but I do have a few I will put on the \emph{wanted} list, mainly people I would be interested to have their feedback and that have knowledge about 3D modelling:
           \begin{itemize}
-            \item Kerry Key (domain knowledge with \texttt{MARE3DEM}, also experience with open-sourcing with \texttt{MARE2DEM}); \itodo{RR and QCR agreed}
+            \item Kerry Key (domain knowledge with \texttt{MARE3DEM}, also experience with open-sourcing with \texttt{MARE2DEM}); \itodo{RR and QCR and LJH agreed}
             \item Rune Mittet (domain knowledge; he will know what SBLwiz actually does, so it would be very interesting to have his feedback);
             \item Dimitry Avdeev and Ralph-Uwe Börner (they both did extensive 3D code overview/review papers in 2005 and 2010, respectively, and it would be interesting to get their feedback). \itodo{RR and QCR agreed}
           \end{itemize}
@@ -223,9 +225,9 @@ The toolbox considers generally anisotropic petrophysical properties. Even thoug
 
 \subsection{emg3d}
 
-The 3D CSEM code \emg3d is a multigrid solver \citep{CMMP.64.Fedorenko} for electromagnetic diffusion following \cite{GP.06.Mulder}, with tri-axial electrical anisotropy, isotropic electric permittivity, and isotropic magnetic permeability. The matrix-free solver can be used as main solver, or alternatively as preconditioner for one of the Krylov subspace methods implemented in SciPy. The governing equations are discretized on a staggered grid by the finite-integration technique \citep{AEU.77.Weiland}, which is a finite-volume generalisation of a Yee grid. The code is written completely in Python using the NumPy and SciPy stacks, where the most time- and memory-consuming parts are sped up through jitted (just-in-time compiled) functions using Numba \citep{LLVM.15.Lam}. The strength of \emg3d is the matrix-free multigrid implementation, which is characterised by almost linear scaling both in terms of runtime and memory usage, and it is therefore a solver that uses comparably very little memory.
+The 3D CSEM code \emg3d is a multigrid solver \citep{CMMP.64.Fedorenko} for electromagnetic diffusion following \cite{GP.06.Mulder}, including tri-axial electrical anisotropy. The matrix-free solver can be used as main solver, or as preconditioner for one of the Krylov subspace methods implemented in SciPy. The governing equations are discretized on a staggered grid by the finite-integration technique \citep{AEU.77.Weiland}, which is a finite-volume generalisation of a Yee grid. The code is written completely in Python using the NumPy and SciPy stacks, where the most time- and memory-consuming parts are sped up through jitted (just-in-time compiled) functions using Numba \citep{LLVM.15.Lam}. The strength of \emg3d is the matrix-free multigrid implementation, which is characterised by almost linear scaling both in terms of runtime and memory usage, and it is therefore a solver that uses comparably very little memory.
 
-As such the code is, contrary to the other three, primarily a solver, which solves the Maxwell's equation for a single frequency and a single, electric source. However, recent developments added functionalities such that \emg3d can be used directly as a more general EM modeller too. It features now routines to obtain the magnetic field due to an electric source, to obtain the electric and magnetic fields due to a magnetic source, and also to obtain time-domain responses. For the underlying discretization the Python package \discretize is used, which is part of the larger \simpeg ecosystem. Interoperability between \simpeg and \emg3d is therefore straightforward.
+As such the code is primarily a solver, which solves Maxwell's equations for a single frequency and a single, electric source. Recent developments added functionalities such that \emg3d can be used directly as a more general EM modeller too. It features now routines to obtain the magnetic field due to an electric source, to obtain the electric and magnetic fields due to a magnetic source, and to obtain time-domain responses. For the underlying discretization the Python package \discretize is used, which is part of the larger \simpeg ecosystem.
 
 \subsection{PETGEM}
 
@@ -239,10 +241,10 @@ For the parallel forward modelling computations, a highly scalable MPI (message 
 % Based on the current state of the \petgem project, there are many possibilities to improve or to add additional features. For instance, in the short-term, more modelling routines and support for multi-source set-ups will be implemented. For the long-term, the obvious next step is to move to 3D CSEM data inversion.
 
 \subsection{SimPEG}
-\todo{Please condense SimPEG a bit; the other codes use about 200-240 words, SimPEG currently close to 400.}
+\todo{Please condense SimPEG a bit; the other codes use about 190-220 words, SimPEG currently roughly 350.}
 \simpeg is a modular toolbox for simulations and gradient based inversions in geophysics. Current functionality includes modelling and inversion capabilities for gravity, magnetics, direct current resistivity, induced polarisation, electromagnetics (time and frequency, controlled and natural sources such as magnetotellurics), and fluid flow (Richards equation). It is a community driven project that aims to support researchers and \mycom[DW]{I added «and practitioners», as I think «support researchers» downplays the fact that \simpeg is used by various companies as well\dots}practitioners by providing a flexible, extensible framework and to facilitate integration of data sets from a variety of geophysical methods, including joint inversions \citep{GJI.20.Astic}, by providing a common interface to each method. 
 
-Meshes and finite volume differential operators are implemented in the \discretize package, which currently includes tensor, octree, cylindrical, and logically rectangular meshes. Each mesh type inherits from a common structure and uses the same naming conventions for methods and properties. This allows us to decouple the implementation of a discretized partial differential equation from the details of the mesh geometry and therefore we can write a single implementation of discretized partial differential equation (or set of partial differential equations) in \simpeg that will support all mesh types implemented in \discretize.
+Meshes and finite volume differential operators are implemented in the \discretize package, which currently includes rectilinear, octree, cylindrical, and logically rectangular meshes. Each mesh type inherits from a common structure and uses the same naming conventions for methods and properties. This allows us to decouple the implementation of a discretized partial differential equation from the details of the mesh geometry and therefore we can write a single implementation of discretized partial differential equation (or set of partial differential equations) in \simpeg that will support all mesh types implemented in \discretize.
 
 The electromagnetic implementations use a staggered grid finite volume approach where physical properties are discretized at cell centres, fields on cell edges and fluxes on cell faces.
 %(for an overview of discretizing Maxwell's equations, we recommend \cite{B.SIAM.14.Haber}).
@@ -252,7 +254,7 @@ There are two different discretization strategies implemented for Maxwell's equa
 
 \section{Numerical Validation}
 
-We computed the responses for three different models to validate that the four 3D CSEM codes yield the same electromagnetic responses and compare different solver types (FE, FD) and different mesh types (unstructured tetrahedra, tensor, octree) in different scenarios. The first model is an anisotropic layered model, which can be compared to semi-analytical solutions. The layered model also serves as background model for the second validation, where we add three resistive blocks into the subsurface. The final comparison is based on the realistic, anisotropic marine model MR3D. It is an open resistivity model which comes with computed CSEM responses.
+We computed the responses for three different models to validate that the four 3D CSEM codes yield the same electromagnetic responses and compare different solver types (FE, FD) and different mesh types (unstructured tetrahedra, rectilinear, octree) in different scenarios. The first model is an anisotropic layered model, which can be compared to semi-analytical solutions. The layered model also serves as background model for the second validation, where we add three resistive blocks into the subsurface. The final comparison is based on the realistic, anisotropic marine model MR3D. It is an open resistivity model which comes with computed CSEM responses.
 
 \subsection{Layered Model}
 
@@ -276,8 +278,8 @@ There are a few noteworthy points:
   \item The relative error of the responses from \custem and \petgem, on the hand, are relatively big at large offsets, particularly for the inline real responses. This has, again, its origin in the chosen discretization. The thin isotropic layer beneath the water requires many tetrahedra for a good-quality discretization. Therefore, the FE codes only extend this thin layer up to 30\,km for the origin, surrounded by a ten times larger halfspace-like boundary mesh with water conductivities assigned to the subsurface. This approximation significantly reduced the problem size compared to considering the layered-earth geometry for the whole computational domain.
 \end{enumerate}
 
-Please not that \emg3d and \simpeg used the same tensor mesh in this example.
-\imycom[DW]{Lindsey: A sentence why Tensor was chosen over OcTree here?}
+Please not that \emg3d and \simpeg used the same rectilinear mesh in this example.
+\imycom[DW]{Lindsey: A sentence why a rectilinear mesh was chosen over octree here?}
 
 The runtime and memory requirements for the layered model are listed in Table~\ref{tbl:comp-layered}.
 
@@ -380,27 +382,21 @@ The importance of the meshing to the result can be seen in Figure~\ref{fig:resul
 %
 The most obvious result in that figure is that \custem and \petgem produce results that are almost identical, their NRMSD is generally below 0.03\,\%. The reason is simple: \custem and \petgem use the exactly same mesh for the computation, the only difference is therefore the solver. As they are so similar we compare \emg3d and \simpeg only to \custem in Figure~\ref{fig:results-marlim_2ours}, as the comparisons to \petgem would look the same. But in general the NRMSDs between our codes look similar as in the comparison with the published results, which is due to the different meshes in use.
 
-The actual differences in meshing is shown in the next two figures, in Figure~\ref{fig:results-marlim_entire} for the entire computational domain, and in Figure~\ref{fig:results-marlim_survey} a zoom-in to the survey domain, the domain of interest.
+The actual differences in meshing is shown in the next two figures, in Figure~\ref{fig:results-marlim_medium} for almost the entire computational domain, and in Figure~\ref{fig:results-marlim_survey} a zoom-in to the survey domain, the domain of interest. The dimension of the computational domain varies for the different meshes:
+% emg3d:         x = 327 to 454 km; z =  -57 to 83 km
+% SimPEG:        x = 288 to 492 km; z = -123 to 41 km
+% custEM/PETGEM: as shown in the image (+/- 25 km)
+\plot*{results-marlim_medium}{width=\textwidth}{Meshes (left column), broadside $E_x$ field (middle column), and broadside $E_y$ field (right column) for a rectilinear mesh (top row), octree mesh (middle row), and tetrahedra mesh (bottom row). The shown dimensions shows the entire computational domain for the tetrahedra mesh, whereas the entire rectilinear and octree meshes are bigger. (Vertical exaggeration: 1.1.)}
 %
-\plot*{results-marlim_entire}{width=\textwidth}{Meshes (left column), $E_x$ field (middle column), and $E_y$ field (right column) for a tensor mesh (top row), octree mesh (middle row), and tetrahedra mesh (bottom row) for the entire computational domain.}
-%
-The top rows show the tensor mesh of \emg3d, the middle rows the octree mesh of \simpeg, and the bottom rows the tetrahedra mesh of \custem and \petgem. The actual mesh, the $|E_x|$ field, and the $|E_y|$ field are shown in the left, middle, and right columns, respectively.
-
-\itodo{We have to decide which figures to include, please state your preference:
-\imycom[DW]{I would go for at least two figures, probably 9 and 10 (in reversed order); in my opinion these are the most interesting figures, and I have never seen a comparison like this.}
-\imycom[RR]{only keep this figure in my opinion (Figure 9), remove 8, 10 \& 11. One figure should be enough for an illustrative field and mesh representation.}
-\imycom[OCR]{I also suggest keeping only figure 9. The rest provide little details/specifications}
-}
+The top rows show the rectilinear mesh of \emg3d, the middle rows the octree mesh of \simpeg, and the bottom rows the tetrahedra mesh of \custem and \petgem. The actual mesh, the $|E_x|$ field, and the $|E_y|$ field are shown in the left, middle, and right columns, respectively.
 
 %
-\plot*{results-marlim_survey}{width=\textwidth}{Meshes (left column), $E_x$ field (middle column), and $E_y$ field (right column) for a tensor mesh (top row), octree mesh (middle row), and tetrahedra mesh (bottom row) for the survey domain. (Vertical exaggeration: 5.45)}
+\plot*{results-marlim_survey}{width=\textwidth}{Meshes (left column), $E_x$ field (middle column), and $E_y$ field (right column) for a rectilinear mesh (top row), octree mesh (middle row), and tetrahedra mesh (bottom row) for the survey domain. (Vertical exaggeration: 4.1.)}
 
 The most striking point of these mesh comparison plots is that, while the overall fields are similar and particularly the responses at receiver locations are the same, the fields can vary quite a lot in different parts of the model. At, e.g., two kilometres below the seafloor there are already significant changes visible, purely due to meshing. This is an important insight that has to be taken into account when interpreting inversion results.
 
 The required runtime and memory to compute the shown MR3D responses for the four codes are listed in Table~\ref{tbl:comp-marlim}. The memory requirement varies from $0.5-520\,$GiB, and the runtime from roughly 7\,min to 1h\,23\,min, where the codes were run on very different machines from servers to supercomuters (see Table \ref{tbl:machines}) and use between 1 and 96 processes in parallel).
 
-\plot*{results-marlim_medium}{width=\textwidth}{Additional zoom “medium”; which ones should we use? (Vertical exaggeration: 1.33)}
-\plot*{results-marlim_small}{width=\textwidth}{Additional zoom “small”; which ones should we use? (Vertical exaggeration: 4.0)}
 %
 \tabl[bthp]{comp-marlim}{Comparison of number of processes, runtime, and memory, as well as the degree of freedom of the discretization used by the different codes for the MR3D model.}{
   \centering
@@ -418,7 +414,6 @@ The required runtime and memory to compute the shown MR3D responses for the four
   \bottomrule
 \end{tabular}}%
 %
-\itodo{Update nc-file of custEM and PETGEM for new CPU/RAM.}
 
 \paragraph{TODOs:}
 Figure \ref{fig:results-marlim_allmodels} is just added; integrate properly. Also, the following info should be integrated:
@@ -426,7 +421,7 @@ Figure \ref{fig:results-marlim_allmodels} is just added; integrate properly. Als
     \item Model interpolation: \simpeg and \emg3d use volume averaging on log10(rho)-space; \custem and \petgem use linear interpolation on log10(rho)-space.
     \item Fields interpolation: \simpeg uses ???\mycom[DW]{Lindsey, what did you use in the end?}; \emg3d uses spline interpolation; the FE codes custEM and PETGEM use the second-order basis functions for the interpolation within elements. 
 \end{itemize}
-\plot*{results-marlim_allmodels}{width=\textwidth}{TODO}
+\plot*{results-marlim_allmodels}{width=\textwidth}{TODO (Vertical exaggeration: 3.6.)}
 
 \section{Discussion}
 \imycom[DW]{Currently still a collection of discussions. Needs better structuring.}
@@ -439,14 +434,13 @@ We point out that making a synthetic and a real benchmark model available to cro
 
 In the first model, the necessity of discretizing regular structures with tetrahedra, especially thin layers, led to comparatively large FE problem sizes and computational resource demands. FE codes with unstructured meshes were probably the poorest choice of all commonly used methods for this setup in terms of computational performance. However, thinking about introducing just one slight irregularity such as bathymetry, a thin dipping plate or an anticline, the performance behaviour could likely switch. All of these changes would barely change the problem size for the FE codes, but significantly increase it for the FD codes if the true geometry should be approximated sufficiently accurate.
 
-The real MR3D model was, ironically, the ideal case for FE codes because it's structure was characterised by irregular lithological horizons obtained from seismic data. Since the corresponding published resistivity model was defined on a regular grid, we were forced to approximate the comparatively fine regular discretization by an unstructured one and interpolate the resistivity data for being able to apply the FE codes to this problem. We are completely aware about the ineptness of this re-approximation procedure, unless it served for the cross-validation purposes. Nevertheless, the chosen tetrahedral discretization, especially in combination with second order basis functions, showed clearly the intrinsic strength of the FE codes, requiring significantly less dof for meshing irregular geometries in general. The p2 FE solution required only $\approx$9\,M dof \todo{Update this number if we decide compute the fields for the new FE mesh} instead of $\approx$90\,M dof for the FD system by \citet{GEO.19.Correa}, disregarding the structure of the system matrices. It is important to state that the FE mesh used for the MR3D model incorporates the entire domain and could be used for all source and receiver positions, whereas the rectilinear and octree meshes were designed for the shown receiver and two source lines.
+The real MR3D model was, ironically, the ideal case for FE codes because it's structure was characterised by irregular lithological horizons obtained from seismic data. Since the corresponding published resistivity model was defined on a regular grid, we were forced to approximate the comparatively fine regular discretization by an unstructured one and interpolate the resistivity data for being able to apply the FE codes to this problem. We are completely aware about the ineptness of this re-approximation procedure, unless it served for the cross-validation purposes. Nevertheless, the chosen tetrahedral discretization, especially in combination with second order basis functions, showed clearly the intrinsic strength of the FE codes, requiring significantly less dof for meshing irregular geometries in general.
+\imycom[DW]{Rethink the previous and next phrases. Correa could have chosen a different discretization. Also, OcTree uses even less cells, so this statement is wrong.}
+The p2 FE solution required only $\approx$1.9\,M dof instead of $\approx$90\,M dof for the FD system by \citet{GEO.19.Correa}, disregarding the structure of the system matrices. It is important to state that the FE mesh used for the MR3D model incorporates the entire domain and could be used for all source and receiver positions, whereas the rectilinear and octree meshes were designed for the shown receiver and two source lines.
 
 The codes under consideration use direct and iterative solvers. In general, the biggest advantage of iterative solvers with appropriate preconditioners are the comparatively small memory requirements. Direct solvers can be considered as most robust to solve any ill-conditioned SLE, which is most important for systems of the FE method on unstructured meshes. As the consumed computational resources indicate, a more powerful machine than a laptop is required for most 3D CSEM problems, but no high-performance-computing architecture.
 
-The computation times can differ significantly for specific simulations, but there is no clear general advantage for one of the solver types. In our models, the runtime comparison favoured the iterative solver and therefore, \emg3d. Even though not shown here, direct solvers exhibit their strongest advantage in terms of computation times if responses of multiple CSEM transmitters need to be computed in the same computational domain. As the system matrix factorisation requires 98-99\,\% of the solution time, computations for additional sources come at almost no cost for direct solvers, i.e., MUMPS, whereas it would come at the same cost as the first source for \emg3d. For the sake of completeness, note that there are also advanced techniques for iterative solvers to make use of preconditioners, factorisations, or intermediate solutions of the previous SLE to speed up the computation for multiple sources, but this argumentation is beyond the scope of this work.
-\imycom[RR]{maybe add also another important argument: Direct solvers ALWAYS solve solvable systems, whereas iterative solvers with suited preconditioners heavily rely on the matrix structure and condition caused influenced by resistivity distributions and cell/element sizes/shapes. This is in my opinion also the most important point why most of the recent unstructured FE papers use direct solvers (new real-world problem and your preconditioner might be completely useless even if it worked for your paper example - @ Octavio - can you confirm this thought or am I telling nonsense?
-\imycom[DW]{If this is true we should definitely include it. However, this is new to me (and I currently doubt it), we would need a reference confirming this.}
-\imycom[OCR]{I agree entirely with @Raphael. The reality is that most FE papers use direct solvers because there is no iterative solver that is capable of offering good convergence and scalability. Most iterative solvers (petsc for example) are general purpose and are not adapted to deal with the particularities imposed by the CSEM problem, therefore they offer the "best effort" approach (depending on user experience, model, computational architecture) . Perhaps the easiest way to justify this point is to review the recent literature and verify that the majority of FE discretizations use direct solvers.}}
+The computation times can differ significantly for specific simulations, but there is no clear general advantage for one of the solver types. In our models, the runtime comparison favoured the iterative solver and therefore, \emg3d. Even though not shown here, direct solvers exhibit their strongest advantage, besides stability, in terms of computation times if responses of multiple CSEM transmitters need to be computed in the same computational domain. As the system matrix factorisation requires 98-99\,\% of the solution time, computations for additional sources come at almost no cost for direct solvers, i.e., MUMPS, whereas it would come at the same cost as the first source for \emg3d. For the sake of completeness, note that there are also advanced techniques for iterative solvers to make use of preconditioners, factorisations, or intermediate solutions of the previous SLE to speed up the computation for multiple sources, but this argumentation is beyond the scope of this work.
 
 We see this work as the start for future elaboration on the validation of modelling codes, not necessarily restricted to CSEM problems. Much more comparisons and examples are required which not only result in the finding that a sufficient accuracy was observed. 3D CSEM modelling is a difficult task, which requires many considerations. It starts with the selection of the right code for the problem. We found that the meshing task, which is most performance determining, is particularly difficult and relevant, choosing cells small enough to appropriately represent the model yet to be as coarse as possible still achieving the desired precision. The required model extent has to be considered as well, thinking also about effects of the so-called airwave in marine setups or boundary meshes in general. This is not a new finding but rather well known fact. We are surprised that only the minority of publications in the field of 3D EM modelling considers a sufficiently detailed elaboration of the meshing process.
 
@@ -486,9 +480,7 @@ The work of O.C-R. has received funding from the \emph{European Union's Horizon 
 
 \section{Data}
 
-All files to rerun the different models with the four codes and reproduce the shown results are available at \dots.
-\itodo{Put up on Zenodo, link here.}
-
+All files to rerun the different models with the four codes and reproduce the shown results are available at Zenodo (DOI) \emph{with the final submission}. For the review process we refer to the github page \href{https://github.com/prisae/3d-csem-open-source-landscape}{github.com/prisae/3d-csem-open-source-landscape}.
 
 % REFERENCES
 \bibliographystyle{Refs}  % Modified SEG bibliography style.
