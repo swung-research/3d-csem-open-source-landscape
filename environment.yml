@@ -21,3 +21,4 @@ dependencies:
   - segyio
   - simpeg
   - xarray
+  - mkl-service
