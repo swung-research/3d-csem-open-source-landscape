@@ -376,7 +376,14 @@ The actual discretized resistivity model of the three mesh types are shown in Fi
 %
 \plot*{results-marlim_allmodels}{width=\textwidth}{The resistivity model as obtained from the three different discretizations using rectilinear, octree, and tetrahedral meshes (3$\times$ vertical exaggeration).}
 %
-The models where obtained using volume averaging (\emg3d, \simpeg) and linear interpolation (\custem, \petgem), in both cases on $\log_{10}{\rho}$ values. The actual representation of the original resistivities in the tetrahedra mesh is not as smooth as in the other meshes since this would require significantly smaller tetrahedra and more dof on top of the inclusion of subsurface layer constraints. However, note that the combination of slicing through tetrahedra and the vertical exaggeration lead to a very distorted view of the tetrahedral mesh which is barely representative for the overall averaged approximation of resistivities. The actual responses at the receivers (field interpolation) are obtained by spline interpolation (\emg3d), linear interpolation (\simpeg), and through the second-order basis functions (\custem, \petgem). 
+The models where obtained using volume averaging (\emg3d, \simpeg) and linear interpolation (\custem, \petgem), in both cases on $\log_{10}{\rho}$ values. The actual representation of the original resistivities in the tetrahedra mesh is not as smooth as in the other meshes since this would require significantly smaller tetrahedra and more dof on top of the inclusion of subsurface layer constraints. However, note that the combination of slicing through tetrahedra and the vertical exaggeration lead to a very distorted view of the tetrahedral mesh which is barely representative for the overall averaged approximation of resistivities. The actual responses at the receivers (field interpolation) are obtained by spline interpolation (\emg3d), linear interpolation (\simpeg), and through the second-order basis functions (\custem, \petgem).
+
+% Maybe's
+% - Show a region where all codes agree
+% - Show a region where all codes are different
+% - Show a region where all our codes agree very well, but not to MR3D
+
+% Note re frequency-dependent meshes.
 
 \section{Discussion}
 
