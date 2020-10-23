@@ -1,7 +1,8 @@
 # Open-source landscape for 3D CSEM modelling
 
 > Werthmüller, D., R. Rochlitz, O. Castillo Reyes, and L. Heagy,
-> Open-source landscape for 3D CSEM modelling: Submitted to XYZ.
+> Open-source landscape for 3D CSEM modelling:
+> Submitted to Geophysical Journal International.
 
 
 This repository contains the LaTeX source of the manuscript as well as the
@@ -12,11 +13,12 @@ necessary codes to reproduce all the results and figures.
     ├── environment.yml  # Python environment file
     ├── LICENSE          # CC-BY-SA-4.0 License
     ├── README.md        # this file
-    ├── manuscript/      # LaTeX-files; figures
+    ├── manuscript/      # LaTeX-files
+    │   └── figures/     # figures used in manuscript
     └── model-{MODEL}/   # for MODEL in {block, marlim}
         ├── README.md    # info about MODEL
         ├── {CODE}/      # for CODE in {custEM, emg3d, PETGEM, SimPEG}
-        └── results/     # result
+        └── results/     # results of the different codes
 
 Each `model-{MODEL}/`-directory contains a `README.md` with more information
 about the particular model.
@@ -24,7 +26,7 @@ about the particular model.
 
 ## History
 
-1. Submitted 2020-??-?? to XYZ.
+1. Submitted 2020-10-23 to Geophysical Journal International.
 
 
 ## Environment
@@ -61,8 +63,3 @@ conda remove --name csem --all
 ```
 
 _You need at least Python 3.7 to run the codes._
-
-
-## Note
-
-The final edited version of the article will be &copy; XYZ.
