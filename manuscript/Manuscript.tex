@@ -1,5 +1,8 @@
-% \documentclass[onecolumn,extra,referee,camera]{gji}
-\documentclass[onecolumn,extra,camera]{gji}
+\documentclass[extra, camera,%
+    % onecolumn,   % comment for two columns
+    % referee,     % uncomment for double lines
+    % final,       % uncomment for changes
+]{gji}
 \usepackage{timet}
 
 % Additional packages
@@ -10,8 +13,13 @@
 \usepackage{amssymb, amsmath, amsfonts}
 \usepackage{booktabs}
 \usepackage{xspace}
+\usepackage[final]{graphicx}
+\usepackage[position=top]{subfig}
+\usepackage{ifthen}
+\usepackage[addedmarkup=bf]{changes}
+% \usepackage[final]{changes}
 \usepackage[pdftex, final, allcolors=blue, colorlinks=true]{hyperref}
-\usepackage[pdftex]{graphicx}
+
 
 % workaround siunitx clashes unfortunately with gji
 % https://tex.stackexchange.com/a/412886
@@ -24,6 +32,38 @@
 \let\zz@tabarray\@tabarray
 \makeatother
 
+% Figures
+% To print widths put this in text:
+% \the\textwidth
+% \the\columnwidth
+%
+% Widths:   textwidth  columnwidth  tablewidth
+%       1-c   504pt        252pt       504pt
+%       2-c   504pt        240pt       240pt
+%       ref   468pt        234pt       468pt
+%
+\newlength{\fwidth}
+\newlength{\cwidth}
+\newlength{\twidth}
+\ifthenelse{\boolean{GJ@referee}}{%
+  \setlength{\cwidth}{234pt}%
+  \setlength{\fwidth}{468pt}%
+  \setlength{\twidth}{468pt}}{%
+  \setlength{\fwidth}{504pt}%
+  \ifthenelse{\boolean{@twocolumn}}{%
+    \setlength{\cwidth}{240pt}%
+    \setlength{\twidth}{240pt}}{%
+    \setlength{\cwidth}{252pt}%
+    \setlength{\twidth}{504pt}%
+  }
+}
+\graphicspath{{./figures/}}
+
+% Change default colour of «changes» package
+\definecolor{alizarin}{rgb}{0.82, 0.1, 0.26}
+\definecolor{mygreen}{rgb}{0, .5, 0}
+\setaddedmarkup{\color{mygreen}{\uline{#1}}}
+\setdeletedmarkup{\color{alizarin}{\uwave{#1}}}
 
 \let\tablenum\relax
 \usepackage{siunitx}
@@ -44,8 +84,15 @@
 \newcommand{\discretize}{\texttt{discretize}\xspace}
 \newcommand{\custem}{\texttt{custEM}\xspace}
 \newcommand{\petgem}{\texttt{PETGEM}\xspace}
+
+% Remove once done
+% \newcommand{\itodo}[1]{\todo[color=blue!40!white, inline]{\sffamily #1}}
+% \newcommand{\mtodo}[1]{\todo[inline]{\sffamily #1}}
+% \newcommand{\etodo}[1]{\todo[color=blue!40!white]{#1}}
+\newcommand{\dul}[1]{\underline{\underline{#1}}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\rmk}[1]{{\color{red}{#1}}}
 \newcommand{\ohmm}{\ensuremath{\Omega\,}\text{m}\xspace}
-\newcommand{\rmk}[1]{{\color{red}\bfseries #1}}
 
 \title[3D CSEM Open-Source Landscape]{Open-source landscape for 3D CSEM modelling}
 
@@ -78,50 +125,23 @@
 \newtheorem{theorem}{Theorem}[section]
 
 
-% % == Notes from Wim ==
+% % == Notes from Wim; to incorporate ==
 %
-% - 1990s as plural of a noun, not an adjective
-% - both, an open-source license and an online-hosted: no comma
-% - indirect solvers: iterative solvers
-% - "on the one hand" instead of "on one hand"
-% - are released openly: are released as open source
-% - This figure is interesting for various points: various reasons
-% - as an example: for example
-% - rise: increase
-% - The shown dimensions shows: ugly. Depict, display, exhibit
-% - the x- and y-directions
+% All implemented
 %
 % % == Notes form Paulo ==
 %
-% Very good to know that the Ex responses are well represented. For most of the
-% inversions done in the industry, we use these fields only.
+% Very good to know that the Ex responses are well represented. For most of the inversions done in the industry, we use these fields only.
 %
-% Ez: the mismatch occurs at the longer offsets and below the noise threshold
-% 10-15. EMGS argues now that with the new source, the threshold is pushed to
-% 10-16. But in practice, if the curve follows a smooth decay, we use this data
-% for inversion, and we get meaningful geological results compared to seismic
-% images.
+% Ez: the mismatch occurs at the longer offsets and below the noise threshold 10-15. EMGS argues now that with the new source, the threshold is pushed to 10-16. But in practice, if the curve follows a smooth decay, we use this data for inversion, and we get meaningful geological results compared to seismic images.
 %
-% Ey: the broadside component is quite close,  with small differences at long
-% offsets. For the inline component, I've noted that your responses are up to
-% two orders of magnitude higher than MR3D. The four programs you tested give
-% the same amplitudes? It may be a problem with the EMGS software, as EY is
-% always neglected we may have ignored that issue. Simultaneously, it looks
-% that your inline responses are at the same level as the broadside ones.
+% Ey: the broadside component is quite close,  with small differences at long offsets. For the inline component, I've noted that your responses are up to two orders of magnitude higher than MR3D. The four programs you tested give the same amplitudes? It may be a problem with the EMGS software, as EY is always neglected we may have ignored that issue. Simultaneously, it looks that your inline responses are at the same level as the broadside ones.
 %
-% Bathymetry is also a big issue. It must be well represented to avoid
-% problems.
+% Bathymetry is also a big issue. It must be well represented to avoid problems.
 %
 % % == Notes from Evert ==
 %
-% [T]he fact that the solutions in the four codes are roughly correct with an
-% expected error between 1\% and 10\% makes it totally understandable that the
-% field that is one to two orders of magnitude smaller has no accuracy. You
-% could test this by driving the overall error down by a factor 100. Not sure
-% that is feasible with all codes but if you can do it with one it can be
-% enough when all codes agree sufficiently on the strong field components.
-% Another option can be to increase the cross line component in the error
-% computation.
+% [T]he fact that the solutions in the four codes are roughly correct with an expected error between 1\% and 10\% makes it totally understandable that the field that is one to two orders of magnitude smaller has no accuracy. You could test this by driving the overall error down by a factor 100. Not sure that is feasible with all codes but if you can do it with one it can be enough when all codes agree sufficiently on the strong field components. Another option can be to increase the cross line component in the error computation.
 
 
 \begin{document}
@@ -153,13 +173,19 @@ Large-scale modelling of three-dimensional controlled-source electromagnetic (CS
 
 \section{Introduction}
 
+\begin{itemize}
+  \item \deleted{old}: \texttt{\textbackslash deleted\{old\}}
+  \item \added{new}: \texttt{\textbackslash added\{new\}}
+  \item \replaced{new}{old}: \texttt{\textbackslash replaced\{new\}\{old\}}
+\end{itemize}
+
 Controlled-source electromagnetic (CSEM) measurements are a frequently applied method in various areas of geophysical exploration, such as geothermal, groundwater, oil and gas, mining, civil engineering, or geohazards. Modelling these electromagnetic fields is therefore of great interest to design survey layouts, to understand the measured data, and for inversion purposes. Publications regarding three-dimensional (3D) modelling in electromagnetic (EM) methods started to appear as early as the 1970's and 1980's. These early publications were integral equation (IE) methods for simulating an anomaly embedded within a layered medium, mostly for loop-loop type transient EM measurements  \citep{GJI.74.Raiche, GEO.75.Hohmann, GJI.82.Das, GEO.86.Newman} and magnetotelluric (MT) measurements \citep{GEO.84.Wannamaker}. \cite{B.SEG.88.Ward} assemble many of these solutions in \emph{Electromagnetic Theory for Geophysical Applications}, which is widely viewed as an authoritative publication on electromagnetic geophysics.
 
-In the 1990's, computers became sufficiently powerful that 3D modelling gained traction, and in 1995 the first International Symposium on Three-Dimensional Electromagnetics took place. This symposium resulted eventually in the book \emph{Three-Dimensional Electromagnetics} \citep{B.SEG.99.Oristaglio}, and another book by \cite{B.02.Wannamaker} with the exactly same title came out only three years later. Often cited publications from that time are \cite{RSC.94.Mackie} for 3D MT computation; \cite{RS.94.Druskin} for frequency- and time-domain modelling using a Yee grid and a global Krylov subspace approximation; and \cite{RS.96.Alumbaugh, GJI.97.Newman} for low-to-high frequency computation on massively parallel computers.
+In the \replaced{1990s}{1990's}, computers became sufficiently powerful that 3D modelling gained traction, and in 1995 the first International Symposium on Three-Dimensional Electromagnetics took place. This symposium resulted eventually in the book \emph{Three-Dimensional Electromagnetics} \citep{B.SEG.99.Oristaglio}, and another book by \cite{B.02.Wannamaker} with the exactly same title came out only three years later. Often cited publications from that time are \cite{RSC.94.Mackie} for 3D MT computation; \cite{RS.94.Druskin} for frequency- and time-domain modelling using a Yee grid and a global Krylov subspace approximation; and \cite{RS.96.Alumbaugh, GJI.97.Newman} for low-to-high frequency computation on massively parallel computers.
 
 The continuous improvement of computing power and the CSEM boom in the early 2000's in the hydrocarbon industry led to a wealth of developed numerical solutions and according publications. The most commonly applied methods to solve Maxwell's equation are the IE method \citep{GJI.74.Raiche, RS.02.Hursan, GEO.06.Zhdanov, GP.10.Tehrani, CAG.16.Kruglyakov, MGS.17.Kruglyakov} and different variations of the differential equation (DE) method, such as finite differences (FD) \citep{GEO.93.Wang, RS.94.Druskin, RSC.94.Mackie, GEO.09.Streich, CAG.13.Sommer}, finite elements (FE) \citep{GEO.04.Commer, GJI.11.Schwarzbach,GEO.12.daSilva, GJI.13.Grayver, GJI.13.Puzyrev, SEG.16.Zhang}, and finite volumes (FV) \citep{EM.90.Madsen, SIAM.01.Haber, PIER.01.Clemens, GEO.14.Jahandari}. There are also many different types of discretization, where the most common ones are regular grids (Cartesian, rectilinear, curvilinear), mostly using a Yee grid \citep{IEEE.66.Yee} or a Lebedev grid \citep{CMMP.64.Lebedev}, but also unstructured tetrahedral grids \citep{SEG.16.Zhang, CAG.17.Cai}, hexagonal meshes \citep{CAG.14.Cai}, or octree meshes \citep{ECP.07.Haber}.
 
-Very well written overviews about the different approaches to 3D EM modelling (and inversion) are given by \cite{SG.05.Avdeev} and \cite{SG.10.Borner}. But there was also a tremendous publications output with regards to 3D EM modelling in the last 10-15 years, at least partly driven by the ever increasing computing power. One reason why there are so many publications about this topic results from the variety of techniques to solve the systems of linear equations (SLE). They can be distinguished between direct solvers \citep{GEO.09.Streich, GP.14.Chung, GEO.14.Jaysaval, GEO.15.Grayver, SEG.15.Oh, GJI.18.Wang}, indirect solvers \citep{GP.06.Mulder, GJI.15.Jaysaval}, or a combination of both, so-called hybrid solvers \citep{GEO.18.Liu}. The solvers often use preconditioners such as the multigrid method \citep{SIAM.02.Aruliah, GJI.16.Jaysaval}.
+Very well written overviews about the different approaches to 3D EM modelling (and inversion) are given by \cite{SG.05.Avdeev} and \cite{SG.10.Borner}. But there was also a tremendous publications output with regards to 3D EM modelling in the last 10-15 years, at least partly driven by the ever increasing computing power. One reason why there are so many publications about this topic results from the variety of techniques to solve the systems of linear equations (SLE). They can be distinguished between direct solvers \citep{GEO.09.Streich, GP.14.Chung, GEO.14.Jaysaval, GEO.15.Grayver, SEG.15.Oh, GJI.18.Wang}, \replaced{iterative}{indirect} solvers \citep{GP.06.Mulder, GJI.15.Jaysaval}, or a combination of both, so-called hybrid solvers \citep{GEO.18.Liu}. The solvers often use preconditioners such as the multigrid method \citep{SIAM.02.Aruliah, GJI.16.Jaysaval}.
 
 Many of the advancements made in the EM modelling community over the past decades have required that authors develop new implementations from scratch. These codes often provided the research group or company with a competitive advantage for a time, and thus the source codes were often kept internal. In some cases, executables have been made available for academic purposes upon request or to sponsoring consortium members. As the field continues to mature, advancements become more incremental, and particularly in an applied field, many advancements are driven by new use-cases and applications that were not considered by the original authors. In the aforementioned review on EM modelling and inversion Dmitry Avdeev concludes with the following statement: «\emph{The most important challenge that faces the EM community today is to convince software developers to put their 3-D EM forward and inverse solutions into the public domain, at least after some time. This would have a strong impact on the whole subject and the developers would benefit from feedback regarding the real needs of the end-users.}» Similarly, \cite{EXG.19.Oldenburg} argue that an open-source paradigm has the potential to accelerate multidisciplinary research by encouraging the development of modular, interoperable tools that are supported by a community of researchers.
 
@@ -171,7 +197,7 @@ We simulate EM fields for a layered background model with vertical transverse is
 
 \section{Codes}
 
-The four codes under consideration are, in alphabetical order, \custem \citep{GEO.19.Rochlitz}, \emg3d \citep{JOSS.19.Werthmuller}, \petgem \citep{CAG.18.CastilloReyes, GJI.19.CastilloReyes}, and \simpeg \citep{CAG.15.Cockett, CAG.17.Heagy}. All four codes have their user-facing routines written in Python, and all of them make heavy use of \texttt{NumPy} \citep{NAT.20.Harris} and \texttt{SciPy} \citep{NM.20.Virtanen}. The four of them follow the open model of development, meaning that they come with both, an open-source license and an online-hosted version-control system with tracking possibilities (raising issues, filing pull requests). All developments comprise an extensive online documentation with many examples and have continuous integration to some degree. Newer package-management systems such as \texttt{conda}, \texttt{docker}, or \texttt{pip} simplify installation for all of these codes on any major operating system
+The four codes under consideration are, in alphabetical order, \custem \citep{GEO.19.Rochlitz}, \emg3d \citep{JOSS.19.Werthmuller}, \petgem \citep{CAG.18.CastilloReyes, GJI.19.CastilloReyes}, and \simpeg \citep{CAG.15.Cockett, CAG.17.Heagy}. All four codes have their user-facing routines written in Python, and all of them make heavy use of \texttt{NumPy} \citep{NAT.20.Harris} and \texttt{SciPy} \citep{NM.20.Virtanen}. The four of them follow the open model of development, meaning that they come with both\deleted{,} an open-source license and an online-hosted version-control system with tracking possibilities (raising issues, filing pull requests). All developments comprise an extensive online documentation with many examples and have continuous integration to some degree. Newer package-management systems such as \texttt{conda}, \texttt{docker}, or \texttt{pip} simplify installation for all of these codes on any major operating system
 
 We briefly present our codes in this section. It is, however, beyond the scope of this article to go into every detail of the different modellers, and we refer to their documentations for more details. An overview comparison of the codes is given in Table~\ref{tbl:codecomparison}. All four have in common that they solve Maxwell's equation in its differential form (DE) under the quasi-static or diffusive approximation, hence neglecting displacement currents, which is a common approximation for the low frequency range usually applied in CSEM. The machines on which the different codes were run are listed in Table~\ref{tbl:machines} together with the responsible operator. A few clarifying words on abbreviations and definitions: For the boundary conditions (BC) in the comparison table we use the abbreviations \emph{PEC} and \emph{PMC}, which stand for perfect electric conductor
 % We could add maths here; but we would need to introduce all the symbols. For now, we leave it out.
@@ -388,9 +414,9 @@ The corresponding required runtime and memory are listed in Table~\ref{tbl:comp-
 
 \subsection{Marlim R3D}
 
-The Marlim oil field is a giant reservoir in a turbidite sandstone horizon in the north-eastern part of the Campos Basin, offshore Brazil, which was discovered in 1985. \cite{BJG.17.Carvalho} created from seismic data and well log data a realistic, three-dimensional resistivity model with vertical transverse isotropy (VTI), called MR3D, which they released under the open creative common license \emph{CC BY 4.0}. \cite{GEO.19.Correa} computed CSEM data for MR3D for six frequencies from 0.125\,Hz to 1.25\,Hz, and released them under the same CC license. To compute the data they used a state-of-the-art code from the industry \citep[][ \emph{SBLwiz} software from \emph{EMGS}]{GEO.07.Maao}. It is therefore, on one hand, an ideal case to validate our open-source codes against, as it is a complex, realistic model and the data were computed by an industry-proofed code. On the other hand it is impossible to reproduce it exactly, as it is a closed-source code and we cannot know exactly what was done internally. Additionally, that code is a time-domain code obtaining the frequency-domain responses through a transform, and it includes the air layer via a non-local boundary condition at the water-air interface \citep{GEO.10.Mittet}. We compute all the results in this study in the frequency domain, where we model the entire domain including the air layer by putting the boundaries of the computational domain far away.
+The Marlim oil field is a giant reservoir in a turbidite sandstone horizon in the north-eastern part of the Campos Basin, offshore Brazil, which was discovered in 1985. \cite{BJG.17.Carvalho} created from seismic data and well log data a realistic, three-dimensional resistivity model with vertical transverse isotropy (VTI), called MR3D, which they released under the open creative common license \emph{CC BY 4.0}. \cite{GEO.19.Correa} computed CSEM data for MR3D for six frequencies from 0.125\,Hz to 1.25\,Hz, and released them under the same CC license. To compute the data they used a state-of-the-art code from the industry \citep[][ \emph{SBLwiz} software from \emph{EMGS}]{GEO.07.Maao}. It is therefore, on \added{the} one hand, an ideal case to validate our open-source codes against, as it is a complex, realistic model and the data were computed by an industry-proofed code. On the other hand it is impossible to reproduce it exactly, as it is a closed-source code and we cannot know exactly what was done internally. Additionally, that code is a time-domain code obtaining the frequency-domain responses through a transform, and it includes the air layer via a non-local boundary condition at the water-air interface \citep{GEO.10.Mittet}. We compute all the results in this study in the frequency domain, where we model the entire domain including the air layer by putting the boundaries of the computational domain far away.
 
-The full MR3D model consists of $1022 \times 371 \times 1229$ cells, totalling to almost 466 million cells, where each cell has dimensions of 25 by 75 by 5\,m. The model was upscaled for the computation to 515 by 563 by 310 cells, totalling to almost 90 million cells, where each cell has dimensions of 100 by 100 by 20\,m. Both the full model and the upscaled computational model are released openly. The published data set consists of a regular grid of receivers of 20 in eastern direction by 25 in northern direction, 500 receivers in total, with 1\,km spacing located on the irregular seafloor. 45 source-towlines were located on the same grid above each receiver line, 50\,m above the seafloor, with shots every 100\,m. The computed responses for one of the receivers, \texttt{04Rx251a}, are shown in the original publication for the East-West inline-source \texttt{04Tx013a} and the East-West broadside-source \texttt{04Tx014a} (broadside offset of 1\,km). We reproduce the responses for this receiver and corresponding source-lines in our comparison. The $x$-$z$ cross-section of the horizontal resistivity model at the receiver position is shown in Figure~\ref{fig:model-marlim}, together with the receiver and sources positions. All layer have a VTI with $\lambda=\sqrt{2}$, except for the air layer, the seawater, and the salt layer, which are all isotropic.
+The full MR3D model consists of $1022 \times 371 \times 1229$ cells, totalling to almost 466 million cells, where each cell has dimensions of 25 by 75 by 5\,m. The model was upscaled for the computation to 515 by 563 by 310 cells, totalling to almost 90 million cells, where each cell has dimensions of 100 by 100 by 20\,m. Both the full model and the upscaled computational model are released \replaced{as open source}{openly}. The published data set consists of a regular grid of receivers of 20 in eastern direction by 25 in northern direction, 500 receivers in total, with 1\,km spacing located on the irregular seafloor. 45 source-towlines were located on the same grid above each receiver line, 50\,m above the seafloor, with shots every 100\,m. The computed responses for one of the receivers, \texttt{04Rx251a}, are shown in the original publication for the East-West inline-source \texttt{04Tx013a} and the East-West broadside-source \texttt{04Tx014a} (broadside offset of 1\,km). We reproduce the responses for this receiver and corresponding source-lines in our comparison. The $x$-$z$ cross-section of the horizontal resistivity model at the receiver position is shown in Figure~\ref{fig:model-marlim}, together with the receiver and sources positions. All layer have a VTI with $\lambda=\sqrt{2}$, except for the air layer, the seawater, and the salt layer, which are all isotropic.
 
 %
 \begin{figure*}
@@ -444,11 +470,11 @@ The actual differences in meshing is shown in the next two figures. Figure~\ref{
 \begin{figure*}
   \centering
   \includegraphics[width=.9\linewidth]{figures/results-marlim_big}
-  \caption{Meshes and broadside $E_x$ and $E_y$ fields in the left, middle, and right column, respectively, for the rectilinear, octree, and tetrahedral meshes in the top, middle, and bottom row, respectively. The shown dimensions shows the entire computational domain for the tetrahedra mesh, whereas the entire rectilinear and octree meshes are bigger.}
+  \caption{Meshes and broadside $E_x$ and $E_y$ fields in the left, middle, and right column, respectively, for the rectilinear, octree, and tetrahedral meshes in the top, middle, and bottom row, respectively. The shown dimensions \replaced{display}{shows} the entire computational domain for the tetrahedra mesh, whereas the entire rectilinear and octree meshes are bigger.}
   \label{fig:results-marlim_big}
 \end{figure*}
 %
-This figure is interesting for various points, as the differences between the three meshes are clearly visible. Particularly the advantage of octree and tetrahedra to create large cells outside of the region of interest to push away the boundary can be seen, whereas a rectilinear grid, even though stretched, has to compute many cells far away of the zone of interest. The different boundary condition also play a part, where the top row used PEC, and the other two rows PMC.
+This figure is interesting for various \replaced{reasons}{points}, as the differences between the three meshes are clearly visible. Particularly the advantage of octree and tetrahedra to create large cells outside of the region of interest to push away the boundary can be seen, whereas a rectilinear grid, even though stretched, has to compute many cells far away of the zone of interest. The different boundary condition also play a part, where the top row used PEC, and the other two rows PMC.
 
 Figure~\ref{fig:results-marlim_survey} shows a zoom-in to the survey domain, the domain of interest, which shows how the different codes discretized the zones of interest.
 %
@@ -499,13 +525,13 @@ The models where obtained using volume averaging (\emg3d, \simpeg) and linear in
 Today we are in the fortunate situation where we have several open-source codes available to model CSEM data for arbitrarily sized complex 3D models. It is therefore comparably easy for anyone to run a simulation and obtain reasonable-looking, robust and precise results, something that was impossible a few years ago. However, just because one obtains a good-looking result does not say anything about its accuracy. Though we may be able to confirm the accuracy of codes in some simple scenarios, validating the performance of 3D CSEM codes for complex problems is only possible by cross-validating multiple solutions. This is the core motivation for this study.
 
 %% 1. Results: good agreement %%
-Overall, we observed an excellent match between the solutions. The amplitudes of the layered model have mostly a relative error of less than 1--2\,\%. Looking individually at the real or imaginary part results in much higher error values, but those are related to the zero crossings of the responses. The cross-validation of the results for the block model yields a similar picture, with normalised differences within a few percents. For the large, complex MR3D model it is a bit different. First it can be noted that the misfits are higher for higher frequencies. For the lowest frequency, 0.125\,Hz, the normalised difference is a few percent for inline and broadside $E_x$ components, and up to 10\,\% for the broadside $E_y$ component. For higher frequencies these numbers rise to the order of $\pm10\,$\%. The reason for the higher misfit for MR3D than for the layered or block model lies mostly in the discretization, boundary effects, and interpolation strategy. While one might argue that 5--10\,\% NRMSD is a lot, we argue that this is probably as good as it gets, given that the code with which the responses we compare to were computed is not open-source. This has been shown within the process of this study. Our first attempts were based on the originally published, fine MR3D model. This model is very detailed, but its extent is too small in x- and y-directions for CSEM computations. In order to represent the fine-scale model on a mesh suitable for computation, each of our codes did its own upscaling and extrapolation. However, we were unsuccessful in our attempt to reproduce the published results.  The reason is that there are many ways how you can extrapolate a model, and without knowing the details of how MR3D represents the model on the computational mesh, we could not re-produce this step. We reached out to the authors of MR3D, and they kindly agreed to also published the upscaled and extended computational model. It is only with this model that we were able to obtain comparable results.
+Overall, we observed an excellent match between the solutions. The amplitudes of the layered model have mostly a relative error of less than 1--2\,\%. Looking individually at the real or imaginary part results in much higher error values, but those are related to the zero crossings of the responses. The cross-validation of the results for the block model yields a similar picture, with normalised differences within a few percents. For the large, complex MR3D model it is a bit different. First it can be noted that the misfits are higher for higher frequencies. For the lowest frequency, 0.125\,Hz, the normalised difference is a few percent for inline and broadside $E_x$ components, and up to 10\,\% for the broadside $E_y$ component. For higher frequencies these numbers \replaced{increase}{rise} to the order of $\pm10\,$\%. The reason for the higher misfit for MR3D than for the layered or block model lies mostly in the discretization, boundary effects, and interpolation strategy. While one might argue that 5--10\,\% NRMSD is a lot, we argue that this is probably as good as it gets, given that the code with which the responses we compare to were computed is not open-source. This has been shown within the process of this study. Our first attempts were based on the originally published, fine MR3D model. This model is very detailed, but its extent is too small in \added{the} x- and y-directions for CSEM computations. In order to represent the fine-scale model on a mesh suitable for computation, each of our codes did its own upscaling and extrapolation. However, we were unsuccessful in our attempt to reproduce the published results.  The reason is that there are many ways how you can extrapolate a model, and without knowing the details of how MR3D represents the model on the computational mesh, we could not re-produce this step. We reached out to the authors of MR3D, and they kindly agreed to also published the upscaled and extended computational model. It is only with this model that we were able to obtain comparable results.
 
 %% 2. Discretization %%
 One of the key insights we gained from this study is that creating appropriate meshes is a difficult and time-consuming task. While there now exist several open-source 3D CSEM codes the capability for automatic meshing lacks behind and currently remains a largely manual task requiring experience in the field. It is important to state that the chosen models favour structured meshes. The first two examples can easily and accurately be represented by regular meshes. Using, for instance, a dipping layer instead of three resistive cubes would turn it around and make the model more favourable for unstructured meshes. MR3D would be an ideal scenario for unstructured meshes, as it is based on also published irregular lithological horizons. Since the corresponding resistivity model, however, was defined on a regular grid, the FE codes were forced to approximate the comparatively fine regular discretization by an unstructured one and interpolate the resistivity data for being able to apply the FE codes to this problem. We are completely aware about the ineptness of this re-approximation procedure, unless it served for the cross-validation purposes. Both cases show that automatic and adaptive meshing capabilities are needed, which will increase the flexibility of 3D CSEM modelling. Such meshing codes should also take into account the physics of CSEM computation with its diffusive behaviour. It is also important to state that the unstructured mesh used for the MR3D model incorporates the entire domain and could be used for all source and receiver positions, whereas the rectilinear and octree meshes were designed for the shown receiver and corresponding source lines.
 
 %% 3. Iterative vs direct solvers; runtime and memory %%
-Whereas proper discretization is the main driver for accurate results, the used solver is the main discriminator in terms of runtime and memory. Both iterative and direct solvers are used in this study, however, the chosen models clearly favour iterative solvers. The biggest advantage of iterative solvers are the comparatively small memory requirements, even more so if the iterative solver is matrix free. Direct solvers exhibit their strongest advantage, besides stability and robustness, in terms of computation times if responses of multiple CSEM transmitters need to be computed in the same computational domain. As the system matrix factorisation requires 98--99\,\% of the solution time, computations for additional sources come at almost no cost for direct solvers, whereas it would come at the same cost as the first source for iterative solvers. Independently of the solver there is a trade-off between high accuracy and runtime. As an example, the octree mesh made for a very fast computation in the MR3D example thanks to the low number of dof, even though a direct solver was used. But the octree mesh has, due to its 2:1 aspect ratio, some limitations on the accuracy, why it was not used in the first two examples. Having discussed the discretization and the solver it is important to state that the reported runtime and memory is just one of the aspects, and we would like to emphasise that neither was at the core of this comparison, but the validation of the results. As such, no special efforts were undertaken to minimise either, as this is an entire different task.
+Whereas proper discretization is the main driver for accurate results, the used solver is the main discriminator in terms of runtime and memory. Both iterative and direct solvers are used in this study, however, the chosen models clearly favour iterative solvers. The biggest advantage of iterative solvers are the comparatively small memory requirements, even more so if the iterative solver is matrix free. Direct solvers exhibit their strongest advantage, besides stability and robustness, in terms of computation times if responses of multiple CSEM transmitters need to be computed in the same computational domain. As the system matrix factorisation requires 98--99\,\% of the solution time, computations for additional sources come at almost no cost for direct solvers, whereas it would come at the same cost as the first source for iterative solvers. Independently of the solver there is a trade-off between high accuracy and runtime. \replaced{For}{As an} example, the octree mesh made for a very fast computation in the MR3D example thanks to the low number of dof, even though a direct solver was used. But the octree mesh has, due to its 2:1 aspect ratio, some limitations on the accuracy, why it was not used in the first two examples. Having discussed the discretization and the solver it is important to state that the reported runtime and memory is just one of the aspects, and we would like to emphasise that neither was at the core of this comparison, but the validation of the results. As such, no special efforts were undertaken to minimise either, as this is an entire different task.
 
 %% 4. Gains through collaboration; focus here on marine CSEM %%
 A positive outcome of a collaboration between different projects such as this is that it brings the realm as a whole further, which should be motivation enough for further collaborations. Within \simpeg, this work has motivated feature development including averaging strategies to map physical properties on a fine mesh to a coarser mesh for computation and new examples to be included in the documentation for designing octree meshes. Furthermore, as a part of a broader development objective of inter-operating with other forward-simulation engines, connecting \emg3d and \simpeg provided a motivating use-case for the latest refactor and release of \simpeg 0.14.0. Within \emg3d, this work pushed a lot of the meshing functionality, and implementation of I/O utilities for different file formats. Within \custem, cell-wise resistivity interpolation was added for this work, multi-layer subsurface topography was the first time applied as well as first time reciprocity modelling, and also improved mesh design (resolution, refinement, etc.). Within \petgem, this work has promoted the inclusion of routines for magnetic field computation and the implementation of continuous integration functions. It has also improved its test suite and work-flow for the generation of adapted meshes based on a semi-automatic approach that reduces user intervention.
