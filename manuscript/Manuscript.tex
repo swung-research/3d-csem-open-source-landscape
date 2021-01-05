@@ -94,14 +94,13 @@
 \newcommand{\rmk}[1]{{\color{red}{#1}}}
 \newcommand{\ohmm}{\ensuremath{\Omega\,}\text{m}\xspace}
 
-\title[3D CSEM Open-Source Landscape]{Open-source landscape for 3D CSEM modelling}
+\title[3D CSEM Open-Source Landscape]{\replaced{Towards an open-source landscape for 3D CSEM modelling}{Open-source landscape for 3D CSEM modelling}}
 
 \author[D. Werthmüller \emph{et al.}]
-  {\Large Dieter Werthmüller$^1$,        % orcid: 0000-0002-8575-2484
+  {\Large Dieter Werthmüller$^1$, % orcid: 0000-0002-8575-2484
    Raphael Rochlitz$^2$,          % orcid: 0000-0002-5132-916X
    Octavio Castillo-Reyes$^3$ and % orcid: 0000-0003-4271-5015
-   Lindsey Heagy$^4$              % orcid: 0000-0002-1551-5926
-   \\
+   Lindsey Heagy$^4$\\            % orcid: 0000-0002-1551-5926
    \footnotesize
   $^1$ TU Delft, Building 23, Stevinweg 1 / PO-box 5048, 2628 CN Delft (NL).
   E-mail: \href{mailto:Dieter@Werthmuller.org}{Dieter@Werthmuller.org}\\[-.3em]
@@ -123,26 +122,6 @@
 \let\leqslant=\leq
 
 \newtheorem{theorem}{Theorem}[section]
-
-
-% % == Notes from Wim; to incorporate ==
-%
-% All implemented
-%
-% % == Notes form Paulo ==
-%
-% Very good to know that the Ex responses are well represented. For most of the inversions done in the industry, we use these fields only.
-%
-% Ez: the mismatch occurs at the longer offsets and below the noise threshold 10-15. EMGS argues now that with the new source, the threshold is pushed to 10-16. But in practice, if the curve follows a smooth decay, we use this data for inversion, and we get meaningful geological results compared to seismic images.
-%
-% Ey: the broadside component is quite close,  with small differences at long offsets. For the inline component, I've noted that your responses are up to two orders of magnitude higher than MR3D. The four programs you tested give the same amplitudes? It may be a problem with the EMGS software, as EY is always neglected we may have ignored that issue. Simultaneously, it looks that your inline responses are at the same level as the broadside ones.
-%
-% Bathymetry is also a big issue. It must be well represented to avoid problems.
-%
-% % == Notes from Evert ==
-%
-% [T]he fact that the solutions in the four codes are roughly correct with an expected error between 1\% and 10\% makes it totally understandable that the field that is one to two orders of magnitude smaller has no accuracy. You could test this by driving the overall error down by a factor 100. Not sure that is feasible with all codes but if you can do it with one it can be enough when all codes agree sufficiently on the strong field components. Another option can be to increase the cross line component in the error computation.
-
 
 \begin{document}
 
@@ -173,6 +152,7 @@ Large-scale modelling of three-dimensional controlled-source electromagnetic (CS
 
 \section{Introduction}
 
+% TODO delete before re-submission
 \begin{itemize}
   \item \deleted{old}: \texttt{\textbackslash deleted\{old\}}
   \item \added{new}: \texttt{\textbackslash added\{new\}}
@@ -199,7 +179,7 @@ We simulate EM fields for a layered background model with vertical transverse is
 
 The four codes under consideration are, in alphabetical order, \custem \citep{GEO.19.Rochlitz}, \emg3d \citep{JOSS.19.Werthmuller}, \petgem \citep{CAG.18.CastilloReyes, GJI.19.CastilloReyes}, and \simpeg \citep{CAG.15.Cockett, CAG.17.Heagy}. All four codes have their user-facing routines written in Python, and all of them make heavy use of \texttt{NumPy} \citep{NAT.20.Harris} and \texttt{SciPy} \citep{NM.20.Virtanen}. The four of them follow the open model of development, meaning that they come with both\deleted{,} an open-source license and an online-hosted version-control system with tracking possibilities (raising issues, filing pull requests). All developments comprise an extensive online documentation with many examples and have continuous integration to some degree. Newer package-management systems such as \texttt{conda}, \texttt{docker}, or \texttt{pip} simplify installation for all of these codes on any major operating system
 
-We briefly present our codes in this section. It is, however, beyond the scope of this article to go into every detail of the different modellers, and we refer to their documentations for more details. An overview comparison of the codes is given in Table~\ref{tbl:codecomparison}. All four have in common that they solve Maxwell's equation in its differential form (DE) under the quasi-static or diffusive approximation, hence neglecting displacement currents, which is a common approximation for the low frequency range usually applied in CSEM. The machines on which the different codes were run are listed in Table~\ref{tbl:machines} together with the responsible operator. A few clarifying words on abbreviations and definitions: For the boundary conditions (BC) in the comparison table we use the abbreviations \emph{PEC} and \emph{PMC}, which stand for perfect electric conductor
+We briefly present our codes in this section. It is, however, beyond the scope of this article to go into every detail of the different modellers, and we refer to their documentations for more details. An overview comparison of the codes is given in Table~\ref{tbl:codecomparison}. All four have in common that they solve Maxwell's equation in its differential form (DE) under the quasi-static or diffusive approximation, hence neglecting displacement currents, which is a common approximation for the low frequency range usually applied in CSEM. \added{For the shown numerical examples all codes use the total-field formulation for the electric field.} The machines on which the different codes were run are listed in Table~\ref{tbl:machines} together with the responsible operator. A few clarifying words on abbreviations and definitions: For the boundary conditions (BC) in the comparison table we use the abbreviations \emph{PEC} and \emph{PMC}, which stand for perfect electric conductor
 % We could add maths here; but we would need to introduce all the symbols. For now, we leave it out.
 % ($\vec{n}\times\vec{E} = 0; \vec{n}\cdot\vec{H} = 0$)
 and perfect magnetic conductor%
