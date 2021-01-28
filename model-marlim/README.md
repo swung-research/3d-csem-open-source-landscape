@@ -79,7 +79,7 @@ res_h = data['res_h']
 res_v = data['res_v']
 
 mesh = discretize.TensorMesh(
-    [data['hx'], data['hy'], data['hz']], x0=data['x0'])
+    h=[data['hx'], data['hy'], data['hz']], origin=data['x0'])
 ```
 
 **Note:** The computational models are not yet publicly available, I sent them
@@ -149,19 +149,10 @@ ds.attrs['date'] = datetime.today().isoformat()
 ds.attrs['...'] = ...
 
 # Save it under <{model}_{code}.nc>
-code = ...   # 'custEM', 'emg3d', 'PETGEM', or 'SimPEG'
-#            # custEM/PETGEM: you can add a '_{p}', where p = 'p1' or 'p2'
+code = ...   # 'custEM', 'emg3d', 'PETGEM', 'SimPEG' (custEM/PETGEM: +'_{p}')
 ds.to_netcdf(f"../results/marlim_{code}.nc", engine='h5netcdf')
 ```
 
 A note regarding `runtime` and `max_ram`: Only profile the solution of the
 actual system `Ax=b`. Mesh creation, model and field interpolation, and all
 other pre- and post-processing steps do not fall under this measure.
-
-
-## Info
-
-Every code should store its info directly in the data (`ds.attrs[]`) as shown
-in the code snippet above.
-
-**Please make sure to add all info-data as indicated!**

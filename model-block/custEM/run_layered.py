@@ -44,7 +44,7 @@ for p in [2, 1]:
     #                        stop=[100., 0., -550.])
 
     # Call solver, skip H-field computation, and export results
-    M.solve_main_problem(convert_to_H=False)
+    M.solve_main_problem()
 
     # create regular inteprolation lines in x-direction at sea floor
     M.IB.create_line_meshes('x',  x0=-1e4, x1=1e4, y=-3e3, z=-600.1,
@@ -54,6 +54,17 @@ for p in [2, 1]:
     M.IB.create_line_meshes('x',  x0=-1e4, x1=1e4, y=3e3, z=-600.1,
                             n_segs=100, line_name='l3m')
 
+    M.IB.create_line_meshes('x',  x0=-1e4, x1=1e4, y=-3e3, z=-599.9,
+                            n_segs=100, line_name='l1p')
+    M.IB.create_line_meshes('x',  x0=-1e4, x1=1e4, y=0., z=-599.9,
+                            n_segs=100, line_name='l2p')
+    M.IB.create_line_meshes('x',  x0=-1e4, x1=1e4, y=3e3, z=-599.9,
+                            n_segs=100, line_name='l3p')
+
     for line in ['l1m_line_x', 'l2m_line_x', 'l3m_line_x']:
         M.IB.interpolate(line, 'E_t')
+        M.IB.interpolate(line, 'H_t')
+    for line in ['l1p_line_x', 'l2p_line_x', 'l3p_line_x']:
+        M.IB.interpolate(line, 'E_t')
+        M.IB.interpolate(line, 'H_t')
     M.IB.synchronize()  # synchronize all processes after interpolation
