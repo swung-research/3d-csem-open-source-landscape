@@ -302,25 +302,26 @@ We computed the responses for three different models to validate that the four 3
 
 The layered (1D) model consists of an upper halfspace of air ($\rho_\text{air}=\num{e8}\,\ohmm$), a 600\,m deep water layer ($\rho_\text{sea}=0.3\,\ohmm$), followed by a 250\,m thick, isotropic layer of 1\,\ohmm, a 2.3\,km thick, anisotropic (vertical transverse isotropy, VTI) layer of $\rho_\text{h}=2\,\ohmm$ and $\rho_\text{v}=4\,\ohmm$, and finally a resistive, isotropic basement consisting of a lower halfspace of $1000\,\ohmm$. The survey uses a 200\,m long, 800\,A source  with frequency $f=1\,$Hz at a single position, and three receiver lines of 101 receivers each. The centre of the $x$-oriented source is at $x=y=0\,$m, 50\,m above the seafloor. The $x$-directed receivers are placed on the seafloor every 200\,m from $x=-10\,$km to $x=+10\,$km in three lines with $y=-3; 0; +3\,$km.
 
-A layered model fails to show the strength of 3D modellers, and in reality one would not choose a 3D code to compute responses for a layered model. However, it is one of the few examples that can be verified with semi-analytical results, and is therefore still a valuable test. \itodo{Adjust everything here in section 3.1 for new figures}The results are shown in Figure~\ref{fig:results-layered}, where the left, middle, and right columns are for the real part, imaginary part, and absolute value, respectively (dashed lines indicate negative values). The top row shows the actual, semi-analytically computed responses, for which we used \empymod\citep{GEO.17.Werthmuller}. The second and the third row show the relative percentage error of the inline and the broadside receivers, respectively; note that for the 1D case the two broadside lines for $y=\pm3\,$km are identical.
+A layered model fails to show the strength of 3D modellers, and in reality one would not choose a 3D code to compute responses for a layered model. However, it is one of the few examples that can be verified with semi-analytical results, and is therefore still a valuable test. The results are shown in Figure~\ref{fig:results-layered}, \replaced{in the left column the amplitudes and in the right column the phases}{where the left, middle, and right columns are for the real part, imaginary part, and absolute value, respectively (dashed lines indicate negative values)}. The top row shows the actual, semi-analytically computed responses, for which we used \empymod\citep{GEO.17.Werthmuller}. The second and the third row show the relative percentage error of the inline and the broadside receivers, respectively; note that for the 1D case the two broadside lines for $y=\pm3\,$km are identical.
 %
 \begin{figure*}
   \centering
-  \includegraphics[width=.9\linewidth]{figures/results-layered}
+  \includegraphics[width=.9\linewidth]{figures/results-layered.png}
   \caption{\itodo{Adjust Figures 1 (Amplitude/Phase) and corresponding text in manuscript.} Results of the layered model: The semi-analytical inline and broadside responses are shown in the top row. The relative percentage error of the four 3D modellers are shown in the second and the third row for the inline and broadside responses, respectively.}
   \label{fig:results-layered}
 \end{figure*}
 %
 
-There are a few noteworthy points:
-\begin{enumerate}
-  \item \itodo{adjust}The error of the real and imaginary responses are dominated by their zero-crossings, which blows up the error as is the nature of the relative error formula, it has no real-world implications.
-  \item It can be seen from the absolute-value errors that the misfit is generally in the order of 1\,\% or less.
-  \item The errors become substantial towards zero offset, particularly for the results of the FV codes. These comparably significant errors could be significantly reduced by choosing a finer discretization around the source, at the cost of increased computation time. \itodo{Add a sentence re close offsets FV codes, Rune's comment (or above in point ii).}
-  \item~\\ \itodo{Adjust re changes of Raphael.} The error of the responses from the FE codes, on the hand, are relatively big at large offsets, particularly for the inline real responses. This has, again, its origin in the chosen discretization. The thin isotropic layer beneath the water requires many tetrahedra for a good-quality discretization. Therefore, the FE codes only extend this thin layer up to 30\,km from the origin, surrounded by a ten times larger halfspace-like boundary mesh with water conductivities assigned to the subsurface. This approximation significantly reduces the problem size compared to considering the layered-earth geometry for the whole computational domain.
-\end{enumerate}
+\added{The misfit is generally in the order of 1\,\% or less, the biggest misfits are close to the source and where there are rapid phase changes. The errors become substantial towards zero offset, particularly for the results of the FV codes. These comparably significant errors could be eliminated by choosing a finer discretization around the source, at the cost of increased computation time. Another possibility is to have a finer mesh for short offsets, and a coarser mesh for large offsets.}
 
-Note that \emg3d and \simpeg used the same rectilinear mesh in this example. The use of an octree mesh in \simpeg could greatly reduce the size of the mesh and resultant computation time, but at the cost of accuracy, which is reduced when averaging over layer interfaces to coarsen cells and because of the factor-of-two expansion rate of coarsened cells. As the aim of this study is to focus on accuracy of the simulations and compare discretization approaches, we chose to use the same mesh as in the \emg3d simulation.
+\deleted{There are a few noteworthy points:\\
+\phantom{\hspace{1em}}(i) The error of the real and imaginary responses are dominated by their zero-crossings, which blows up the error as is the nature of the relative error formula, it has no real-world implications.\\
+\phantom{\hspace{1em}}(ii) It can be seen from the absolute-value errors that the misfit is generally in the order of 1\,\% or less.\\
+\phantom{\hspace{1em}}(iii) The errors become substantial towards zero offset, particularly for the results of the FV codes. These comparably significant errors could be significantly reduced by choosing a finer discretization around the source, at the cost of increased computation time.\\
+\phantom{\hspace{1em}}(iv) The error of the responses from the FE codes, on the hand, are relatively big at large offsets, particularly for the inline real responses. This has, again, its origin in the chosen discretization. The thin isotropic layer beneath the water requires many tetrahedra for a good-quality discretization. Therefore, the FE codes only extend this thin layer up to 30\,km from the origin, surrounded by a ten times larger halfspace-like boundary mesh with water conductivities assigned to the subsurface. This approximation significantly reduces the problem size compared to considering the layered-earth geometry for the whole computational domain.\\
+}
+
+Note that \emg3d and \simpeg used the same rectilinear mesh in this example. The use of an octree mesh in \simpeg could greatly reduce the size of the mesh and resultant computation time, but at the cost of accuracy, which is reduced when averaging over layer interfaces to coarsen cells and because of the factor-of-two expansion rate of coarsened cells. As the aim of this study is to focus on accuracy of the simulations and compare discretization approaches, we chose to use the same mesh as in the \emg3d simulation. \added{Although we only show the x-directed field in this comparison, the y-directed field yields a similar result with respect to the misfit. A different story in this scenario are the z-directed fields, which is not continues across the boundary on the seafloor. Having receivers close to such a non-continues boundary requires advanced interpolation routine} \citep[e.g., ][]{GJI.15.Shantsev, GP.11.Wirianto}\added{. This is no problem for the used FE codes within their basis functions, but the used FV codes do currently not have such routines implemented. }
 
 The runtime and memory requirements for the layered model are listed in Table~\ref{tbl:comp-layered}.
 %
@@ -343,15 +344,13 @@ The runtime and memory requirements for the layered model are listed in Table~\r
 \end{table*}
 %
 
-\itodo{Explain/clarify re interpolation and re vertical fields in the manuscript.}
-
 \subsection{Block Model}
 
 The block model is a derivation of the \emph{Dublin Test Model~1} from the first EM modelling workshop described by \cite{GJI.13.Miensopust}. We use the same layout of the blocks but adjust the dimensions and resistivities to a typical marine CSEM problem, as shown in Figure~\ref{fig:model-block}. Additionally, we add our \emph{Layered Model} as a VTI background. The three resistive blocks have resistivities of $\rho=10\,\ohmm$ (shallow beam perpendicular to survey lines), $\rho=100\,\ohmm$ (thin plate, South-East), and $\rho=500\,\ohmm$ (cube, North-West).
 %
 \begin{figure}
   \centering
-  \includegraphics[width=\linewidth]{figures/model-block}
+  \includegraphics[width=\linewidth]{figures/model-block.png}
   \caption{Sketch of the block model, consisting of the layered background model with three resistive blocks, embedded in the thick background layer which has VTI with $\lambda=\sqrt{\rho_\textrm{v}/\rho_\textrm{h}}=\sqrt{2}$.}
   \label{fig:model-block}
 \end{figure}
@@ -370,7 +369,7 @@ The results for the three receiver lines $y=-3;0;+3\,$km are shown in the left, 
 %
 \begin{figure*}
   \centering
-  \includegraphics[width=.9\linewidth]{figures/results-block}
+  \includegraphics[width=.9\linewidth]{figures/results-block.png}
   \caption{\itodo{Adjust Figures 3 (\emg3d-\simpeg; \custem-\petgem; FV-FE) and corresponding text in manuscript.}Results of the block model comparison: The responses of \emg3d, as an example, are shown in the top row, and the normalised differences (\%) between the absolute responses $|E_x|$ of the different codes are shown in the bottom row.}
   \label{fig:results-block}
 \end{figure*}
@@ -414,7 +413,7 @@ The full MR3D model consists of $1022 \times 371 \times 1229$ cells, totalling t
 %
 \begin{figure*}
   \centering
-  \includegraphics[width=.9\linewidth]{figures/model-marlim}
+  \includegraphics[width=.9\linewidth]{figures/model-marlim.png}
   \caption{MR3D horizontal resistivity model, $x$-$z$-slice through the receiver $y$-position and with major formations annotated. Air (not shown in the model), seawater, and the salt layer are electrically isotropic, everything else has VTI with $\lambda=\sqrt{2}$. The receiver is located on the seafloor, and the sources fly 50\,m above the seafloor.}
   \label{fig:model-marlim}
 \end{figure*}
@@ -424,7 +423,7 @@ The responses for all six frequencies and all three electric components are show
 %
 \begin{figure*}
   \centering
-  \includegraphics[width=.9\linewidth]{figures/results-marlim-responses}
+  \includegraphics[width=.9\linewidth]{figures/results-marlim-responses.png}
   \caption{MR3D comparison between our codes (grey lines) and the published data (coloured lines). The grey lines under the coloured lines are not visible in most areas, meaning that they are very similar. However, there are three notable zones, (1) to (3), which are explained further in the text.}
   \label{fig:results-marlim-responses}
 \end{figure*}
@@ -440,7 +439,7 @@ It is important to note that the published results nor any of our results is the
 %
 \begin{figure*}
   \centering
-  \includegraphics[width=.9\linewidth]{figures/results-marlim_2published}
+  \includegraphics[width=.9\linewidth]{figures/results-marlim_2published.png}
   \caption{\itodo{Improve figure.}Normalised differences for all four codes in comparison with the published data, for the inline $E_x$ field and the broadside $E_x$ and $E_y$ fields in the left, middle, and right column, respectively. Shown are the three frequencies 0.125\,Hz, 0.5\,Hz, and 1.0\,Hz in the top, middle, and bottom row, respectively.}
   \label{fig:results-marlim_2published}
 \end{figure*}
@@ -451,7 +450,7 @@ The importance of the meshing to the result can be seen in Figure~\ref{fig:resul
 %
 \begin{figure*}
   \centering
-  \includegraphics[width=.9\linewidth]{figures/results-marlim_2ours}
+  \includegraphics[width=.9\linewidth]{figures/results-marlim_2ours.png}
   \caption{\itodo{Improve figure.}Normalised differences, just as in Figure~\ref{fig:results-marlim_2published}, but comparing some of the four codes with each other. \custem and \petgem produce very similar results, which is due to the fact that they use the same mesh. This also shows that the biggest impact in 3D forward modelling comes from the discretization.}
   \label{fig:results-marlim_2ours}
 \end{figure*}
@@ -462,7 +461,7 @@ The actual differences in meshing is shown in the next two figures. Figure~\ref{
 %
 \begin{figure*}
   \centering
-  \includegraphics[width=.9\linewidth]{figures/results-marlim_big}
+  \includegraphics[width=.9\linewidth]{figures/results-marlim_big.png}
   \caption{Meshes and broadside $E_x$ and $E_y$ fields in the left, middle, and right column, respectively, for the rectilinear, octree, and tetrahedral meshes in the top, middle, and bottom row, respectively. The shown dimensions \replaced{display}{shows} the entire computational domain for the tetrahedra mesh, whereas the entire rectilinear and octree meshes are bigger.}
   \label{fig:results-marlim_big}
 \end{figure*}
@@ -473,7 +472,7 @@ Figure~\ref{fig:results-marlim_survey} shows a zoom-in to the survey domain, the
 %
 \begin{figure*}
   \centering
-  \includegraphics[width=.9\linewidth]{figures/results-marlim_survey}
+  \includegraphics[width=.9\linewidth]{figures/results-marlim_survey.png}
   \caption{Meshes and broadside $E_x$ and $E_y$ fields in the left, middle, and right column, respectively, for the rectilinear, octree, and tetrahedral meshes in the top, middle, and bottom row, respectively (3$\times$ vertical exaggeration).}
   \label{fig:results-marlim_survey}
 \end{figure*}
@@ -505,7 +504,7 @@ The actual discretized resistivity model of the three mesh types are shown in Fi
 %
 \begin{figure*}
   \centering
-  \includegraphics[width=.9\linewidth]{figures/results-marlim_allmodels}
+  \includegraphics[width=.9\linewidth]{figures/results-marlim_allmodels.png}
   \caption{The resistivity model as obtained from the three different discretizations using rectilinear, octree, and tetrahedral meshes (3$\times$ vertical exaggeration).}
   \label{fig:results-marlim_allmodels}
 \end{figure*}
