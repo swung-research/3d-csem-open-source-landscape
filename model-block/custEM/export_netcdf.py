@@ -22,8 +22,8 @@ import numpy as np
 ds = xr.load_dataset('../block_model_and_survey.nc', engine='h5netcdf')
 lines = ['l1m_line_x', 'l2m_line_x', 'l3m_line_x']
 
-runtimes = ['118 s', '158 s']
-memory = ['97.8 GiB', '115.9 GiB']
+runtimes = ['232 s', '312 s']
+memory = ['244.1 GiB', '281.8 GiB']
 
 # export everything to netcdf
 for p in ['2']:
@@ -53,7 +53,7 @@ for p in ['2']:
 
         # Add info
         ds.attrs['runtime'] = runtimes[mm]
-        ds.attrs['n_procs'] = '24'
+        ds.attrs['n_procs'] = '48'
         ds.attrs['max_ram'] = memory[mm]
         ds.attrs['n_cells'] = P.cells
         ds.attrs['n_nodes'] = P.nodes

@@ -16,9 +16,10 @@ import xarray as xr
 ds = xr.load_dataset('../block_model_and_survey.nc', engine='h5netcdf')
 
 # Mesh
-hx, hy, hz = ds.attrs['hx'], ds.attrs['hy'], ds.attrs['hz']
-x0 = ds.attrs['x0']
-mesh_model = discretize.TensorMesh([hx, hy, hz], x0=x0)
+mesh_model = discretize.TensorMesh(
+    h=[ds.attrs['hx'], ds.attrs['hy'], ds.attrs['hz']],
+    origin=ds.attrs['x0'],
+)
 
 # Models
 resh_bg, resh_bg = ds.attrs['resh_bg'], ds.attrs['resv_bg']
@@ -64,23 +65,10 @@ ds.attrs['...'] = ...
 
 # Save it under <{model}_{code}.nc>
 model = ...  # 'layered' or 'block'
-code = ...   # 'custEM', 'emg3d', 'PETGEM', or 'SimPEG'
-#            # custEM/PETGEM: you can add a '_{p}', where p = 'p1' or 'p2'
+code = ...   # 'custEM', 'emg3d', 'PETGEM', 'SimPEG' (custEM/PETGEM: +'_{p}')
 ds.to_netcdf(f"../results/{model}_{code}.nc", engine='h5netcdf')
 ```
 
 A note regarding `runtime` and `max_ram`: Only profile the solution of the
 actual system `Ax=b`. Mesh creation, model and field interpolation, and all
 other pre- and post-processing steps do not fall under this measure.
-
-
-## Info
-
-Every code should store its info directly in the data (`ds.attrs[]`) as shown
-in the code snippet above.
-
-**Please make sure to add all info-data as indicated!**
-
-If you want to get an idea of the content and format of the info-data to
-provide have a look at the `BlockModel-Comparison.ipynb`, there you see the
-info provided from `emg3d`.
