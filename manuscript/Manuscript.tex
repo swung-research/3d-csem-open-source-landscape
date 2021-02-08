@@ -164,6 +164,12 @@ Large-scale modelling of three-dimensional controlled-source electromagnetic (CS
 \subsection*{Revise entire manuscript re:}
 \ymark{Intro/Discussion: Take into account «To make this manuscript publishable within GJI, it requires some serious effort to focus more on the bigger picture and make this story more pronounced within your manuscript.»}
 
+\ymark{RR: here my thoughts to strengthen the manuscript:\\
+- Marlim clearly shows that more than two independent codes are needed to say which one might produce the most reliable results in case of greater differences (like 10\%). Our work shows that having the choice of multiple usable codes is the only chance to see how good our codes are for realistic scenarios.\\
+- even though our examples are not suited for FE, we discuss important pros and cons of the different methods, mainly related to the discretization, which helps other modellers to make the correct choice for their application. AS Dieter mentioned, I'm not aware of anything comparable for CSEM.\\
+- Not everything is perfect in our paper - actually, we must rather argue that this is a unique benefit of our work. Every modeller will experience the same issues if he wants to go for realistic geometries, but none talks about it. As we go open-source, we are forced to mention and explain every issue and problem in the application for common examples every reader can learn from our negative experiences. In the common practice, none talk about the issues and weaknesses of his code but says "I have a few \% errors for two examples so my code is super".\\
+- I think so far none mentioned the importance of a proper resistivity description in 3D, in the best case as function(x, y, z), which is an important general finding for designing any non-blocky model.}
+
 \listoftodos
 
 \clearpage
@@ -257,7 +263,7 @@ and perfect magnetic conductor%
           & - SuSE Linux Enterprise                           & \\[.5em]
   \simpeg & \textbf{GKE n2-custom (Google cloud)}             & Lindsey Heagy \\
           & - Intel Cascade Lake, 8 vCPUs                     & \\
-          & - 355 GB RAM                                      & \\
+          & - 420 GB RAM                                      & \\
           & - Ubuntu 16.04                                    & \\
 %
   \bottomrule
@@ -320,29 +326,30 @@ A layered model fails to show the strength of 3D modellers, and in reality one w
 \phantom{\hspace{1em}}(iv) The error of the responses from the FE codes, on the hand, are relatively big at large offsets, particularly for the inline real responses. This has, again, its origin in the chosen discretization. The thin isotropic layer beneath the water requires many tetrahedra for a good-quality discretization. Therefore, the FE codes only extend this thin layer up to 30\,km from the origin, surrounded by a ten times larger halfspace-like boundary mesh with water conductivities assigned to the subsurface. This approximation significantly reduces the problem size compared to considering the layered-earth geometry for the whole computational domain.\\
 }
 
-\itodo{Expand and adjust, wait for final result \simpeg (same mesh or different mesh?); some of this might be outdated.}
 Note that \emg3d and \simpeg used the same rectilinear mesh in this example. The use of an octree mesh in \simpeg could greatly reduce the size of the mesh and resultant computation time, but at the cost of accuracy, which is reduced when averaging over layer interfaces to coarsen cells and because of the factor-of-two expansion rate of coarsened cells. As the aim of this study is to focus on accuracy of the simulations and compare discretization approaches, we chose to use the same mesh as in the \emg3d simulation. \added{Although we only show the x-directed field in this comparison, the y-directed field yields a similar result with respect to the misfit. A different story in this scenario is the z-directed field, which is not continues across the boundary on the seafloor. Having receivers close to such a non-continues boundary requires advanced interpolation routine} \citep[e.g., ][]{GJI.15.Shantsev, GP.11.Wirianto}\added{. This is no problem for the used FE codes within their basis functions, but the used FV codes do currently not have such routines implemented. The grid for the FV codes in this first example with a focus on precision is created in such a way that  the receivers are located on the corresponding nodes, so no interpolation is required to obtain the responses.}
 
-The runtime and memory requirements for the layered model are listed in Table~\ref{tbl:comp-layered}.
+\deleted{The runtime and memory requirements for the layered model are listed in Table~\ref{tbl:comp-layered}.
+[Note to reviewers: we removed the runtime table of the layered model; there is not much difference in RAM/Runtime of the layered and block models.]
 %
-\begin{table*}
-\begin{minipage}{10cm}
-  \centering
-  \caption{Comparison of number of processes, runtime, and memory, as well as the degree of freedom of the discretization used by the different codes for the layered model.}
-\label{tbl:comp-layered}
-  \begin{tabular}{lrS[table-format=6.0]S[table-format=4.1]S[table-format=8.0]}
-  \toprule
-  Code & \#Procs & {Runtime (s)} & {Memory (GiB)}   & {\#dof} \\
-  \midrule
-  \custem & 48 &   232 & 244.1 & 5899578 \\ % dof: 11799156 / 2 (Real+Imag -> Complex)
-  \emg3d  &  1 &   216 &   0.5 & 6004144 \\
-  \petgem & 24 &   252 & 151.7 & 2455868 \\
-  \simpeg &  4 & 10089 & 280.3 & 4813216 \\ % nprocs: 1*4 threads
-  \bottomrule
-\end{tabular}
-\end{minipage}
-\end{table*}
+%\begin{table*}
+%\begin{minipage}{10cm}
+%  \centering
+%  \caption{Comparison of number of processes, runtime, and memory, as well as the degree of freedom of the discretization used by the different codes for the layered model.}
+% \label{tbl:comp-layered}
+%  \begin{tabular}{lrS[table-format=6.0]S[table-format=4.1]S[table-format=8.0]}
+%  \toprule
+%  Code & \#Procs & {Runtime (s)} & {Memory (GiB)}   & {\#dof} \\
+%  \midrule
+%  \custem & 48 &   232 & 244.1 & 5899578 \\ % dof: 11799156 / 2 (Real+Imag -> Complex)
+%  \emg3d  &  1 &   216 &   0.5 & 6004144 \\
+%  \petgem & 24 &   252 & 151.7 & 2455868 \\
+%  \simpeg &  4 & 37131 & 392.2 & 6004144 \\ % nprocs: 1x4 vCPUs
+%  \bottomrule
+%\end{tabular}
+%\end{minipage}
+%\end{table*}
 %
+}
 
 \subsection{Block Model}
 
@@ -379,14 +386,12 @@ The results for the three receiver lines $y=-3;0;+3\,$km are shown in the left, 
 A few interesting points stand out:
 \begin{enumerate}
   \item The error levels between the different codes are overall comparable; the normalised difference is generally below a few percent, increasing towards larger offsets.
-  \item \itodo{Adjust with final \simpeg results; conclusion does currently not hold.} The normalised difference between the FV codes \emg3d and \simpeg is comparably low except at the boundary. The generally low normalised difference is because these codes use the same rectilinear mesh for modelling. The increasing normalised difference towards the boundary is because \emg3d uses the PEC boundary condition, while \simpeg uses the PMC boundary condition in this example.
+  \item The normalised difference between the FV codes \emg3d and \simpeg is comparably low except at the boundary. The generally low normalised difference is because these codes use the same rectilinear mesh for modelling. The increasing normalised difference towards the boundary is because \emg3d uses the PEC boundary condition, while \simpeg uses the PMC boundary condition in this example.
   \item The FE codes \custem and \petgem show similar boundary effects, but are influenced by the anomaly response (higher errors on right side and now unsymmetrical error distribution).
   \item The agreement within the same differential equation method (FE or FV) is better than across methods.
 \end{enumerate}
 
 The corresponding required runtime and memory are listed in Table~\ref{tbl:comp-block}.
-\ymark{We could remove Table 4, as \#procs and \#doc are equal, and runtime and memory are almost identical for all codes in these two examples. What do you think? I would then replace it in the following way:
-«The corresponding required runtime and memory are \added{almost identical to the ones for the layered model} listed in Table~\replaced{\ref{tbl:comp-layered}}{\ref{tbl:comp-block}}.»}
 %
 \begin{table*}
 \begin{minipage}{10cm}
@@ -400,7 +405,7 @@ The corresponding required runtime and memory are listed in Table~\ref{tbl:comp-
   \custem & 48 &   312 & 281.8 & 6014440 \\ % dof: 12,028,880 / 2  (Real+Imag -> Complex)
   \emg3d  &  1 &   213 &   0.5 & 6004144 \\
   \petgem & 24 &   238 & 152.8 & 2455868 \\
-  \simpeg &  4 & 10295 & 280.4 & 4813216 \\ % nprocs: 1*4 threads
+  \simpeg &  4 & 20000 & 387.9 & 6004144 \\ % nprocs: 1x4 vCPUs
   \bottomrule
 \end{tabular}
 \end{minipage}
@@ -496,7 +501,7 @@ The required runtime and memory to compute the shown MR3D responses for the four
   \custem & 64 &  872 & 230.1 & 1918106 \\ % dof: 3836212 / 2 (Real+Imag -> Complex)
   \emg3d  &  1 & 1246 &   0.5 & 5998992 \\
   \petgem & 96 &  524 & 175.4 & 1918106 \\
-  \simpeg &  4 &  422 &  12.8 &  720146 \\ % nprocs: 1*4 threads
+  \simpeg &  4 &  422 &  12.8 &  720146 \\ % nprocs: 1*4 vCPU
   \bottomrule
 \end{tabular}
 \end{minipage}
@@ -524,9 +529,7 @@ Today we are in the fortunate situation where we have several open-source codes 
 Overall, we observed an excellent match between the solutions. The amplitudes \added{and phases} of the layered model have mostly a relative error of less than 1--2\,\%. \deleted{Looking individually at the real or imaginary part results in much higher error values, but those are related to the zero crossings of the responses.} The cross-validation of the results for the block model yields a similar picture, with normalised differences within a few percents. For the large, complex MR3D model it is a bit different. First it can be noted that the misfits are higher for higher frequencies. For the lowest frequency, 0.125\,Hz, the normalised difference is a few percent for inline and broadside $E_x$ components, and up to 10\,\% for the broadside $E_y$ component. For higher frequencies these numbers \replaced{increase}{rise} to the order of $\pm10\,$\%. The reason for the higher misfit for MR3D than for the layered or block model lies mostly in the discretization, boundary effects, and interpolation strategy. While one might argue that 5--10\,\% NRMSD is a lot, we argue that this is probably as good as it gets, given that the code with which the responses we compare to were computed is not open-source. This has been shown within the process of this study. Our first attempts were based on the originally published, fine MR3D model. This model is very detailed, but its extent is too small in \added{the} x- and y-directions for CSEM computations. In order to represent the fine-scale model on a mesh suitable for computation, each of our codes did its own upscaling and extrapolation. However, we were unsuccessful in our attempt to reproduce the published results.  The reason is that there are many ways how you can extrapolate a model, and without knowing the details of how MR3D represents the model on the computational mesh, we could not re-produce this step. We reached out to the authors of MR3D, and they kindly agreed to also publish\deleted{ed} the upscaled and extended computational model. It is only with this model that we were able to obtain comparable results.
 
 %% 2. Discretization %%
-One of the key insights we gained from this study is that creating appropriate meshes is a difficult and time-consuming task. While there now exist several open-source 3D CSEM codes the capability for automatic meshing lacks behind and currently remains a largely manual task requiring experience in the field. It is important to state that the chosen models favour structured meshes. The first two examples can easily and accurately be represented by regular meshes. Using, for instance, a dipping layer instead of three resistive cubes would turn it around and make the model more favourable for unstructured meshes. MR3D would be an ideal scenario for unstructured meshes, \added{as they are best suited to represent the irregular geometry provided by the} \deleted{as it is based on also published irregular} lithological horizons. Since the corresponding resistivity model, however, was defined on a regular grid, the FE codes were forced to approximate the comparatively fine regular discretization by an unstructured one and interpolate the resistivity data for being able to apply the FE codes to this problem. We are completely aware about the ineptness of this re-approximation procedure, unless it served for the cross-validation purposes. Both cases show that automatic and adaptive meshing capabilities are needed, which will increase the flexibility of 3D CSEM modelling \added{\mbox{\citep{GJI.11.Schwarzbach,GJI.16.Key}}}. Such meshing codes should also take into account the physics of CSEM computation with its diffusive behaviour. It is also important to state that the unstructured mesh used for the MR3D model incorporates the entire domain and could be used for all source and receiver positions, whereas the rectilinear and octree meshes were designed for the shown receiver and corresponding source lines.
-\ymark{I added this last sentence. Let me know what you think, we can take it out again or adjust/modify it:}
-\added{Also, creating FV meshes is much simpler than creating FE meshes. However, having a FE mesh yields a lot o flexibility with regards to interpolation and refinement and adaption, making it more powerful once created.}
+One of the key insights we gained from this study is that creating appropriate meshes is a difficult and time-consuming task. While there now exist several open-source 3D CSEM codes the capability for automatic meshing lacks behind and currently remains a largely manual task requiring experience in the field. It is important to state that the chosen models favour structured meshes. The first two examples can easily and accurately be represented by regular meshes. Using, for instance, a dipping layer instead of three resistive cubes would turn it around and make the model more favourable for unstructured meshes. MR3D would be an ideal scenario for unstructured meshes, \replaced{as they are best suited to represent the irregular geometry provided by the}{as it is based on also published irregular} lithological horizons. Since the corresponding resistivity model, however, was defined on a regular grid, the FE codes were forced to approximate the comparatively fine regular discretization by an unstructured one and interpolate the resistivity data for being able to apply the FE codes to this problem. We are completely aware about the ineptness of this re-approximation procedure, unless it served for the cross-validation purposes. Both cases show that automatic and adaptive meshing capabilities are needed, which will increase the flexibility of 3D CSEM modelling \added{\mbox{\citep{GJI.11.Schwarzbach,GJI.16.Key}}}. Such meshing codes should also take into account the physics of CSEM computation with its diffusive behaviour. It is also important to state that the unstructured mesh used for the MR3D model incorporates the entire domain and could be used for all source and receiver positions, whereas the rectilinear and octree meshes were designed for the shown receiver and corresponding source lines. \added{Also, creating FV meshes is much simpler than creating FE meshes. However, having a FE mesh yields a lot of flexibility with regards to interpolation and local refinement, making it more powerful once created.}
 
 %% 3. Iterative vs direct solvers; runtime and memory %%
 Whereas proper discretization is the main driver for accurate results, the used solver is the main discriminator in terms of runtime and memory. Both iterative and direct solvers are used in this study, however, the chosen models clearly favour iterative solvers. The biggest advantage of iterative solvers are the comparatively small memory requirements, even more so if the iterative solver is matrix free. Direct solvers exhibit their strongest advantage, besides stability and robustness, in terms of computation times if responses of multiple CSEM transmitters need to be computed in the same computational domain. As the system matrix factorisation requires 98--99\,\% of the solution time, computations for additional sources come at almost no cost for direct solvers, whereas it would come at the same cost as the first source for iterative solvers. Independently of the solver there is a trade-off between high accuracy and runtime. \replaced{For}{As an} example, the octree mesh made for a very fast computation in the MR3D example thanks to the low number of dof, even though a direct solver was used. But the octree mesh has, due to its 2:1 aspect ratio, some limitations on the accuracy, why it was not used in the first two examples. Having discussed the discretization and the solver it is important to state that the reported runtime and memory is just one of the aspects, and we would like to emphasise that neither was at the core of this comparison, but the validation of the results. As such, no special efforts were undertaken to minimise either, as this is an entire different task.
