@@ -58,8 +58,8 @@ def extract_model(model='orig'):
         txt += f"{s}- Vertical_Resistivity.sgy\n"
         txt += f"{s}from https://doi.org/10.5281/zenodo.400233\n\n"
         txt += f"{s}For model='comp' you need\n"
-        txt += f"{s}- novo_mrl3d_H_Z_meters.segy\n"
-        txt += f"{s}- novo_mrl3d_Zmeters.segy\n"
+        txt += f"{s}- Mrl3d_Rh_20metersmesh.segy\n"
+        txt += f"{s}- Mrl3d_Rv_20metersmesh.segy\n"
         txt += f"{s}from https://doi.org/10.5281/zenodo.3748492\n"
         print(txt)
         return None, None
