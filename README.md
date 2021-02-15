@@ -15,10 +15,11 @@ necessary codes to reproduce all the results and figures.
     ├── README.md        # this file
     ├── manuscript/      # LaTeX-files
     │   └── figures/     # figures used in manuscript
-    └── model-{MODEL}/   # for MODEL in {block, marlim}
-        ├── README.md    # info about MODEL
-        ├── {CODE}/      # for CODE in {custEM, emg3d, PETGEM, SimPEG}
-        └── results/     # results of the different codes
+    ├── model-{MODEL}/   # for MODEL in {block, marlim}
+    │   ├── README.md    # info about MODEL
+    │   ├── {CODE}/      # for CODE in {custEM, emg3d, PETGEM, SimPEG}
+    │   └── results/     # results of the different codes
+    └── presentation/    # talk given at the AGU 2020
 
 Each `model-{MODEL}/`-directory contains a `README.md` with more information
 about the particular model.
@@ -27,6 +28,14 @@ about the particular model.
 ## History
 
 1. Submitted 2020-10-23 to Geophysical Journal International.
+2. Revision submitted 2021-02-15.
+
+
+## Data
+
+The information in this repo is enough to reproduce all results and figures
+shown in the manuscript. Our results are available at
+[10.5281/zenodo.4535603](https://doi.org/10.5281/zenodo.4535603).
 
 
 ## Environment

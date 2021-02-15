@@ -1,9 +1,16 @@
 # Block model
 
 
-A simple marine model consisting of a layered, partially anisotropic background
-in which three blocks are embedded. We compare the layered background results
-to the semi-analytical 1D solutions of *empymod*.
+A simple shallow marine model consisting of a layered, partially anisotropic
+background in which three blocks are embedded.
+
+It is a CSEM adaption of the MT *Dublin Test Model 1* from the first EM
+modelling workshop described by
+[Miensopust et al. (2013)](https://doi.org/10.1093/gji/ggt066). We use the same
+layout of the blocks but adjust the dimensions and resistivities to a typical
+marine CSEM problem. Additionally, we add a layered VTI background. We compare
+the layered background results to the semi-analytical 1D solutions of
+*empymod*.
 
 
 ## Loading the model and the survey

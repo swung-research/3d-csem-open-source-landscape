@@ -12,6 +12,7 @@ model-marlim/DATA/
 model-marlim/DATA
 model-marlim/marlim_dat*.nc
 model-marlim/*.npz
+zenodo/
 
 # LaTeX
 *.pdf
