@@ -87,14 +87,6 @@
 \newcommand{\petgem}{\texttt{PETGEM}\xspace}
 \newcommand{\ymark}[1]{%
   \begin{tcolorbox}[colback=yellow!40!white]#1\end{tcolorbox}}
-
-% Remove once done
-% \usepackage[colorinlistoftodos]{todonotes}
-\newcommand{\itodo}[1]{\todo[color=blue!40!white, inline]{\sffamily #1}}
-% \newcommand{\mtodo}[1]{\todo[inline]{\sffamily #1}}
-\newcommand{\etodo}[1]{\todo[color=blue!40!white]{#1}}
-\newcommand{\dul}[1]{\underline{\underline{#1}}}
-\newcommand{\ul}[1]{\underline{#1}}
 \newcommand{\rmk}[1]{{\color{red}{#1}}}
 \newcommand{\ohmm}{\ensuremath{\Omega\,}\text{m}\xspace}
 
@@ -423,7 +415,7 @@ It is important to note that there is no \emph{true solution}; but the closer th
   \label{fig:results-marlim_2published}
 \end{figure*}
 %
-A few conclusions can be drawn from this figure: In general the normalised difference is roughly 10\,\% or less. The structured meshes have in some cases a smaller normalised difference, e.g., for negative offsets in the inline and broadside $E_x$ responses, and in other cases the unstructured tetrahedral meshes, e.g., for positive offsets for all broadside $E_y$ responses, and often they have a comparable NRMSD. Some normalised differences have an interesting step-pattern, which is more pronounced for the structured meshes than for the unstructured meshes; this is related to the annotated point (1) in Figure~\ref{fig:model-marlim}. The origin of this zigzag pattern is most likely the bathymetry, as the code of the published data uses the bathymetry information in addition to the resistivity cube. This explains why the codes using the tetrahedra mesh, which use the bathymetry as well, do not show this feature. \added{None of your codes has currently special interpolation routines implemented to take particular care of a source injection close to a dipping interface, such as the bathymetry, with discontinuities in the normal electrical field and the normal derivatives of both electric and magnetic tangential fields. This effect alone can potentially contribute several percents of NRMSD, as shown by \mbox{\cite{GJI.15.Shantsev}}.}
+A few conclusions can be drawn from this figure: In general the normalised difference is roughly 10\,\% or less. The structured meshes have in some cases a smaller normalised difference, e.g., for negative offsets in the inline and broadside $E_x$ responses, and in other cases the unstructured tetrahedral meshes, e.g., for positive offsets for all broadside $E_y$ responses, and often they have a comparable NRMSD. Some normalised differences have an interesting step-pattern, which is more pronounced for the structured meshes than for the unstructured meshes; this is related to the annotated point (1) in Figure~\ref{fig:model-marlim}. The origin of this zigzag pattern is most likely the bathymetry, as the code of the published data uses the bathymetry information in addition to the resistivity cube. This explains why the codes using the tetrahedra mesh, which use the bathymetry as well, do not show this feature. \added{None of our codes has currently special interpolation routines implemented to take particular care of a source injection close to a dipping interface, such as the bathymetry, with discontinuities in the normal electrical field and the normal derivatives of both electric and magnetic tangential fields. This effect alone can potentially contribute several percents of NRMSD, as shown by \mbox{\cite{GJI.15.Shantsev}}.}
 
 The importance of the meshing to the result can be seen in Figure~\ref{fig:results-marlim_2ours}, where we compute the normalised differences between our codes.
 %
@@ -497,33 +489,7 @@ The models where obtained using volume averaging (\emg3d, \simpeg) and linear in
 Today we are in the fortunate situation where we have several open-source codes available to model CSEM data for arbitrarily sized complex 3D models. It is therefore comparably easy for anyone to run a simulation and obtain reasonable-looking, robust and precise results, something that was impossible a few years ago. However, just because one obtains a good-looking result does not say anything about its accuracy. Though we may be able to confirm the accuracy of codes in some simple scenarios, validating the performance of 3D CSEM codes for complex problems is only possible by cross-validating multiple solutions. This, plus the necessity for more reproducible modelling results, are the core motivations for this study.
 
 %% 1. Results: good agreement %%
-Overall, we observed an excellent match between the solutions. The amplitudes
-and phases of the layered model have mostly a relative error of less than
-1--2\,\%. The cross-validation of the results for the block model yields a
-similar picture, with normalised differences within a few percents. For the
-large, complex MR3D model it is a bit different. First it can be noted that the
-misfits are higher for higher frequencies. For the lowest frequency, 0.125\,Hz,
-the normalised difference is a few percent for inline and broadside $E_x$
-components, and up to 10\,\% for the broadside $E_y$ component. For higher
-frequencies these numbers increase to the order of $\pm10\,$\%. The reason for
-the higher misfit for MR3D than for the layered or block model lies mostly in
-the discretization, boundary effects, and interpolation
-\replaced{strategies}{strategy} \added{for the model, the source distribution
-on the mesh, and to obtain the response at receiver locations}. While one might
-argue that 5--10\,\% NRMSD is a lot, we argue that this is probably as good as
-it gets, given that the code with which the responses we compare to were
-computed is not open-source. This has been shown within the process of this
-study. Our first attempts were based on the originally published, fine MR3D
-model. This model is very detailed, but its extent is too small in the x- and
-y-directions for CSEM computations. In order to represent the fine-scale model
-on a mesh suitable for computation, each of our codes did its own upscaling and
-extrapolation. However, we were unsuccessful in our attempt to reproduce the
-published results.  The reason is that there are many ways how you can
-extrapolate a model, and without knowing the details of how MR3D represents the
-model on the computational mesh, we could not re-produce this step. We reached
-out to the authors of MR3D, and they kindly agreed to also publish the upscaled
-and extended computational model. It is only with this model that we were able
-to obtain comparable results.
+Overall, we observed an excellent match between the solutions. The amplitudes and phases of the layered model have mostly a relative error of less than 1--2\,\%. The cross-validation of the results for the block model yields a similar picture, with normalised differences within a few percents. For the large, complex MR3D model it is a bit different. First it can be noted that the misfits are higher for higher frequencies. For the lowest frequency, 0.125\,Hz, the normalised difference is a few percent for inline and broadside $E_x$ components, and up to 10\,\% for the broadside $E_y$ component. For higher frequencies these numbers increase to the order of $\pm10\,$\%. The reason for the higher misfit for MR3D than for the layered or block model lies mostly in the discretization, boundary effects, and interpolation \replaced{strategies}{strategy} \added{for the model, the source distribution on the mesh, and to obtain the response at receiver locations}. While one might argue that 5--10\,\% NRMSD is a lot, we argue that this is probably as good as it gets, given that the code with which the responses we compare to were computed is not open-source. This has been shown within the process of this study. Our first attempts were based on the originally published, fine MR3D model. This model is very detailed, but its extent is too small in the x- and y-directions for CSEM computations. In order to represent the fine-scale model on a mesh suitable for computation, each of our codes did its own upscaling and extrapolation. However, we were unsuccessful in our attempt to reproduce the published results.  The reason is that there are many ways how you can extrapolate a model, and without knowing the details of how MR3D represents the model on the computational mesh, we could not re-produce this step. We reached out to the authors of MR3D, and they kindly agreed to also publish the upscaled and extended computational model. It is only with this model that we were able to obtain comparable results.
 
 %% 2. Discretization %%
 One of the key insights we gained from this study is that creating appropriate meshes is a difficult and time-consuming task. While there now exist several open-source 3D CSEM codes the capability for automatic meshing lacks behind and currently remains a largely manual task requiring experience in the field. It is important to state that the chosen models favour structured meshes. The first two examples can easily and accurately be represented by regular meshes. Using, for instance, a dipping layer instead of three resistive cubes would turn it around and make the model more favourable for unstructured meshes. MR3D would be an ideal scenario for unstructured meshes, as they are best suited to represent the irregular geometry provided by the lithological horizons. Since the corresponding resistivity model, however, was defined on a regular grid, the FE codes were forced to approximate the comparatively fine regular discretization by an unstructured one and interpolate the resistivity data for being able to apply the FE codes to this problem. We are completely aware about the ineptness of this re-approximation procedure, unless it served for the cross-validation purposes. Both cases show that automatic and adaptive meshing capabilities are needed, which will increase the flexibility of 3D CSEM modelling \citep{GJI.11.Schwarzbach,GJI.16.Key,GJI.19.CastilloReyes}. Such meshing codes should also take into account the physics of CSEM computation with its diffusive behaviour. It is also important to state that the unstructured mesh used for the MR3D model incorporates the entire domain and could be used for all source and receiver positions, whereas the rectilinear and octree meshes were designed for the shown receiver and corresponding source lines. Also, creating FV meshes is much simpler than creating FE meshes. However, having a FE mesh yields a lot of flexibility with regards to interpolation and local refinement, making it more powerful once created.
