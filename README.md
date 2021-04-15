@@ -1,7 +1,7 @@
-# Open-source landscape for 3D CSEM modelling
+# Towards an open-source landscape for 3D CSEM modelling
 
 > Werthmüller, D., R. Rochlitz, O. Castillo Reyes, and L. Heagy,
-> Open-source landscape for 3D CSEM modelling:
+> Towards an open-source landscape for 3D CSEM modelling:
 > Submitted to Geophysical Journal International.
 
 
@@ -29,6 +29,7 @@ about the particular model.
 
 1. Submitted 2020-10-23 to Geophysical Journal International.
 2. Revision submitted 2021-02-15.
+3. Revision II submitted 2021-04-15.
 
 
 ## Data
