@@ -37,7 +37,7 @@ about the particular model.
 
 The information in this repo is enough to reproduce all results and figures
 shown in the manuscript. Our results are available at
-[10.5281/zenodo.4535603](https://doi.org/10.5281/zenodo.4535603).
+[10.5281/zenodo.4535602](https://doi.org/10.5281/zenodo.4535602).
 
 
 ## Environment
