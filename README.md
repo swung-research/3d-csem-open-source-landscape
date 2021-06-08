@@ -27,9 +27,10 @@ about the particular model.
 
 ## History
 
-1. Submitted 2020-10-23 to Geophysical Journal International.
-2. Revision submitted 2021-02-15.
-3. Revision II submitted 2021-04-15.
+1. 2020-10-23: submitted to Geophysical Journal International.
+2. 2021-02-15: Revision I submitted.
+3. 2021-04-15: Revision II submitted.
+4. 2021-06-08: Revision III submitted.
 
 
 ## Data
