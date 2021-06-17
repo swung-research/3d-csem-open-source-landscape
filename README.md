@@ -172,3 +172,4 @@ either in Python via ``SimPEG.Report()`` or in the terminal via ``python -c
              scipy : 1.2.1
         matplotlib : 3.3.4
 ```
+=======
