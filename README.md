@@ -81,8 +81,8 @@ _You need at least Python 3.7 to run (at least some of) the codes._
 
 Dependencies are a difficult topic, and no-one can guarantee that the scripts
 will still work a few years down to road with many new releases of all
-dependencies. We list here therefore the most important dependencies that where
-used when creating the results:
+dependencies. We list here therefore the most important dependencies that were
+used when creating the results.
 
 
 Note that all notebooks (data creation, results, and computation of emg3d and
@@ -133,6 +133,7 @@ custEM     1.0.0
 fenics     2019.1
 pygimli    1.1.0
 tetgen     1.51
+```
 
 ### PETGEM
 
