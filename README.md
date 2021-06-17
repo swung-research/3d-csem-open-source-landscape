@@ -149,3 +149,27 @@ gmsh       4.5.4
 ```
 
 ### SimPEG
+
+The following an excerpt from the SimPEG-scooby report. You can get your own
+either in Python via ``SimPEG.Report()`` or in the terminal via ``python -c
+'import SimPEG; print(SimPEG.Report())'``.
+
+```
+                OS : Linux
+            CPU(s) : 8
+           Machine : x86_64
+      Architecture : 64bit
+               RAM : 413.4 GB
+       Environment : Python
+  Python 3.7.9 | packaged by conda-forge | (default, Dec  9 2020, 21:08:20)
+  [GCC 9.3.0]
+            SimPEG : 0.14.3
+        discretize : 0.6.2
+       pymatsolver : 0.1.2
+        vectormath : 0.2.2
+        properties : 0.6.1
+             numpy : 1.19.2
+             scipy : 1.2.1
+        matplotlib : 3.3.4
+```
+=======
