@@ -1,8 +1,9 @@
 # Towards an open-source landscape for 3D CSEM modelling
 
-> Werthmüller, D., R. Rochlitz, O. Castillo Reyes, and L. Heagy,
+> Werthmüller, D., R. Rochlitz, O. Castillo-Reyes, and L. Heagy, 2021,
 > Towards an open-source landscape for 3D CSEM modelling:
-> Geophysical Journal International (accepted).
+> Geophysical Journal International; ggab238,
+> DOI: [10.1093/gji/ggab238](https://doi.org/10.1093/gji/ggab238).
 
 
 This repository contains the LaTeX source of the manuscript as well as the
@@ -172,4 +173,3 @@ either in Python via ``SimPEG.Report()`` or in the terminal via ``python -c
              scipy : 1.2.1
         matplotlib : 3.3.4
 ```
-=======
