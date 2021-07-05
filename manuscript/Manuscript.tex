@@ -108,10 +108,10 @@
   $^4$ University of California Berkeley, Department of Statistics (USA)
   }
 
-\date{Received 2021 MMMM DD; in original form 2020 October 23}
+\date{Accepted 2021 June 17. Received 2021 June 8; in original form 2020 October 23}
 \pagerange{\pageref{firstpage}--\pageref{lastpage}}
-\volume{VVV}
-\pubyear{202Y}
+% \volume{VVV}
+\pubyear{2021}
 
 % Authors with AMS fonts and mssymb.tex can comment out the following
 % line to get the correct symbol for Geophysical Journal International.
@@ -191,7 +191,7 @@ and perfect magnetic conductor%
   \midrule
   %
   Website & \href{https://custem.rtfd.io}{custem.rtfd.io}
-          & \href{https://emsig.github.io}{emsig.github.io}
+          & \href{https://emsig.xyz}{emsig.xyz}
           & \href{http://petgem.bsc.es}{petgem.bsc.es}
           & \href{https://docs.simpeg.xyz}{simpeg.xyz} \\
   License & GPL-3.0 & Apache-2.0 & BSD-3-Clause & MIT \\
@@ -379,7 +379,7 @@ The corresponding required runtime and memory are listed in Table~\ref{tbl:comp-
 
 The Marlim oil field is a giant reservoir in a turbidite sandstone horizon in the north-eastern part of the Campos Basin, offshore Brazil, which was discovered in 1985. \cite{BJG.17.Carvalho} created from seismic data and well log data a realistic, three-dimensional resistivity model with vertical transverse isotropy (VTI), called MR3D, which they released under the open creative common license \emph{CC BY 4.0}. \cite{GEO.19.Correa} computed CSEM data for MR3D for six frequencies from 0.125\,Hz to 1.25\,Hz, and released them under the same CC license. To compute the data they used a code from the industry \citep[][ \emph{SBLwiz} software from \emph{EMGS}]{GEO.07.Maao}. It is therefore, on the one hand, an ideal case to validate our open-source codes against, as it is a complex, realistic model and the data were computed by an industry-proofed code. On the other hand it is impossible to reproduce it exactly, as it is a closed-source code and we cannot know exactly what was done internally. Additionally, that code is a time-domain code obtaining the frequency-domain responses through a transform, and it includes the air layer via a non-local boundary condition at the water-air interface \citep{GEO.10.Mittet}. We compute all the results in this study in the frequency domain, where we model the entire domain including the air layer by putting the boundaries of the computational domain far away.
 
-The full MR3D model consists of $1022\times371\times1229$ cells, totalling to almost 466 million cells, where each cell has dimensions of $25\times75\times5$\,m. The model was upscaled for the computation to $515\times563\times310$ cells, totalling to almost 90 million cells, where each cell has dimensions of $100\times100\times20$\,m. Both the full model and the upscaled computational model are released as open source. The published data set consists of a regular grid of receivers of 20 in eastern direction by 25 in northern direction, 500 receivers in total, with 1\,km spacing located on the irregular seafloor. 45 source-towlines were located on the same grid above each receiver line, 50\,m above the seafloor, with shots every 100\,m. The computed responses for one of the receivers, \texttt{04Rx251a}, are shown in the original publication for the East-West inline-source \texttt{04Tx013a} and the East-West broadside-source \texttt{04Tx014a} (broadside offset of 1\,km). We reproduce the responses for this receiver and corresponding source-lines in our comparison. The $x$-$z$ cross-section of the horizontal resistivity model at the receiver position is shown in Figure~\ref{fig:model-marlim}, together with the receiver and sources positions. All layer have a VTI with $\lambda=\sqrt{2}$, except for the air layer, the seawater, and the salt layer, which are all isotropic.
+The full MR3D model consists of $1022\times371\times1229$ cells, totalling to almost 466 million cells, where each cell has dimensions of $25\times75\times5$\,m. The model was upscaled for the computation to $515\times563\times310$ cells, totalling to almost 90 million cells, where each cell has dimensions of $100\times100\times20$\,m. Both the full model and the upscaled computational model are released openly. The published data set consists of a regular grid of receivers of 20 in eastern direction by 25 in northern direction, 500 receivers in total, with 1\,km spacing located on the irregular seafloor. 45 source-towlines were located on the same grid above each receiver line, 50\,m above the seafloor, with shots every 100\,m. The computed responses for one of the receivers, \texttt{04Rx251a}, are shown in the original publication for the East-West inline-source \texttt{04Tx013a} and the East-West broadside-source \texttt{04Tx014a} (broadside offset of 1\,km). We reproduce the responses for this receiver and corresponding source-lines in our comparison. The $x$-$z$ cross-section of the horizontal resistivity model at the receiver position is shown in Figure~\ref{fig:model-marlim}, together with the receiver and sources positions. All layer have a VTI with $\lambda=\sqrt{2}$, except for the air layer, the seawater, and the salt layer, which are all isotropic.
 
 %
 \begin{figure*}
