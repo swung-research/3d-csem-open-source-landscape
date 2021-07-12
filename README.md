@@ -1,9 +1,10 @@
-# Towards an open-source landscape for 3D CSEM modelling
+# Towards an open-source landscape for 3-D CSEM modelling
 
 > Werthmüller, D., R. Rochlitz, O. Castillo-Reyes, and L. Heagy, 2021,
-> Towards an open-source landscape for 3D CSEM modelling:
-> Geophysical Journal International; ggab238,
+> Towards an open-source landscape for 3-D CSEM modelling:
+> Geophysical Journal International, 227(1), 644--659;
 > DOI: [10.1093/gji/ggab238](https://doi.org/10.1093/gji/ggab238).
+
 
 
 This repository contains the LaTeX source of the manuscript as well as the
